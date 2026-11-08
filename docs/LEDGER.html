@@ -348,6 +348,26 @@ to <em>perform</em> it. Cron prompts must state the correct location and prohibi
 <td>script crons executed</td>
 <td>both exit 0</td>
 </tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>vehicles.html</code> DOM suite, live URL</td>
+<td>44/44</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>vehicle visual audit, desktop + mobile</td>
+<td>pass (R2 visible in the DOM matrix)</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>business-domain prototype paths after cleanup</td>
+<td>all 404</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>routing-proxy.py</code> prototype route</td>
+<td>removed, proxy restarted, site all 200</td>
+</tr>
 </tbody>
 </table>
 <hr>
@@ -374,8 +394,10 @@ tools/
 prototype/
   classes.html            class x family matrix (53 checks)
   index.html              weapon spec tree (39 checks)
+  vehicles.html           chassis x battlefield-line matrix (44 checks)
   test-classes.js
   test-prototype.js
+  test-vehicles.js
 </code></pre>
 <hr>
 <h2>9. Change log</h2>
@@ -384,6 +406,11 @@ prototype/
   <code>IkkeOmar/neutralia</code> on GitHub Pages. Routing-proxy prototype route deleted.</li>
 <li><strong>2026-11-08</strong> — 09:00 cron recreated the prototype on the business domain; root-caused,
   removed, and both BFH cron prompts rewritten + paused.</li>
+<li><strong>2026-11-08</strong> — Vehicle system designed: 7 chassis x 20 variants, simulator-verified, prototype
+  built and deployed (44/44 live checks). Armoured car + Heavy tank are new chassis.</li>
+<li><strong>2026-11-08</strong> — Pages build STATUS can be stale: the API reports <code>built</code> for the previous
+  build while the new one queues. Poll on live CONTENT, never on status alone. Recorded in
+  skill devops/deliverable-hosting.</li>
 <li><strong>2026-11-08</strong> — Rocket Launcher reclassified as <em>split</em>, not new. Matrix re-cut.</li>
 <li><strong>2026-11-07</strong> — class × weapon-family system written; simulator extended; prototype built.</li>
 </ul>
