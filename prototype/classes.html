@@ -120,8 +120,8 @@
     <div class="mxscroll"><table class="mx" id="matrix"></table></div>
     <div class="mxhint">Swipe the table sideways to see all four classes.</div>
     <div class="note" style="margin-top:12px">
-      <span class="chip o">New</span> = family the 2009 original never had &nbsp; <span class="chip c">Split</span> = shipped in 2009 but conflated with another family in one category &nbsp; <span class="chip p">Original</span> = the 2009 category as-is &nbsp;
-      <span class="chip g">Invariant</span> rows below are asserted by <code>tools/simulate-design.py</code>.
+      <span class="chip o">New</span> = family the 2009 original never had &nbsp; <span class="chip c">Split</span> = shipped in 2009 but conflated with another family in one category &nbsp; <span class="chip p">Original</span> = the 2009 category as-is.
+      <br>The invariants listed under <b>Invariants</b> are asserted by <code>tools/simulate-design.py</code> on every run.
     </div>
   </div>
 
@@ -136,7 +136,7 @@
       <div class="card">
         <h2>Family node grammar — each family decides a different kind of trade</h2>
         <div class="grammar" id="grammar"></div>
-        <div class="note" style="margin-top:12px">
+        <div class="note" style="margin-top:14px;font-size:13px;line-height:1.6">
           A shotgun's branch is <b>slug vs scatter</b>; an MG's is <b>sustain vs burst</b>;
           a rifle's is <b>marksman vs duelist</b>. Eleven families that all read as
           "more damage vs more range" is one family with a reskin on.
@@ -272,7 +272,7 @@ function owns(c,f){return famOf(c).includes(f);}
 function renderMatrix(){
   const classes=CLASSES.map(c=>c.id);
   let h="<thead><tr><th>Family</th>";
-  for(const c of CLASSES) h+=`<th>${c.id}${c.new?'<br><span style="color:#f0b429">NEW</span>':""}</th>`;
+  for(const c of CLASSES) h+=`<th>${c.id}${c.new?' <span style="color:#f0b429;font-size:9px">NEW</span>':""}</th>`;
   h+="</tr></thead><tbody>";
   for(const f of FAMILIES){
     const org=FAMILY_ORIGIN[f.n];
