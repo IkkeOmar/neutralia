@@ -330,4 +330,20 @@ prototype/
   138 KB → 1.85 MB gzip; Rapier is the whole increase. Colyseus 0.18 SDK installed but NOT yet
   wired — the raw WebSocket transport still runs, so lag compensation is the next gap.
 
+- **2026-11-08** — SECOND BUG ROUND (5 more bugs, found by testing the rocket jump
+  repeatedly rather than once): (1) the client's self-blast prediction was erased by
+  reconciliation, because a blast impulse is not an input and the snapshot reset discarded
+  it — the player launched and snapped back; (2) the projectile ray passed a direction vector
+  60x too long, so Rapier's reported hit distance was 60x the real one and the rocket
+  detonated mid-flight instead of at the ground; (3) a ray starting inside the shooter's own
+  capsule reports a zero-length hit, which detonated the rocket at muzzle height — ABOVE the
+  centre of mass — so the blast pushed sideways instead of up; (4) `removeCharacter` leaked the
+  Rapier rigid body, collider and CharacterController, so orphaned capsules piled up at the
+  spawn point and shoved new players around (this was the real cause of both the flaky rocket
+  jump and a movement slowdown); (5) the rocket-jump test harness used plain HTTP and could
+  not reach an HTTPS Cloudflare tunnel, reporting "server never came up". All five are now
+  rules in the skill. Test suite 98 -> 115 checks across six suites; the rocket-jump suite is
+  now 19/19 and passes 5/5 consecutive runs against a clean server. Live playable at
+  `https://signature-retained-managing-replica.trycloudflare.com` (ephemeral quick tunnel).
+
 - **2026-11-07** — class × weapon-family system written; simulator extended; prototype built.

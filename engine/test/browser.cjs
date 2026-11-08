@@ -14,7 +14,11 @@ const CDP_PORT = 9341;
 
 function get(url) {
   return new Promise((res, rej) => {
-    http.get(url, (r) => { let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); }).on('error', rej);
+    // https.get for https:// URLs (Cloudflare tunnel); http.get throws on TLS.
+    const mod = url.startsWith('https:') ? https : http;
+    const req = mod.get(url, (r) => { let d = ''; r.on('data', c => d += c); r.on('end', () => res(d)); });
+    req.on('error', rej);
+    req.setTimeout(15000, () => req.destroy(new Error('timeout')));
   });
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));

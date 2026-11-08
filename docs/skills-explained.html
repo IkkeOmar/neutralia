@@ -175,7 +175,7 @@
     <span class="chip"><b>Engine</b> Three.js 0.187 + Rapier 0.21</span>
     <span class="chip"><b>Skills</b> 2,515 indexed</span>
     <span class="chip"><b>Written</b> 8 Nov 2026</span>
-    <span class="chip"><b>Checks</b> 98 passing</span>
+    <span class="chip"><b>Checks</b> 115 passing</span>
   </div>
 </header>
 
@@ -183,7 +183,7 @@
   <ol>
     <li><a href="#what">What a skill actually is</a></li>
     <li><a href="#stack">The stack, and what it costs</a></li>
-    <li><a href="#bugs">Ten bugs, written down so they cannot recur</a></li>
+    <li><a href="#bugs">Fifteen bugs, written down so they cannot recur</a></li>
     <li><a href="#jump">The rocket jump, explained physically</a></li>
     <li><a href="#tests">The test suite and what it proves</a></li>
     <li><a href="#where">Where everything lives</a></li>
@@ -292,7 +292,7 @@
   </tbody>
 </table>
 
-<h2 id="bugs">3 — Ten bugs, written down so they cannot recur</h2>
+<h2 id="bugs">3 — Fifteen bugs, written down so they cannot recur</h2>
 <p class="sub">
   None of these were found by reading the code. Every one was caught by a test that asserted a
   specific physical or network property and failed. This is the actual value of the skill:
@@ -507,6 +507,117 @@
   </div>
 </div>
 
+
+<div class="bug">
+  <div class="head"><span class="n">11</span><span class="t">The self-blast prediction was erased by reconciliation</span></div>
+  <div class="body">
+    <p>
+      The client predicts the rocket jump locally so it feels instant, and the server applies
+      the same impulse to its own authoritative state. But when the server's snapshot arrived,
+      the client reset its position and velocity from the authority and replayed only the
+      unacknowledged <em>inputs</em>.
+    </p>
+    <p>
+      A blast impulse is not an input. It was silently discarded — the player launched and then
+      snapped back to the ground on the very next snapshot.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Record the pending self-blast together with the sequence number it was applied at. When a
+      snapshot arrives, if the authority has already simulated past that sequence number the
+      local prediction must be <em>dropped</em>; if the authority predates the blast, the
+      prediction must be <em>re-applied</em>. Test both directions.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">12</span><span class="t">The projectile ray had a direction 60 times too long</span></div>
+  <div class="body">
+    <p>
+      Rapier's ray does <strong>not</strong> normalise its direction, and the distance it
+      reports is expressed in units of that direction's <em>length</em>. The projectile sweep
+      passed <code>v / (|v| · dt)</code> as the direction — a magnitude of <code>1/dt</code>,
+      which is 60 — together with <code>maxToi = |v| · dt</code>.
+    </p>
+    <p>
+      The result: a 0.7 m sub-step could travel 42 m. The rocket detonated 1.07 m along its
+      path instead of 0.7 m, and on some runs it detonated right at the muzzle.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Pass <code>v / |v|</code> as the direction and <code>|v| · dt</code> as the maximum
+      distance. Both are then in the same units and the reported hit distance is a real world
+      distance.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">13</span><span class="t">A ray starting inside a solid reports a zero-length hit</span></div>
+  <div class="body">
+    <p>
+      The muzzle sits about 6 mm outside the shooter's own capsule. Float noise sometimes put
+      the ray origin <em>inside</em> it, and Rapier reported a hit distance of zero — meaning
+      "you started inside something", not "you hit something".
+    </p>
+    <p>
+      Treating that as an impact detonated the rocket at the muzzle. That is fatal for the
+      rocket jump specifically: the muzzle is at 1.0 m, which is <em>above</em> the centre of
+      mass at 0.91 m, so the blast pushed the player sideways instead of up.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Ignore a hit whose distance is essentially zero and let the projectile advance out of the
+      shape it started in. The next sub-step hits the real surface.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">14</span><span class="t">Leaving a player behind leaked a capsule into the physics world</span></div>
+  <div class="body">
+    <p>
+      Disconnecting a player deleted the map entry but left the rigid body, the collider and
+      the character controller in the physics world forever.
+    </p>
+    <p>
+      Every browser test run adds a player and then kills the browser, so the server
+      accumulated orphaned capsules at the spawn point. After a few runs a new player spawned
+      <em>inside that pile</em> and the character controller shoved it around. This was the
+      real cause of two separate symptoms: the rocket-jump test passed on the first run and
+      failed on every run after it, and ordinary walking slowed to a crawl.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Removing a player must free the controller <em>and</em> remove the rigid body. A character
+      controller holds a reference to its collider, so leaving both behind is a leak in both
+      the physics engine and its WebAssembly memory.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">15</span><span class="t">The test harness could not speak HTTPS</span></div>
+  <div class="body">
+    <p>
+      The rocket-jump test's readiness check used a plain HTTP request. Against a Cloudflare
+      tunnel — which is HTTPS — the request failed and the test printed
+      <code>server never came up</code>.
+    </p>
+    <p>
+      That is a harness failure dressed up as a game failure. It cost a full round of chasing a
+      bug in the engine that was never there.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Every test helper must choose its HTTP client from the URL scheme. A test that cannot
+      reach the target has to say so distinctly from a test that reached it and found a
+      defect.
+    </div>
+  </div>
+</div>
+
 <h2 id="jump">4 — The rocket jump, explained physically</h2>
 <p class="sub">
   The brief was specific: reproduce the Battlefield Heroes behaviour where detonating a rocket
@@ -587,7 +698,7 @@
 
 <h2 id="tests">5 — The test suite and what it proves</h2>
 <p class="sub">
-  98 checks across five suites. The browser tests assert the player's actual physical state,
+  115 checks across six suites. The browser tests assert the player's actual physical state,
   not that a page loaded — a screenshot on its own is not a test.
 </p>
 
@@ -603,13 +714,18 @@
       Both GLBs decode with the standard loader, the map's 16 nodes match the shared map
       definition exactly, the soldier has a bound skeleton with 19 bones, correct joint and
       weight attributes, and two animation clips that actually deform the rig.</li>
+  <li><b>Vehicle data — 15 checks</b> <code>node test/vehicles-data.js</code><br>
+      The 7 chassis and 20 variants extracted from the design document match the document
+      exactly, every variant has a stated weakness, and no two variants of the same chassis
+      are alike.</li>
   <li><b>Browser — 16 checks</b> <code>node test/browser.cjs $URL</code><br>
       WebGL context alive, the canvas contains rendered geometry rather than a background, the
       HUD is wired, and the player actually moves when a key is held.</li>
-  <li><b>Rocket jump — 17 checks</b> <code>node test/browser-rocket.cjs $URL</code><br>
-      The whole chain in a real browser: the model is skinned with 19 bones, the rocket is
-      fired at the player's own feet, the player leaves the ground, reaches a useful height,
-      comes back down, and lands on the floor rather than through it.</li>
+  <li><b>Rocket jump — 19 checks</b> <code>node test/browser-rocket.cjs $URL</code><br>
+      The whole chain in a real browser: the model is skinned with 19 bones, the server
+      confirms the shot and broadcasts the explosion, the rocket is fired at the player's own
+      feet, the player leaves the ground, reaches a useful height, comes back down, and lands
+      on the floor rather than through it.</li>
 </div>
 
 <div class="note">
@@ -625,6 +741,13 @@
     with getters. Adding a getter there is much cleaner than reaching into module scope from
     outside.
   </p>
+  <p>
+    <strong>Test against a clean server, and test more than once.</strong> A server that has
+    already served several test runs is not the server you started. Bug 14 above was a leak
+    that showed up as a test passing on the first run and failing on every run after — so a
+    single green run proves very little. Restart the server after any change to the shared
+    physics, movement or combat modules; the server imports them at boot.
+  </p>
 </div>
 
 <div class="codeblock">
@@ -632,8 +755,9 @@
 node test/explosions.js          # 20  blast geometry, self-push, determinism
 node test/slice.js               # 29  authoritative server end to end
 node tools/verify-assets.mjs     # 16  glTF decodes, skin, clips, sizes
+node test/vehicles-data.js       # 15  vehicle data vs the design document
 node test/browser.cjs $URL       # 16  WebGL, HUD, movement, net
-node test/browser-rocket.cjs $URL # 17  the rocket jump, end to end</code></pre>
+node test/browser-rocket.cjs $URL # 19  the rocket jump, end to end</code></pre>
 </div>
 
 <h2 id="where">6 — Where everything lives</h2>
@@ -688,6 +812,12 @@ node test/browser-rocket.cjs $URL # 17  the rocket jump, end to end</code></pre>
       <td>Permanent hostname</td>
       <td><span class="tag todo">ephemeral</span> The quick tunnel dies with its process. A
           permanent name needs a domain that is not the business one, which stays clean.</td>
+    </tr>
+    <tr>
+      <td>Multiplayer combat</td>
+      <td><span class="tag done2">unverified</span> Two clients can connect through the tunnel,
+          but player-versus-player damage has not been asserted end to end over the internet
+          path. The engine's own hit detection is tested; the network path is not.</td>
     </tr>
   </tbody>
 </table>

@@ -95,8 +95,22 @@ export class PhysicsWorld {
     return rec;
   }
 
+  /**
+   * Remove a character and free every Rapier resource it owned.
+   *
+   * Deleting the map entry alone LEAKS: the rigid body, the collider and
+   * the character controller all stay in the Rapier world. Orphaned
+   * capsules then accumulate at the spawn point, and a new player spawned
+   * inside that pile gets shoved around by the character controller - which
+   * is exactly what made the rocket-jump test pass on the first run and fail
+   * on every run after.
+   */
   removeCharacter(id) {
+    const rec = this.characters.get(id);
+    if (!rec) return;
     this.characters.delete(id);
+    try { rec.controller.free(); } catch {}
+    try { this.world.removeRigidBody(rec.body); } catch {}
   }
 
   /** Teleport a character (used on respawn). Feet-space position. */

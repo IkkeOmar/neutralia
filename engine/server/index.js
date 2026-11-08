@@ -98,6 +98,11 @@ function broadcast(type, data) {
 wss.on('connection', (ws) => {
   const id = nextId++;
   const spawnIndex = spawnPoint();
+  if (process.env.NL_DEBUG) {
+    console.log('[join] id=' + id + ' spawnIndex=' + spawnIndex +
+      ' spawn=' + JSON.stringify(MAP.spawns[spawnIndex]) +
+      ' players=' + players.size);
+  }
   const state = createPlayerState(MAP.spawns[spawnIndex]);
   const player = {
     id, ws, spawnIndex,
@@ -166,6 +171,7 @@ wss.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
+    if (process.env.NL_DEBUG) console.log('[close] id=' + id + ' players=' + players.size);
     players.delete(id);
     if (physics) physics.removeCharacter(id);
     broadcast(MSG.LEAVE, { id });
@@ -366,18 +372,38 @@ function tick() {
     // Sweep the projectile against the static world so a rocket detonates
     // on a wall instead of sailing through it. The step is small enough that
     // a point test along the path is accurate enough.
-    const stepLen = Math.hypot(p.vx, p.vy, p.vz) * SUB_DT;
-    if (stepLen > 1e-4) {
+    // The ray direction MUST be a unit vector. Rapier does not normalise it,
+    // and `t` is measured in units of the direction's length - a direction
+    // with magnitude 60 makes maxToi=0.7 mean 42 world metres.
+    const speed = Math.hypot(p.vx, p.vy, p.vz);
+    if (speed > 1e-6) {
+      const maxToi = speed * SUB_DT;          // world metres this sub-step
       const hit = physics.raycast(
         p.x, p.y, p.z,
-        p.vx / stepLen, p.vy / stepLen, p.vz / stepLen,
-        stepLen, undefined
+        p.vx / speed, p.vy / speed, p.vz / speed,
+        maxToi, undefined
       );
-      if (hit) {
+      // A ray that STARTS INSIDE a solid shape reports toi = 0. The muzzle
+      // sits ~6 mm outside the shooter's own capsule radius, which is close
+      // enough that float noise sometimes puts the ray origin INSIDE it.
+      //
+      // A toi of 0 is never a real impact - it means "you started in
+      // something". Treating it as a hit detonated the rocket at the muzzle,
+      // which is ABOVE the centre of mass, so the blast pushed the player
+      // sideways instead of launching them. That was the flaky rocket jump.
+      //
+      // So: ignore a zero-length hit and let the projectile advance out of
+      // the shape it started in. The next sub-step will hit the real surface.
+      if (hit && hit.t > 1e-4) {
+        if (process.env.NL_DEBUG) {
+          console.log('[proj] HIT', p.weapon, 'from', p.x.toFixed(3), p.y.toFixed(3), p.z.toFixed(3),
+            'maxToi', maxToi.toFixed(3), 't', hit.t.toFixed(6),
+            '=> move', (p.vx/speed*hit.t).toFixed(3), (p.vy/speed*hit.t).toFixed(3), (p.vz/speed*hit.t).toFixed(3));
+        }
         // Move the projectile to the impact point and detonate there.
-        p.x += (p.vx / stepLen) * hit.t;
-        p.y += (p.vy / stepLen) * hit.t;
-        p.z += (p.vz / stepLen) * hit.t;
+        p.x += (p.vx / speed) * hit.t;
+        p.y += (p.vy / speed) * hit.t;
+        p.z += (p.vz / speed) * hit.t;
         projectiles.delete(id);
         detonate(p);
         continue;

@@ -11,6 +11,7 @@
 
 const { spawn } = require('node:child_process');
 const http = require('node:http');
+const https = require('node:https');
 const path = require('node:path');
 
 const BASE = process.argv[2] || 'http://127.0.0.1:8801';
@@ -24,11 +25,16 @@ function ok(name, cond, detail) {
 
 function get(url) {
   return new Promise((res, rej) => {
-    http.get(url, r => {
+    // https.get for https:// URLs - http.get throws on a TLS URL, which made
+    // the test report "server never came up" against a Cloudflare tunnel.
+    const mod = url.startsWith('https:') ? https : http;
+    const req = mod.get(url, r => {
       let d = '';
       r.on('data', c => d += c);
       r.on('end', () => res(d));
-    }).on('error', rej);
+    });
+    req.on('error', rej);
+    req.setTimeout(15000, () => req.destroy(new Error('timeout')));
   });
 }
 
@@ -215,7 +221,17 @@ async function waitFor(url, tries = 60) {
     if (airborne && s.onGround && i > 10) { landed = true; break; }
   }
 
+  const netInfo = await evalJs(`(()=>{
+    const n = window.__NEUTRALIA;
+    return JSON.stringify({
+      shots: n.shotsFired, explosions: n.explosionsSeen,
+      last: n.lastExplosion, local: n.local
+    });
+  })()`);
   console.log(`  samples: ${samples.map(v => v.toFixed(2)).join(' ')}`);
+  console.log(`  net: ${netInfo}`);
+  ok('the server confirmed the shot', JSON.parse(netInfo).shots >= 1, netInfo);
+  ok('the server broadcast the explosion', JSON.parse(netInfo).explosions >= 1, netInfo);
   ok('the player left the ground', airborne, `peak y=${peak.toFixed(2)}`);
   ok('the rocket jump reached a useful height', peak > 4, `peak y=${peak.toFixed(2)}`);
   ok('the player came back down', landed, `peak y=${peak.toFixed(2)}`);

@@ -238,6 +238,10 @@ let serverState = null;      // last authoritative snapshot
 let lastShotAt = 0;
 let physics = null;
 let currentWeapon = 'rifle';
+let shotsFired = 0;        // projectiles the server confirmed
+let explosionsSeen = 0;    // explosion broadcasts received
+let lastExplosion = null;
+let pendingBlast = null;      // local self-blast prediction, awaiting authority
 let ammo = { rifle: 30, rocket: 1, mgl: 6, tnt: 3 };
 const projectiles = new Map();   // visual projectile meshes
 const explosions = [];            // visual explosion effects
@@ -389,7 +393,7 @@ function handleMessage(m) {
       break;
     }
     case MSG.SHOT: {
-      if (m.projectile) spawnProjectileVisual(m);
+      if (m.projectile) { shotsFired++; spawnProjectileVisual(m); }
       else drawTracer(m);
       break;
     }
@@ -406,14 +410,23 @@ function handleMessage(m) {
       break;
     }
     case MSG.EXPLOSION: {
+      explosionsSeen++;
+      lastExplosion = m;
       spawnExplosionVisual(m);
       // A self-blast launches us. Predict it immediately so the jump feels
-      // instant; the server's snapshot reconciles it.
+      // instant.
+      //
+      // The prediction is recorded so reconciliation can tell whether the
+      // server's next snapshot ALREADY contains the impulse. If it does, the
+      // local prediction is dropped (the authority wins). If it does not, the
+      // local prediction is re-applied on top of the authority - otherwise
+      // the launch is silently undone the moment the next snapshot lands.
       if (m.owner === myId) {
         const blast = WEAPONS[m.weapon]?.blast;
         if (blast && local) {
           const eff = blastEffect(blast, local, m, PLAYER_MASS, true, local.onGround);
           applyImpulse(local, eff.dvx, eff.dvy, eff.dvz);
+          pendingBlast = { weapon: m.weapon, x: m.x, y: m.y, z: m.z, seq };
         }
       }
       break;
@@ -463,6 +476,30 @@ function applySnapshot(players) {
           stepMovement(local, inp, SUB_DT, physics);
         }
         pendingInputs = pendingInputs.filter(i => i.seq > p.lastSeq);
+
+        // Re-apply a self-blast the authority has not simulated yet.
+        //
+        // The server applies the blast impulse to its own state before it
+        // snapshots, so once consumedSeq has passed the blast's sequence
+        // number the authority already carries the launch and the local
+        // prediction must be DROPPED. Before that, the authority's snapshot
+        // predates the blast, so the local prediction has to be re-applied or
+        // the jump is undone by the next snapshot.
+        if (pendingBlast) {
+          const authorityHasIt = p.lastSeq >= pendingBlast.seq;
+          if (!authorityHasIt) {
+            const blast = WEAPONS[pendingBlast.weapon]?.blast;
+            if (blast) {
+              const eff = blastEffect(
+                blast, local,
+                { x: pendingBlast.x, y: pendingBlast.y, z: pendingBlast.z },
+                PLAYER_MASS, true, local.onGround);
+              applyImpulse(local, eff.dvx, eff.dvy, eff.dvz);
+            }
+          } else {
+            pendingBlast = null;
+          }
+        }
         updateHp();
       }
       continue;
@@ -812,6 +849,9 @@ window.__NEUTRALIA = {
   get debugNet() { return { seq, pending: pendingInputs.length, unsent: unsentInputs.length, lastServerSeq: serverState?.players?.find(p=>p.id===myId)?.lastSeq }; },
   get snapshots() { return serverState ? serverState.players.length : 0; },
   get weapon() { return currentWeapon; },
+  get shotsFired() { return shotsFired; },
+  get explosionsSeen() { return explosionsSeen; },
+  get lastExplosion() { return lastExplosion; },
   get ammo() { return { ...ammo }; },
   get physicsBuild() { return physicsBuild(); },
   get assetsLoaded() { return { map: !!assets.map, soldier: !!assets.soldier }; },
