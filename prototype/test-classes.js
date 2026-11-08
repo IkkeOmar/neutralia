@@ -109,9 +109,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   check('family-count spread is 1', await evalJs(`
     (()=>{const c=CLASSES.map(x=>famOf(x).length);return Math.max(...c)-Math.min(...c);})()`), 1);
   check('origin model covers all families', await evalJs("FAMILIES.every(f=>FAMILY_ORIGIN[f.n])"), true);
-  check('3 new families, 1 split, 7 original', await evalJs(`
+  check('2 new families, 1 split, 8 original', await evalJs(`
     (()=>{const v=Object.values(FAMILY_ORIGIN);return [v.filter(x=>x==='new').length,
-      v.filter(x=>x==='split').length, v.filter(x=>x==='orig').length];})()`), [3,1,7]);
+      v.filter(x=>x==='split').length, v.filter(x=>x==='orig').length];})()`), [2,1,8]);
   check('no orange dot on an original family (bug fix)', await evalJs(`
     (()=>{const rows=[...document.querySelectorAll('#matrix tbody tr[data-fam]')];
       for(const tr of rows){const fam=tr.dataset.fam;

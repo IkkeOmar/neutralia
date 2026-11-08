@@ -147,8 +147,9 @@ too strong. The stat-clone ratio is real and measured; the claim that the weapon
 *interchangeable* was wrong.)*
 
 **Our pivot:** keep the original's class-locked families — that is the sound part — and
-**re-cut the boundary so that every class holds a roughly equal *number of families*, and
-add families that the original never had** so that no class is a superset.
+**re-cut the boundary so that every class holds a roughly equal *number of families*, split
+the one family the original conflated (Rocket Launcher out of the Grenade Launcher
+category), and add two families the original never had** so that no class is a superset.
 
 ---
 
@@ -255,11 +256,12 @@ If we copied WoW, weapon type would tell a player almost nothing about how a cla
 **A class is a *set of weapon families it may use*, plus one utility only it can perform.**
 Not a stat block. Not a talent tree. The families are the class.
 
-### 4.2 The six families
+### 4.2 The eleven families
 
-We keep the original's four classes but **re-cut which families each holds**, and **add
-two families the original never had**. The additions exist to solve the measured problem in
-§2: the Soldier had 6 families and the others had 2.
+We keep the original's four classes but **re-cut which families each holds**, **split one
+family the original conflated**, and **add two families the original never had**. The
+additions exist to solve the measured problem in §2: the Soldier had 6 families and the
+others had 2.
 
 | # | Family | What it is | Not to be confused with |
 |---|---|---|---|
@@ -270,15 +272,24 @@ two families the original never had**. The additions exist to solve the measured
 | 5 | **Rifle** | Marksman: slow, precise, long | — |
 | 6 | **Knife** | Melee, close, the Commando's signature | — |
 | 7 | **Grenade Launcher** | Arcing indirect explosive | **not** a shoulder-fired launcher |
-| 8 | **Rocket Launcher** | *New.* Flat-trajectory, direct-fire anti-vehicle | the Grenade Launcher is arcing, this is not |
+| 8 | **Rocket Launcher** | *Split.* Flat-trajectory, direct-fire anti-vehicle | shipped in 2009 (Gunner-only) but filed under the GL category |
 | 9 | **Artillery** | *New.* Lobbed shell, long sight-lines, indirect | a map weapon, not a personal one |
 | 10 | **TNT / Demolition** | *New.* Placed charge, area denial, breaching | sticky-timed-only; TNT is a placed charge |
 | 11 | **Field Kit / Support** | *New.* Deployables: repair, shield, cover, spotting | not the original's Widgets (those were consumable premium items) |
 
-Eleven families across four classes. The original's nine map onto eight of them; the
-Grenade Launcher and the Rocket Launcher were conflated in the original's data (both
-appear as "GL"), and separating them is the single biggest functional unlock in this
-document — it lets the Gunner and the Soldier coexist without either being a superset.
+Eleven families across four classes. The original's nine map onto them as follows:
+
+- **Eight map one-to-one** — SMG, Pistol, Shotgun, MG, Rifle, Knife, Grenade Launcher, TNT.
+- **One is split out** — the Rocket Launcher shipped in 2009 (the Gunner had it, and the
+  original's own Gunner page says so), but the scraped roster filed it under the same
+  "GL" category as the arcing Grenade Launcher. **Separating them is the single biggest
+  functional unlock in this document** — it lets the Gunner and the Soldier coexist
+  without either being a superset.
+- **Two are genuinely new** — Artillery (never a personal weapon in 2009) and Field Kit
+  (the 2009 widgets were consumable premium items, not a weapon family).
+
+The last two exist to solve the measured problem in §2: the Soldier had six families and
+the other two classes had two each.
 
 ### 4.3 The matrix
 
