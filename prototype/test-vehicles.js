@@ -165,7 +165,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     "document.querySelectorAll('#weak tbody tr').length"), 20);
   ok('R8 table covers all 7 chassis', await evalJs(`
     (()=>{const rows=[...document.querySelectorAll('#weak tbody tr')].map(r=>r.cells[0].textContent.trim());
-      return new Set(rows).size===7 && rows.includes('Boat');})()`), true);
+      const distinct=new Set(rows);
+      const ok=distinct.size===7 && distinct.has('Boat') && distinct.has('Scout car');
+      if(!ok) return 'distinct='+distinct.size+' '+[...distinct].join('|');
+      return true;})()`), true);
   ok('R8 table has no MISSING cell', await evalJs(
     "!document.getElementById('weak').textContent.includes('MISSING')"));
   ok('R8 table lists every variant by name', await evalJs(`
