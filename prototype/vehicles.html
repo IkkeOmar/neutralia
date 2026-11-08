@@ -36,7 +36,7 @@
   .chip.o{background:rgba(251,146,60,.15);color:#fdba74;border:1px solid rgba(251,146,60,.35)}
   .chip.r{background:rgba(242,84,91,.15);color:#fca5a5;border:1px solid rgba(242,84,91,.35)}
   .mxscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
-  .mxscroll table.mx{min-width:640px}
+  .mxscroll table.mx{min-width:1040px}
   .mxhint{display:none;font-size:11px;color:var(--dim);margin-top:8px}
   @media(max-width:560px){.mxhint{display:block}}
 
@@ -48,12 +48,23 @@
   table.mx tbody tr:hover{background:rgba(255,255,255,.03)}
   table.mx td.ch{font-weight:600;text-align:left}
   table.mx td.ch small{display:block;color:var(--dim);font-size:10.5px;font-weight:400}
-  .vdot{display:inline-block;width:16px;height:16px;border-radius:5px;vertical-align:-3px;cursor:pointer}
-  .vdot.t{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14)}
-  .vdot.on{background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 0 9px rgba(124,92,252,.55)}
-  .vdot.lock{background:rgba(240,180,41,.30);border:1px solid rgba(240,180,41,.55);box-shadow:0 0 9px rgba(240,180,41,.28)}
+  .vcell{display:block;padding:5px 6px;border-radius:7px;cursor:pointer;line-height:1.25;
+         border:1px solid transparent;transition:.15s;min-width:74px}
+  .vcell:hover{border-color:rgba(124,92,252,.6)}
+  .vcell.on{background:linear-gradient(135deg,rgba(124,92,252,.34),rgba(56,189,248,.24));
+            border-color:rgba(124,92,252,.55)}
+  .vcell.lock{background:rgba(240,180,41,.16);border-color:rgba(240,180,41,.42)}
+  .vcell .vname{display:block;font-weight:700;font-size:12px;color:var(--txt);white-space:nowrap}
+  .vcell.on .vname{color:#fff}
+  .vcell.lock .vname{color:#fbd38d}
+  .vcell .vmount{display:block;font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;
+                 text-overflow:ellipsis;margin-top:1px}
+  .vcell.on .vmount{color:rgba(255,255,255,.72)}
+  .vcell.lock .vmount{color:rgba(251,211,141,.66)}
+  table.mx td.empty{background:rgba(255,255,255,.022)}
   tr.sel{background:rgba(124,92,252,.12)!important}
   tr.sel td.ch{color:#b7a4ff}
+  table.mx td[data-v]{padding:4px 5px}
 
   /* chassis tabs */
   .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
@@ -127,7 +138,9 @@
     <div class="mxscroll"><table class="mx" id="matrix"></table></div>
     <div class="mxhint">Swipe the table sideways to see every chassis.</div>
     <div class="note" style="margin-top:12px">
-      Each cell is one variant. <span class="chip g">Unlocked</span> = available in the spawn screen.
+      Rows are chassis, columns are <b>battlefield lines</b> — so rule R2 is visible at a glance:
+      every cell holds exactly one variant, and a contested cell would show two names side by side.
+      <br><span class="chip g">Unlocked</span> = available in the spawn screen.
       <span class="chip o">Locked</span> = earned by playing that chassis.
       <span class="chip p">New</span> = chassis the original never had.
       <br>Click a cell to inspect the variant. The invariants under <b>Invariants</b> are asserted by <code>tools/simulate-design.py</code> on every run.
@@ -357,19 +370,28 @@ let selectedVariant = null;
 
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 
+// Canonical battlefield-line order. The matrix is chassis (rows) x line (columns),
+// so R2 -- each variant of a chassis owns a distinct line -- is visible at a glance:
+// a contested cell would show two names side by side.
+const LINES = ["Recon","Transport","Anti-infantry","Support","Heavy","Hold",
+               "Anti-vehicle","Indirect","Air superiority","Bombing","Naval"];
+
 function renderMatrix(){
   let h = "<thead><tr><th>Chassis</th>";
-  for(const c of CHASSIS) h += `<th>${esc(c.id)}${c.origin==="new"?' <span style="color:#f0b429;font-size:9px">NEW</span>':""}</th>`;
+  for(const L of LINES) h += `<th>${esc(L)}</th>`;
   h += "</tr></thead><tbody>";
   for(const c of CHASSIS){
-    h += `<tr data-chassis="${esc(c.id)}"><td class="ch">${esc(c.id)}<small>${esc(c.abbr)} · ${esc(c.domain)}</small></td>`;
-    for(const v of c.variants){
-      const key = c.id+"|"+v.n;
-      const isUnlocked = unlocked.has(key);
-      const isLockable = !isUnlocked;
-      const cls = isUnlocked ? "on" : "lock";
-      const sel = (selectedVariant && selectedVariant.key===key) ? " sel" : "";
-      h += `<td class="${sel}" data-v="${esc(key)}"><span class="vdot ${cls}" title="${esc(c.id)} · ${esc(v.n)} — ${isUnlocked?'unlocked':'locked'}"></span></td>`;
+    h += `<tr data-chassis="${esc(c.id)}"><td class="ch">${esc(c.id)}<small>${esc(c.abbr)} · ${esc(c.domain)} · ${c.variants.length} variant${c.variants.length===1?"":"s"}</small></td>`;
+    for(const L of LINES){
+      const vs = c.variants.filter(v=>v.line===L);
+      if(!vs.length){ h += `<td class="empty"></td>`; continue; }
+      for(const v of vs){
+        const key = c.id+"|"+v.n;
+        const isUnlocked = unlocked.has(key);
+        const cls = isUnlocked ? "on" : "lock";
+        const sel = (selectedVariant && selectedVariant.key===key) ? " sel" : "";
+        h += `<td class="${sel}" data-v="${esc(key)}"><span class="vcell ${cls}" title="${esc(c.id)} · ${esc(v.n)} — ${isUnlocked?'unlocked':'locked'}"><span class="vname">${esc(v.n)}</span><span class="vmount">${esc(v.mount)}</span></span></td>`;
+      }
     }
     h += "</tr>";
   }

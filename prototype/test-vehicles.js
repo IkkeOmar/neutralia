@@ -83,6 +83,17 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     "document.querySelectorAll('#matrix tbody tr[data-chassis]').length"), 7);
   check('matrix has 20 variant cells', await evalJs(
     "document.querySelectorAll('#matrix td[data-v]').length"), 20);
+  check('matrix header lists the 11 battlefield lines', await evalJs(
+    "document.querySelectorAll('#matrix thead th').length"), 12);
+  check('every matrix cell holds exactly ONE variant (R2 in the DOM)', await evalJs(`
+    (()=>{const cells=[...document.querySelectorAll('#matrix td[data-v]')];
+      if(cells.length!==20) return 'cellcount='+cells.length;
+      const names=cells.map(c=>c.querySelector('.vname').textContent);
+      return new Set(names).size===20 ? 'distinct' : names.join(',');})()`),
+    'distinct');
+  check('every matrix cell shows its mount', await evalJs(`
+    [...document.querySelectorAll('#matrix td[data-v]')].every(c=>{
+      const m=c.querySelector('.vmount').textContent.trim(); return m.length>0;})`), true);
   check('7 rules rendered', await evalJs("document.querySelectorAll('#rules .rule').length"), 7);
   check('12 invariant rows rendered', await evalJs("document.querySelectorAll('#inv .invrow').length"), 12);
   check('8 source tiles rendered', await evalJs("document.querySelectorAll('#srcs .src').length"), 8);
@@ -146,7 +157,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const afterUnlocked = await evalJs('unlocked.size');
   check('clicking a locked cell unlocks it', afterUnlocked, beforeUnlocked + 1);
   ok('unlocked cell renders as unlocked', await evalJs(
-    "document.querySelector('#matrix td[data-v=\"Helicopter|Spotter\"] .vdot').classList.contains('on')"));
+    "document.querySelector('#matrix td[data-v=\"Helicopter|Spotter\"] .vcell').classList.contains('on')"));
   ok('selected variant shows a role panel', await evalJs(
     "document.getElementById('roledetail').textContent.includes('Spotter')"));
   ok('role panel states why the variant exists', await evalJs(
@@ -163,7 +174,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   // the matrix cell for a locked variant is styled differently from an unlocked one
   ok('locked cells use the lock style', await evalJs(
-    "document.querySelector('#matrix td[data-v=\"Boat|Gunboat\"] .vdot').classList.contains('lock')"));
+    "document.querySelector('#matrix td[data-v=\"Boat|Gunboat\"] .vcell').classList.contains('lock')"));
 
   console.log('\n=== RENDER SANITY ===');
   ok('no overflow-x on body', await evalJs(
@@ -178,6 +189,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   ok('all 20 variant names appear in the matrix', await evalJs(`
     (()=>{const cells=[...document.querySelectorAll('#matrix td[data-v]')].map(td=>td.dataset.v);
       return CHASSIS.every(c=>c.variants.every(v=>cells.includes(c.id+'|'+v.n)));})()`));
+  ok('each matrix cell renders the variant name as visible text', await evalJs(`
+    (()=>{for(const td of document.querySelectorAll('#matrix td[data-v]')){
+      const n=td.querySelector('.vname').textContent.trim();
+      if(!n) return false;}
+      return true;})()`));
   ok('every variant name is rendered as a card when its chassis is active', await evalJs(`
     (()=>{const missing=[];
       for(const c of CHASSIS){
