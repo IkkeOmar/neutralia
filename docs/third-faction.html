@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>third-faction</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Lore — The Third Faction and the Structure of the War</h1>
+<p>Companion to <code>GAME-DESIGN.md</code>. Built on the original game's own canon, verified against
+battlefield.fandom.com in <code>research/</code>.</p>
+<hr>
+<h2>1. What the original actually established</h2>
+<p>The canon facts we are building on:</p>
+<ul>
+<li><strong>Setting:</strong> parody of 1930s Europe. War declared by the Royals on <strong>Tuesday, 25 August 1936</strong>.</li>
+<li><strong>The trigger:</strong> during the Olympics, the Royal Nation accused the National Homeland of
+  cheating in a track-cycling contest. The Nationals responded by mocking the Royal King's
+  moustache. The Royals declared war.</li>
+<li><strong>Royal Kingdom</strong> — France, United Benelux, Switzerland, Tirol-Austria, Czechia, West
+  Germany. Capital Paris.</li>
+<li><strong>National Federation</strong> — Slovenia, Hungary, Slovakia, Czechia, East Germany, Poland,
+  Belarus, Ukraine. Capital Kyiv. (Note: Czechia is claimed by both — a deliberate
+  ambiguity in the original that this design leans into.)</li>
+<li><strong>The metagame:</strong> 28 campaigns fought. <strong>22 National victories, 5 Royal victories, 1
+  inconclusive.</strong> The Nationals won overwhelmingly, yet the Royals declared the war and
+  held it for 79 years.</li>
+<li><strong>The truce:</strong> when EA shut the game in July 2015, the lore revealed the war had ended in
+  a truce. The shutdown <em>was</em> the peace.</li>
+</ul>
+<p>This is the single most important fact in the design space: the war is a <strong>truce</strong>, not a
+victory. Both nations survived.</p>
+<hr>
+<h2>2. The third faction: Neutralia</h2>
+<h3>2.1 The premise</h3>
+<p><strong>Neutralia</strong> signed neither the Royal Pact nor the National Compact. It supplied arms to
+both, lent money to both, and mediated both. For 79 years it profited from a war it never
+fought.</p>
+<p>The war was never between France and Ukraine. It was between two proxies of a third party
+who wanted the continent split enough that neither side could industrialise its own heavy
+industry without orders.</p>
+<h3>2.2 Why this reads as true to the original</h3>
+<p>The original's own content already contains the third faction, and never explains it:</p>
+<ul>
+<li><strong>Summer of Heroes (May 2011)</strong> — both armies recruit "extraordinary heroes" worldwide.
+  Pirates answer first, then superheroes who crashed to Earth with super-speed and
+  super-jump, then wizards with telekinesis. Meanwhile tribes in the north fight their own
+  war until a National supply crate lands between them; they fight over a rocket launcher,
+  it misfires, and a Royal supply drop crushes the survivor. Both tribes join the wider
+  war with the fresh ordnance.</li>
+<li><strong>Heroes of Halloween (October 2011)</strong> — an Anubis statue fractures in a National port.
+  Anubis frees itself, shrouds the area in green mist, and converts National soldiers into
+  servants. A similar statue wakes a Pharaoh. Both then take control of Royal and National
+  soldiers alike, turning them into minions.</li>
+</ul>
+<p>Read one way, these are seasonal carnival events. Read another way, they are a catalogue of
+Neutralia's products and experiments — supernatural capabilities delivered to both sides
+equally, with the attendant chaos of two armies using the same "extraordinary hero"
+catalogue against each other. The third faction was already in the game. It just had no
+name.</p>
+<h3>2.3 Structure</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>National Army</th>
+<th>Royal Army</th>
+<th>Neutralia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nature</strong></td>
+<td>Grassroots federation</td>
+<td>Institutional kingdom</td>
+<td>Corporate state</td>
+</tr>
+<tr>
+<td><strong>Members</strong></td>
+<td>Slovenia, Hungary, Slovakia, Czechia, East Germany, Poland, Belarus, Ukraine</td>
+<td>France, Benelux, Switzerland, Tirol-Austria, Czechia, West Germany</td>
+<td>Unaligned, transnational</td>
+</tr>
+<tr>
+<td><strong>Capital</strong></td>
+<td>Kyiv</td>
+<td>Paris</td>
+<td>Geneva (later)</td>
+</tr>
+<tr>
+<td><strong>Doctrine</strong></td>
+<td>Improvised, mobile, anti-hierarchy</td>
+<td>Professional, entrenched, chain of command</td>
+<td>Contractual — sells to everyone</td>
+</tr>
+<tr>
+<td><strong>Economic base</strong></td>
+<td>Grain, industry, manpower</td>
+<td>Finance, administration, legitimacy</td>
+<td>Arms, credit, "extraordinary heroes"</td>
+</tr>
+<tr>
+<td><strong>War aim</strong></td>
+<td>Survive and win outright</td>
+<td>Survive and win outright</td>
+<td>Keep them both surviving and divided</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Neutralia's neutrality is the joke and the trap.</strong> It is not a peacekeeping force; it is
+the only party for whom the war continuing is a commercial success. Its Contracts system
+(§3, Track 1) is the gameplay expression of this: you do Neutralia's work for neutral
+money, while your own faction's war effort ticks down.</p>
+<h3>2.4 What Neutralia wants</h3>
+<p>The endgame cannot be "defeat the third faction" without a twist, or it is just a raid tier.</p>
+<p>Neutralia's aim is <strong>managed coexistence</strong>: a permanent two-sided proxy conflict that keeps
+the continent dependent. It is the arms dealer that needs the war.</p>
+<p>This creates the sharpest endgame problem in the design: the factions' war effort meter and
+Neutralia's Contracts economy are in direct opposition. A player can win the season by
+serving the antagonist.</p>
+<p><strong>Resolution option (recommended, needs Omar's call):</strong> a seasonal world event where the
+Contract track and the War Effort track converge — the war crosses the threshold that
+forces Neutralia to commit openly, and both factions get a window to either finish the war
+or accept the truce and inherit Neutralia's portfolio. Two endings, chosen by the players,
+not by the developers.</p>
+<hr>
+<h2>3. Quest structure</h2>
+<p>Three tracks, deliberately layered so a player always has something to do at any level, and
+each track teaches a different system.</p>
+<h3>3.1 Track 1 — Contracts (repeatable, daily, Neutralia-sourced)</h3>
+<p>Neutralia hires both sides. Neutral currency + Neutralia reputation in exchange for
+objectives that are <strong>communal, not factional</strong>:</p>
+<ul>
+<li>Hold <em>Valley</em> for 8 minutes</li>
+<li>Destroy 40 structures</li>
+<li>Escort a convoy from A to B</li>
+<li>Reduce the enemy flag count to zero</li>
+<li>Collect 5 supply crates from neutral ground</li>
+</ul>
+<p><strong>Why communal:</strong> a Contract must be completable by either faction, otherwise it is a
+faction quest wearing a contract's clothes. Communal objectives also mean National and
+Royal players can complete the same Contract together — the first mechanic that puts the
+two factions on the same side of an objective without a special event.</p>
+<p><strong>The tension:</strong> Contracts advance your <em>Neutralia</em> standing and count <em>against</em> your
+faction's war effort. This is deliberate friction. A player must ask: do I want the neutral
+money and the doctrine it unlocks, or the faction contribution my general is counting on?</p>
+<p><strong>Reward:</strong> Neutral currency (buyable only in Neutralia's store, which sells cosmetics and
+doctrine <em>variants</em>, never power) + Doctrine unlocks + the "Contract" title track.</p>
+<h3>3.2 Track 2 — Commendations (tutorializing, persistent)</h3>
+<p>The original's "missions" (up to three active, achievement-style: <em>kill five enemies in a row
+without dying</em>) become a permanent tracked series of 40+ Commendations. Each teaches one
+mechanic and unlocks one Doctrine on completion.</p>
+<table>
+<thead>
+<tr>
+<th>Commendation</th>
+<th>Teaches</th>
+<th>Unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Five in a Row</em></td>
+<td>suppressing fire, combo tracking</td>
+<td><em>Focus</em> doctrine</td>
+</tr>
+<tr>
+<td><em>Field Promotion</em></td>
+<td>the token economy</td>
+<td><em>Overcharge</em> doctrine</td>
+</tr>
+<tr>
+<td><em>Wheels</em></td>
+<td>vehicle entry and crew roles</td>
+<td><em>Motor Pool</em> doctrine</td>
+</tr>
+<tr>
+<td><em>Nothing Personal</em></td>
+<td>do not kill the same enemy twice in a life</td>
+<td><em>Conscience</em> doctrine</td>
+</tr>
+<tr>
+<td><em>Both Sides</em></td>
+<td>complete a Contract with an enemy player on the same team</td>
+<td><em>Diplomat</em> doctrine</td>
+</tr>
+</tbody>
+</table>
+<p>This is how complex systems get taught without a tutorial that lies or a wall of text. A
+Doctrine is a reward for understanding something.</p>
+<h3>3.3 Track 3 — War Effort (faction, world-scale)</h3>
+<p>The original's 28-campaign metagame, rebuilt as a persistent regional war.</p>
+<ul>
+<li><strong>Territory map:</strong> the two factions' claimed territories (from the original's metagame
+  map) as a shared, persistent board. Each week, campaigns are fought for control of a
+  territory. Both factions fight <em>for</em> their own territory — a National player pushes
+  north-east, a Royal player pushes south-west — and the map visibly changes.</li>
+<li><strong>Shared conflict meter:</strong> beyond territory, a per-season <strong>world meter</strong> tracks total
+  war activity. When it crosses thresholds, Neutralia responds: escalating supplies, then
+  an "extraordinary hero" deployment (a Summer-of-Heroes-style event), then open
+  intervention.</li>
+<li><strong>Cadence:</strong> ~8 weeks per season. Each season ends with a truce (of course) — the next
+  season starts from the new border.</li>
+</ul>
+<p><strong>Why seasonal truces:</strong> the original's own ending was a truce. Making truces the
+<em>structure</em> rather than the <em>ending</em> means the world's borders are player-made history,
+and each season has a genuine beginning and end.</p>
+<h3>3.4 Instanced content</h3>
+<p>Vocabulary taken directly from the original's maps and vehicles:</p>
+<table>
+<thead>
+<tr>
+<th>Instance type</th>
+<th>Original basis</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bunker</strong></td>
+<td>Base / emplacement maps</td>
+<td>4–6 player, objective-based, faction-locked</td>
+</tr>
+<tr>
+<td><strong>Hangar</strong></td>
+<td>Airfield maps, fighter planes</td>
+<td>6–8 player, vehicle-heavy, escort/defend</td>
+</tr>
+<tr>
+<td><strong>Town raid</strong></td>
+<td>Urban conquest maps</td>
+<td>10 player, multi-phase, boss = a named commander</td>
+</tr>
+<tr>
+<td><strong>Convoy</strong></td>
+<td>Jeep-route maps</td>
+<td>3–5 player, escort with pursuers, no revives</td>
+</tr>
+</tbody>
+</table>
+<p>Bosses are <strong>named commanders of the opposing faction</strong> — not monsters. This preserves the
+cartoon-military tone and makes faction identity meaningful in PvE.</p>
+<hr>
+<h2>4. Player-facing lore fragments</h2>
+<p>Fragments, not exposition. Distributed through Commendations, Contracts, item descriptions,
+and idle dialogue at faction hubs.</p>
+<p><strong>On the Olympic incident.</strong> Both factions' official histories claim victory in the
+track-cycling race. Neither history includes a photograph. Neutralia's official history of
+the race is a single line: <em>"the outcome was recorded."</em></p>
+<p><strong>On the Kings' moustache.</strong> The mock was not about the moustache. The Nationals were
+laughing because the Royal delegation had been photographed arriving late, and the Royal
+propaganda office had already published a photograph of an earlier arrival. The insult
+became a casus belli because both nations had spent two years manufacturing the kind of
+incident that could justify one.</p>
+<p><strong>On the truce.</strong> Both armies were told the war had ended. Both armies were told by the
+same people who had supplied the weapons.</p>
+<p><strong>On Czechia.</strong> It is claimed by both factions in every official document. Both claims are
+genuine. Neutralia has never commented. This is the seed of the endgame.</p>
+<p><strong>On the "extraordinary heroes".</strong> Every hero who arrives with super-speed, super-jump, or
+telekinesis arrived from the same place, through the same contract, with the same
+paperwork. Neutralia's recruitment form has one field: <em>Preferred billing</em>.</p>
+<hr>
+<h2>5. Open lore questions for Omar</h2>
+<ol>
+<li><strong>Continuity or restart?</strong> Continue from the 1936 war and the truce, or set the MMO in a
+   new era where the war has already happened and the MMO is about its consequences?
+   Continuing is cheaper to write and more satisfying to original players; restarting lets
+   us invent a cleaner map. My recommendation: <strong>continue</strong>, and treat the season-1 truce
+   as the thing that broke the illusion.</li>
+<li><strong>Neutralia's reveal timing.</strong> Immediate reveal (players know from day one who the
+   antagonist is) or slow reveal (discovered through Contract anomalies)? Slow reveal
+   supports the "both sides are complicit" theme better; immediate reveal is clearer.</li>
+<li><strong>Is the third faction playable?</strong> A Neutralia faction is mechanically interesting
+   (soldiers-for-hire, no home territory) but risks a third faction being a worse
+   experience for the other two. My recommendation: <strong>not a faction</strong> — a vendor and
+   employer, plus an endgame presence.</li>
+<li><strong>Does the war need a side to win?</strong> A persistent world with player-moved borders is
+   more interesting than a winner-take-all war, but it needs a reason for anyone to care
+   about a border at all.</li>
+</ol>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>third-faction.md</code>.</footer>
+</div>
+</body>
+</html>

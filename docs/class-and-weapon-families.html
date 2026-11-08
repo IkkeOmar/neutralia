@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>class-and-weapon-families</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Class Systems and Weapon Families</h1>
+<p>Companion to <code>GAME-DESIGN.md</code> and <code>systems/weapon-specification.md</code>. Implements the deeper
+half of pillar P1: <em>weapon choice is the game</em> — and the class is what makes the weapon
+families mean something.</p>
+<p>Research basis: <code>research/04-class-weapon-family-exclusivity.md</code> (precedents),
+<code>research/02-bfh-system-inventory.md</code> (the original's real numbers),
+<code>research/02-weapon-roster.json</code> + <code>research/bfhinfo_items_detail.json</code> (measured data).
+All primary sources were fetched live on 2026-11-07; claims are marked <code><span class="verified">[verified]</span></code>.</p>
+<hr>
+<h2>1. The concept that names this problem</h2>
+<p><strong>Orthogonal Differentiation</strong> — <em>"Differences in abilities of game entities that are in
+type rather than in value."</em> <code><span class="verified">[verified]</span></code> — GDP3 Game Design Pattern Library, Chalmers
+University of Technology / University of Gothenburg, <code>gdp.cse.chalmers.se</code>. Coined by
+<strong>Harvey Smith</strong> (GDC 2003), formalised as a design pattern by <strong>Björk &amp; Holopainen</strong>
+(<em>Patterns in Game Design</em>, 2004).</p>
+<p>The argument, verbatim:</p>
+<blockquote>
+<p>"When these abilities and the functionality they provide do not only have quantitative
+but also qualitative difference this means that the games have Orthogonal
+Differentiation. This give the different game pieces additional value since they
+represent <strong>the only ways for players to perform certain actions</strong>. Not all or many
+aspects of the game entities need to be unique; often it is sufficient that a
+<strong>single ability is radically different</strong> from other units for it to have special
+gameplay value."</p>
+</blockquote>
+<p>Two sentences from that page matter most for us:</p>
+<blockquote>
+<p>"It is achieved through Asymmetric Abilities between Characters or Units. However,
+Asymmetric Abilities is not enough since <strong>the differences need to be in type rather
+than in degree.</strong>"</p>
+<p>"Orthogonal Differentiation is used in games to either provide more gameplay without
+increasing production costs or create more Complex Gameplay, or both."</p>
+</blockquote>
+<p><strong>Why this is the right frame for the brief Omar gave.</strong> "Make the weapon system much more
+detailed and much more specialized according to different classes" is, in design terms, a
+request for <em>orthogonal</em> differentiation — the class must differ by <strong>what it can do</strong>,
+not by <strong>how much</strong>. A Gunner with 150 HP is a value difference. A Gunner who is the
+<em>only</em> class that can repair a vehicle mid-fight is a type difference, and no amount of
+stat tuning can substitute for it.</p>
+<p><strong>The resolution the GDP3 page hands us for free:</strong></p>
+<blockquote>
+<p>"However, they can be combined by treating the differentiated units as a set and have
+the same sets for all players or all Teams."</p>
+</blockquote>
+<p>That is the fairness answer: every team faces the <em>same set</em> of orthogonal classes, so
+type-difference and symmetry coexist. We do not need the classes to be numerically equal.</p>
+<h3>1.1 The failure mode we are steering away from</h3>
+<p><strong>Apex Legends</strong> is the clean shipped example of what not to do. Its classes are numeric
+perks on fully shared weapons — <em>"Assault Legends carry more ammo per stack and have extra
+grenade slots… They also use weapons faster than other Legends"</em>; Rampart's passive is
+<em>"increased magazine capacity and faster reloads when using LMGs."</em> <code><span class="verified">[verified]</span></code> — EA
+official help page + Apex Legends wiki.</p>
+<p>Every Legend can carry every gun. The class only nudges how good you are with certain
+ones. That is value-differentiation pretending to be type-differentiation, and it is
+exactly the design where "one class is a strict upgrade" is impossible to avoid.</p>
+<hr>
+<h2>2. What the original already had — and the flaw in it</h2>
+<p>The 2009 game shipped <strong>185 base weapons</strong> across <strong>nine categories</strong> and three classes.
+Measured from the scraped roster (<code>research/02-weapon-roster.json</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Soldier</th>
+<th>Gunner</th>
+<th>Commando</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMG</td>
+<td>29</td>
+<td>—</td>
+<td>—</td>
+<td>29</td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td>22</td>
+<td>—</td>
+<td>—</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Shotgun</td>
+<td>18</td>
+<td>—</td>
+<td>—</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Grenade Launcher</td>
+<td>18</td>
+<td>16</td>
+<td>—</td>
+<td>34</td>
+</tr>
+<tr>
+<td>Grenade</td>
+<td>4</td>
+<td>—</td>
+<td>—</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Sticky TNT</td>
+<td>6</td>
+<td>—</td>
+<td>—</td>
+<td>6</td>
+</tr>
+<tr>
+<td>MG</td>
+<td>—</td>
+<td>29</td>
+<td>—</td>
+<td>29</td>
+</tr>
+<tr>
+<td>Rifle</td>
+<td>—</td>
+<td>—</td>
+<td>31</td>
+<td>31</td>
+</tr>
+<tr>
+<td>Knife</td>
+<td>—</td>
+<td>—</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>97</strong></td>
+<td><strong>45</strong></td>
+<td><strong>43</strong></td>
+<td><strong>185</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Seven of the nine families are already class-locked.</strong> Only the Grenade Launcher is
+shared (Soldier <em>and</em> Gunner). The Gunner's own page states it: <em>"The gunner specializes in
+the use of machine guns, shotguns, and rocket launchers… the <strong>only class with Rocket
+Launchers</strong>."</em> <code><span class="verified">[verified]</span></code> — battlefield.fandom.com/wiki/Gunner. The Soldier's page:
+<em>"capable of utilizing submachine guns, shotguns, and pistols."</em> <code><span class="verified">[verified]</span></code></p>
+<p><strong>So the original already had the backbone of orthogonal differentiation. And this is the
+flaw: the Soldier held six of the nine families and 97 of the 185 weapons; the Gunner and
+Commando held two each.</strong> One class was a superset of the game.</p>
+<p><strong>The measured problem is therefore not "weapons are too similar" — it is that the class
+boundary was drawn in the wrong place.</strong> The Soldier was a catch-all, and the other two
+were specialists with almost nothing to specialise in. Measured exclusive-only weapons:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Weapons only this class can use</th>
+<th>Weapons in a shared family</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soldier</td>
+<td>79</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Gunner</td>
+<td>29</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Commando</td>
+<td>43</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3>2.1 The second measured problem: the roster was mostly stat-clones</h3>
+<p>Recomputed directly from the project's own scraped data (<code>02-weapon-roster.json</code> +
+<code>bfhinfo_items_detail.json</code>), over the four stat axes the site exposes (range, rate of
+fire, ammo, damage):</p>
+<p><strong>185 base weapons collapse to 55 distinct stat profiles. Only 7 of 185 have a unique
+profile; 178 share theirs with at least one other weapon.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Weapons</th>
+<th>Distinct stat profiles</th>
+<th>Clone ratio</th>
+<th>Distinct behaviours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grenade Launcher</td>
+<td>34</td>
+<td>5</td>
+<td><strong>6.8×</strong></td>
+<td>11</td>
+</tr>
+<tr>
+<td>MG</td>
+<td>29</td>
+<td>8</td>
+<td>3.6×</td>
+<td>17</td>
+</tr>
+<tr>
+<td>Rifle</td>
+<td>31</td>
+<td>10</td>
+<td>3.1×</td>
+<td>17</td>
+</tr>
+<tr>
+<td>SMG</td>
+<td>29</td>
+<td>11</td>
+<td>2.6×</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Shotgun</td>
+<td>18</td>
+<td>7</td>
+<td>2.6×</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td>22</td>
+<td>9</td>
+<td>2.4×</td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>Knife</strong></td>
+<td><strong>12</strong></td>
+<td><strong>1</strong></td>
+<td><strong>12×</strong></td>
+<td><strong>7</strong></td>
+</tr>
+<tr>
+<td>TNT</td>
+<td>6</td>
+<td>4</td>
+<td>1.5×</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Grenade</td>
+<td>4</td>
+<td>3</td>
+<td>1.3×</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>But the important finding is the last column, and it corrects the obvious reading.</strong>
+There are <strong>95 distinct behaviour descriptions</strong> across the 185 base weapons. The
+Grenade Launcher's 14 identical-stat weapons are not interchangeable — <em>Tank Buster</em> is a
+"long range anti-vehicle weapon", <em>M32 MGL</em> is a "bulky grenade launcher... great for
+laying down areas of infantry destruction", <em>Sam's SAM</em> is a different weapon entirely.
+The Knife family is the extreme case: <strong>12 knives, one single stat profile</strong> (range 1,
+ROF 3, no ammo, no damage value) but <strong>7 distinct behaviours</strong> — <em>Sensei's Striking Edge</em>
+has "slow but long and powerful" swings, <em>Knuckleduster Dagger</em> is "a perfect weapon for
+those surprise attacks deep behind enemy lines", <em>Dirk's Digger</em> is "for digging graves".</p>
+<p><strong>So the original was never purely a reskin farm — it differentiated by <em>behaviour</em> and
+wasted the <em>numbers</em>.</strong> That is the accurate statement, and it matters for the design: we
+are not adding a dimension the original lacked (it had behaviour variation), we are
+<strong>fixing the dimension it had and did not use</strong> — and this is the same correction the
+Workbench finding forced on the special-features argument. <em>(Retraction, 2026-11-07: an
+earlier draft of this section said "the original's 346 weapons was really about 25" and
+cited the clone ratios as pure duplication. The behavioural evidence above shows that was
+too strong. The stat-clone ratio is real and measured; the claim that the weapons were
+<em>interchangeable</em> was wrong.)</em></p>
+<p><strong>Our pivot:</strong> keep the original's class-locked families — that is the sound part — and
+<strong>re-cut the boundary so that every class holds a roughly equal <em>number of families</em>, and
+add families that the original never had</strong> so that no class is a superset.</p>
+<hr>
+<h2>3. Precedents we are copying, and what each teaches</h2>
+<h3>3.1 Deep Rock Galactic — hard slot exclusivity <code><span class="verified">[verified]</span></code></h3>
+<p>Official wiki, <code>deeprockgalactic.wiki.gg/wiki/Equipment</code>:</p>
+<blockquote>
+<p>"All of the classes carry several items of Equipment at once - a Primary Weapon, a
+Secondary Weapon, two Support Tools and a Throwable item (such as a grenade)."</p>
+<p>"Support Tools assist the Dwarves with mobility and utility - <strong>every class has a unique
+pair of Support Tools related to their job.</strong>"</p>
+<p>"The options for the <strong>Primary Weapon, Secondary Weapon, Support Tools, Throwables, and
+Armor are unique for each class.</strong>"</p>
+</blockquote>
+<p>Three lessons:</p>
+<ol>
+<li><strong>Five exclusive slots, none shared.</strong> A Gunner cannot equip a Driller primary. This is
+   the hard constraint we want.</li>
+<li><strong>Every class gets one <em>traversal</em> tool and one <em>job</em> tool.</strong> Driller: Reinforced Power
+   Drills (traversal) + Satchel Charge (HE). Engineer: Platform Gun + LMG Gun Platform
+   (sentry). Gunner: Zipline Launcher + Shield Generator. Scout: Grappling Hook + Flare
+   Gun. The traversal slot guarantees every class can still reach places; the job slot is
+   where identity lives.</li>
+<li><strong>Within a class, the three primaries are <em>variants of one family</em> with different
+   mechanics</strong> (Driller: flamethrower / cryo / sludge), not stat-clones.</li>
+</ol>
+<p><em>Correction applied to our own notes:</em> an earlier draft of this research cited DRG
+weapons by names that <strong>do not exist</strong> — "Flak Cannon", "MOLOK", "Scorcher", "Breacher".
+None appears on the current official wiki (checked: zero occurrences of each). The real
+names are CRSPR Flamethrower / Cryo Cannon / Corrosive Sludge Pump, Warthog Auto 210 /
+Stubby Voltaic SMG / LOK-1 Smart Rifle, Lead Storm Minigun / Thunderhead Autocannon /
+Hurricane Guided Rocket System, Deepcore GK2 / M1000 Classic / DRAK-25 Plasma Carbine.
+<em>(This is the fourth time a plausible-sounding weapon name turned out to be wrong; the
+rule stands — fetch the primary list, never reconstruct it from memory.)</em></p>
+<h3>3.2 Team Fortress 2 — per-class pools with a small shared set <code><span class="verified">[verified]</span></code></h3>
+<p>Nine classes, each with a Primary / Secondary / Melee table of its own. Each class's
+<em>defining</em> weapon is exclusive: Scattergun (Scout), Rocket Launcher (Soldier), Flamethrower
+(Pyro), Grenade Launcher (Demoman), Minigun (Heavy), Sentry (Engineer), Medi Gun (Medic),
+Sniper Rifle (Sniper), Knife/Revolver (Spy). Verified by fetching each class page: the
+<strong>Grenade Launcher appears on the Demoman page and on no other class page.</strong></p>
+<p>Shared exceptions are narrow and meaningful: the <strong>Shotgun</strong> (Soldier, Pyro, Heavy
+secondary, Engineer primary) and the <strong>Pistol</strong> (Scout, Engineer), plus all-class melee
+reskins — and it is telling that the shared weapons are the <em>generic</em> ones. TF2 also
+introduced the word <strong>Subclass</strong>: <em>"a set of weapons a class has that drastically changes
+the way a class is played."</em></p>
+<h3>3.3 World of Warcraft — the model to <em>avoid</em> <code><span class="verified">[verified]</span></code></h3>
+<p>WoW has a 15-row × 13-class proficiency matrix, and it is <strong>broadly overlapping</strong>. Two
+facts that correct common assumptions:</p>
+<ul>
+<li><strong>A Warrior CAN equip a Bow, a Crossbow and a Gun.</strong> The Warrior's weapon list on
+  warcraft.wiki.gg includes Axe, Bow, Crossbow, Dagger, Fist weapon, Mace, Polearm, Shield,
+  Staff, Sword.</li>
+<li><strong>A Mage CAN equip a one-handed Sword</strong> — but not a two-handed sword, axe, mace, fist
+  weapon or polearm. The Mage's kit is Staves, Daggers, 1H Swords, Wands.</li>
+</ul>
+<p><strong>The lesson:</strong> WoW's proficiency matrix is a <em>gear gate</em> (which drops can you use), not
+an identity mechanism. Warrior, Death Knight and Paladin share nearly the entire matrix.
+If we copied WoW, weapon type would tell a player almost nothing about how a class plays.</p>
+<h3>3.4 Overwatch, Hunt, New World — the other three poles</h3>
+<ul>
+<li><strong>Overwatch</strong> <code><span class="verified">[verified]</span></code>: <em>"Every hero wields a unique weapon, which is their main way
+  of dealing damage and/or healing."</em> Total type-difference at the highest production cost
+  — and note that role-queue still had to be added, because orthogonality alone did not
+  prevent degenerate compositions.</li>
+<li><strong>Hunt: Showdown</strong> <code><span class="verified">[verified]</span></code>: no classes at all; every hunter can equip every weapon,
+  differentiated by a loadout point budget and Traits. The pure-freedom pole — it dodges
+  the stat-variant problem by removing the problem, and pays with meta convergence.</li>
+<li><strong>New World</strong> <code>[verified/reported]</code>: no classes; <em>"Each Weapon Mastery has 2 Skill Trees…
+  bonuses that are exclusive to that weapon."</em> The <strong>weapon is the class</strong>, with
+  differentiation inside the weapon's own tree. A useful alternative, but it transfers the
+  balance problem rather than solving it.</li>
+</ul>
+<h3>3.5 The failure modes, condensed</h3>
+<table>
+<thead>
+<tr>
+<th>Game</th>
+<th>What went wrong</th>
+<th>What we avoid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DRG</td>
+<td>Core traversal gated on a single class with no fallback</td>
+<td>Every class gets a traversal tool</td>
+</tr>
+<tr>
+<td>DRG</td>
+<td>A class's 3 primaries can read as "same gun, different damage number"</td>
+<td>Variants must be mechanically distinct, not recoloured</td>
+</tr>
+<tr>
+<td>TF2</td>
+<td>Exclusivity produced near-absent classes in 6v6 (Pyro/Spy/Engineer)</td>
+<td>Exclusivity ≠ always-useful; every class's niche must be live</td>
+</tr>
+<tr>
+<td>TF2</td>
+<td>Hundreds of weapons are reskins or minor stat swaps</td>
+<td>Never inflate a count with stat-clones</td>
+</tr>
+<tr>
+<td>WoW</td>
+<td>Proficiency matrix overlaps; two plate DPS feel like number-swaps</td>
+<td>Proficiency is a gate, not identity</td>
+</tr>
+<tr>
+<td>Overwatch</td>
+<td>Bespoke weapon per hero is unaffordable at scale</td>
+<td>Family-level design, not per-item</td>
+</tr>
+<tr>
+<td>Overwatch</td>
+<td>Orthogonality alone did not stop degenerate comps</td>
+<td>Assume balance needs a separate mechanism</td>
+</tr>
+<tr>
+<td>Apex</td>
+<td>Class perks are numeric modifiers on shared guns</td>
+<td>No ammo/reload/move-speed perks as a class identity</td>
+</tr>
+<tr>
+<td>Hunt</td>
+<td>Open pools collapse to one optimal loadout</td>
+<td>Keep hard family gates</td>
+</tr>
+<tr>
+<td>New World</td>
+<td>"Weapon = class" means 11 trees must all be balanced against each other</td>
+<td>Bound the number of families</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>4. The class system</h2>
+<h3>4.1 The rule</h3>
+<p><strong>A class is a <em>set of weapon families it may use</em>, plus one utility only it can perform.</strong>
+Not a stat block. Not a talent tree. The families are the class.</p>
+<h3>4.2 The six families</h3>
+<p>We keep the original's four classes but <strong>re-cut which families each holds</strong>, and <strong>add
+two families the original never had</strong>. The additions exist to solve the measured problem in
+§2: the Soldier had 6 families and the others had 2.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Family</th>
+<th>What it is</th>
+<th>Not to be confused with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>SMG</strong></td>
+<td>High ROF, short range, fast recovery</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Pistol</strong></td>
+<td>Sidearm: low damage, fast, cheap to draw</td>
+<td>—</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Shotgun</strong></td>
+<td>Cone burst, brutal up close</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>MG</strong></td>
+<td>Sustained, heavy, punishing to use badly</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Rifle</strong></td>
+<td>Marksman: slow, precise, long</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Knife</strong></td>
+<td>Melee, close, the Commando's signature</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Grenade Launcher</strong></td>
+<td>Arcing indirect explosive</td>
+<td><strong>not</strong> a shoulder-fired launcher</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Rocket Launcher</strong></td>
+<td><em>New.</em> Flat-trajectory, direct-fire anti-vehicle</td>
+<td>the Grenade Launcher is arcing, this is not</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Artillery</strong></td>
+<td><em>New.</em> Lobbed shell, long sight-lines, indirect</td>
+<td>a map weapon, not a personal one</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>TNT / Demolition</strong></td>
+<td><em>New.</em> Placed charge, area denial, breaching</td>
+<td>sticky-timed-only; TNT is a placed charge</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Field Kit / Support</strong></td>
+<td><em>New.</em> Deployables: repair, shield, cover, spotting</td>
+<td>not the original's Widgets (those were consumable premium items)</td>
+</tr>
+</tbody>
+</table>
+<p>Eleven families across four classes. The original's nine map onto eight of them; the
+Grenade Launcher and the Rocket Launcher were conflated in the original's data (both
+appear as "GL"), and separating them is the single biggest functional unlock in this
+document — it lets the Gunner and the Soldier coexist without either being a superset.</p>
+<h3>4.3 The matrix</h3>
+<p>Read it as: <strong>no cell is empty, no row is a superset, no column is a superset.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th style="text-align: center;">Soldier</th>
+<th style="text-align: center;">Gunner</th>
+<th style="text-align: center;">Commando</th>
+<th style="text-align: center;"><strong>Engineer</strong> (new)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMG</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td>Shotgun</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>MG</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Rifle</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Knife</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Grenade Launcher</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Rocket Launcher</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Artillery</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td>TNT / Demolition</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Field Kit / Support</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td><strong>Families</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+</tr>
+<tr>
+<td><strong>Original class?</strong></td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;"><strong>new</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Every family is used by at least one class. No class can use another's signature
+family.</strong> The Soldier is still the widest at four families, and its four are <em>one</em> combat
+role (fight in close quarters and hold ground) rather than "everything". It has no MG, no
+Rifle, no Knife, no Rocket Launcher, no Artillery, no Pistol and no Field Kit.</p>
+<p><strong>Anti-domination check on the matrix itself.</strong> The Soldier and the Commando both get
+Shotgun. The Soldier and Gunner both get Grenade Launcher. Those are the only two
+overlaps, and they are deliberate: the Shotgun is the generic weapon (TF2 shares it
+across four classes), and the GL overlap is the original's own arrangement, kept so the
+Gunner's ordnance identity and the Soldier's support role share a tool but not a doctrine.</p>
+<p><strong>The Engineer shares NO family with the Soldier.</strong> This is the load-bearing consequence of
+the re-cut, and it is the check that the first draft of this matrix failed: the Engineer was
+originally given SMG, Pistol <em>and</em> Field Kit — three of its four families were the
+Soldier's — which is precisely the "Soldier with a spanner" failure this document warns
+about. The prototype made it visible; the invariant now makes it impossible.</p>
+<p><strong>Each class also owns exactly one utility that no other class can perform.</strong> This is the
+DRG support-tool rule and it is where the type-difference actually lives:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Exclusive utility</th>
+<th>Why it cannot belong to anyone else</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soldier</td>
+<td><strong>Combat Medicine</strong> — instant heal, scaling with the number of allies healed</td>
+<td>A healing AoE that scales with team size is a <em>support</em> identity; giving it to a class means that class stops being a shooter</td>
+</tr>
+<tr>
+<td>Gunner</td>
+<td><strong>Frenzy Fire</strong> — narrows spread to focus one target <em>and</em> heals on every 4th hit</td>
+<td>Focus-fire + self-sustain is a heavy-weapon behaviour; on a Commando it would make the knife irrelevant</td>
+</tr>
+<tr>
+<td>Commando</td>
+<td><strong>Mark Target</strong> — earns points for designating enemies, and reveals stealthed Commandos</td>
+<td>Information <em>for the team</em>, not for yourself; it converts stealth from a hiding mechanic into a team resource</td>
+</tr>
+<tr>
+<td>Engineer</td>
+<td><strong>Field Repair</strong> — repairs a vehicle or deployable in the field, mid-fight</td>
+<td>Nobody else has the toolkit; it is the Engineer's reason to exist</td>
+</tr>
+</tbody>
+</table>
+<h3>4.4 Why the Engineer is the fourth class and not a fourth Soldier</h3>
+<p>The Engineer was chosen against the measured failure in §2, not for flavour.</p>
+<ul>
+<li>The original's <strong>Soldier was already a superset</strong> (6 families, 97 weapons). Adding
+  another catch-all would repeat the mistake.</li>
+<li>The Engineer needs the <strong>Gunner's job without the Gunner's gun</strong>: the original's widgets
+  prove the concept existed and was sold as consumables — <em>Supreme Wrench</em> ("Repairs a
+  major portion of your vehicle armor over time. Any damage taken will cancel the
+  effect."), <em>Metallo's Rocket Jump</em> ("Activates your rocket boots and launches you in the
+  air"), <em>Titan Security Thruster Fuel</em>, <em>Jeep Jump</em>, <em>Frost's Amassing Force</em> ("Use the
+  Amassing Force to grab the battlefield") — all <code><span class="verified">[verified]</span></code> from bfh-info item pages,
+  all class-agnostic, all priced in Play4Free Funds.</li>
+<li>Those widgets are <strong>the Engineer's kit, un-classed</strong>. The original sold them as
+  consumable premium items. We make them a <strong>class with a permanent identity</strong> — which is
+  exactly the correction the Widgets finding demanded: <em>no premium currency may purchase
+  any combat advantage</em>. The Engineer takes the widget abilities and gives them a home.</li>
+</ul>
+<p><strong>The Engineer's three families — Pistol, Artillery, Field Kit — give it a role no
+other class can fill:</strong> a mid-range combat engineer who repairs vehicles, plants
+emplacements, and shells targets from behind cover. It has no MG (not a heavy gunner),
+no Rifle (not a marksman), no Shotgun (not a brawler), no Knife (not an infiltrator),
+no SMG (not a close-quarters fighter) and no Rocket Launcher (not an ordnance gunner).</p>
+<p><strong>Anti-domination, honestly stated:</strong> the Engineer risks becoming "Soldier-lite with a
+wrench". The guard is that the Engineer's <em>identity</em> is the Field Kit — repair, deploy,
+shell — and its personal gunplay is deliberately modest (SMG + Pistol + Artillery). If the
+Engineer's kit is ever merely a Soldier who also owns a spanner, it has failed.</p>
+<h3>4.5 The four classes in play</h3>
+<p><strong>SOLDIER — 110 HP.</strong> <em>Close-quarters, team-scale sustain.</em> Six families: SMG, Pistol,
+Shotgun, Grenade Launcher, TNT, Field Kit. Original kit: Sixth Sense, Burning Bullets,
+Combat Medicine, Grenade Spam, Blasting Strike <code><span class="verified">[verified]</span></code>. Burning Bullets is the
+mechanical signature: the SMG sets enemies on fire, which is damage-over-time as a
+<em>weapon property</em>, not a status effect bolted on.</p>
+<p><strong>GUNNER — 150 HP.</strong> <em>Heavy weapons, anti-vehicle, the only rocket gunner.</em> Three families:
+MG, Grenade Launcher, Rocket Launcher. Original kit: Hero Shield, Leg It, Explosive Keg,
+Frenzy Fire, I Eats Grenades <code><span class="verified">[verified]</span></code>. The Gunner is the class that dies in the open
+and comes back firing — its own trailer line: <em>"Stands in the open firing his gun, taking
+the bullets but he never runs. After death, he comes back with his gun, this time, firing
+with fun."</em></p>
+<p><strong>COMMANDO — 80 HP.</strong> <em>Fastest, weakest, the only one who sees.</em> Three families: Shotgun,
+Rifle, Knife. Original kit: Stealth, Elixir, Mark Target, Troop Trap, Piercing Shot,
+Poisoned Blade <code><span class="verified">[verified]</span></code>. Six abilities spanning stealth, marking, knives and poison —
+three identities, none of them deep, which is why the specs split it three ways.</p>
+<p><strong>ENGINEER — 130 HP (proposed).</strong> <em>Fieldcraft, vehicles, emplacements.</em> Four families: SMG,
+Pistol, Artillery, Field Kit. Proposed kit: <strong>Field Repair</strong> (exclusive utility),
+<strong>Deployable Emplacement</strong> (a sandbag nest or MG nest that a team can use and an enemy can
+destroy), <strong>Shell</strong> (artillery strike on a marked point), <strong>Field Dressing</strong> (repairs an
+ally's armour over time, cancelled by damage — the syringe mechanic the original gave the
+Soldier, but as a <em>targeted</em> version rather than a team AoE).</p>
+<h3>4.6 Class abilities are not new — they are the original's, re-cut</h3>
+<p>Every ability above except the Engineer's is from the 2009 game. The Engineer's four are
+built from <strong>widgets the original already shipped</strong> (repair, rocket jump, thruster fuel,
+jeep jump) and from mechanics the original already had (the deployable sandbag from the
+promotion table; artillery from the map vocabulary of bunkers and emplacements).</p>
+<p>This is the same discipline the class-spec table already used: <em>"Every spec is built on an
+ability that already shipped in 2009 — the specs are a reorganization of the original's
+kit, not an invention on top of it."</em> <code>[from GAME-DESIGN.md]</code></p>
+<hr>
+<h2>5. Specialisation <em>within</em> a family — how the weapon tree gets deeper</h2>
+<p>The class matrix says which families a class may use. The weapon tree says how a given
+weapon inside a family becomes <em>yours</em>. Two additions make the tree family-aware.</p>
+<h3>5.1 The tree is per-weapon, and the family gives it a shared skeleton</h3>
+<p>Every weapon still carries its own 8-point tree (<code>systems/weapon-specification.md</code>). But
+the <strong>shape</strong> of the tree is inherited from the family, so that a family of nine
+grenade launchers still produces nine <em>different</em> weapons rather than nine recolours.</p>
+<p>The rule that enforces this, and that the original broke:</p>
+<blockquote>
+<p><strong>Anti-domination.</strong> A weapon is only allowed into a family if it differs from the two
+weapons in that family it most resembles on at least <strong>three of six axes</strong>.</p>
+</blockquote>
+<p>Measured on the original's base roster, the Grenade Launcher family <strong>fails this test
+badly</strong>: 34 grenade launchers collapse to <strong>5 distinct stat profiles</strong>. <em>M32 MGL</em> and
+<em>Tank Buster</em> differ only in magazine count (6 vs 1) — though the behavioural layer
+still separates them (§2.1). The Knife family is worse: 12 knives, <strong>one</strong> stat profile.</p>
+<h3>5.2 Family-specific node grammar</h3>
+<p>Each family gets a <strong>distinct grammatical shape</strong> for its tree, so that a shotgun tree
+cannot be reskinned into a rifle tree. This is the DRG rule — <em>"within a class, the three
+primaries are variants of a family, different mechanics"</em> — extended from the slot to the
+whole tree.</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Node 2 branch</th>
+<th>What the branch changes</th>
+<th>Signature examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SMG</strong></td>
+<td><em>Spread</em> ↔ <em>Focus</em></td>
+<td>pellet cone vs single-target</td>
+<td><em>Phantom</em> (appear as a friendly dot when not firing), <em>Interceptor</em> (speed on destroying deployables)</td>
+</tr>
+<tr>
+<td><strong>Shotgun</strong></td>
+<td><em>Slug</em> ↔ <em>Scatter</em></td>
+<td>single heavy pellet vs wide cone</td>
+<td><em>Meat Grinder</em> (each pellet can crit independently)</td>
+</tr>
+<tr>
+<td><strong>MG</strong></td>
+<td><em>Sustain</em> ↔ <em>Burst</em></td>
+<td>long belt vs short bursts</td>
+<td><em>Frenzy</em> (spread collapses on a held trigger)</td>
+</tr>
+<tr>
+<td><strong>Rifle</strong></td>
+<td><em>Marksman</em> ↔ <em>Duelist</em></td>
+<td>one-shot discipline vs hipfire</td>
+<td><em>Overwatch</em> (first shot after 2 s unscoped ×2), <em>Saboteur</em> (+30 % vs vehicles)</td>
+</tr>
+<tr>
+<td><strong>Pistol</strong></td>
+<td><em>Rapid</em> ↔ <em>Precise</em></td>
+<td>spam vs tap</td>
+<td><em>Executioner</em> (a kill refreshes 25 % of magazine)</td>
+</tr>
+<tr>
+<td><strong>Grenade Launcher</strong></td>
+<td><em>Bounce</em> ↔ <em>Direct</em></td>
+<td>arcing vs flat</td>
+<td><em>Sapper</em> (kills drop an ammo crate)</td>
+</tr>
+<tr>
+<td><strong>Rocket Launcher</strong></td>
+<td><em>Cluster</em> ↔ <em>Pierce</em></td>
+<td>multi-warhead vs single-tap</td>
+<td><em>Demolition</em> (destroyed vehicles detonate)</td>
+</tr>
+<tr>
+<td><strong>Artillery</strong></td>
+<td><em>Bunker</em> ↔ <em>Spread</em></td>
+<td>one deep crater vs shrapnel</td>
+<td><em>Siege</em> (artillery damage from the sky is doubled)</td>
+</tr>
+<tr>
+<td><strong>TNT</strong></td>
+<td><em>Breach</em> ↔ <em>Trap</em></td>
+<td>open doors vs deny approach</td>
+<td><em>Ambush</em> (a placed charge arms faster but has a shorter fuse)</td>
+</tr>
+<tr>
+<td><strong>Knife</strong></td>
+<td><em>Slash</em> ↔ <em>Throw</em></td>
+<td>close vs thrown</td>
+<td><em>Poisoned Blade</em> (DoT on knife hits)</td>
+</tr>
+<tr>
+<td><strong>Field Kit</strong></td>
+<td><em>Repair</em> ↔ <em>Fortify</em></td>
+<td>keep it alive vs make it strong</td>
+<td><em>Bulwark</em> (deployables absorb damage while you build)</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the <strong>branch in each family is a different kind of decision</strong> — spread vs focus,
+slug vs scatter, sustain vs burst — not a repeated "more damage vs more range". That is
+what makes 11 families feel like 11 games rather than 11 recolours.</p>
+<h3>5.3 Three Signature tiers, per weapon, as already specified</h3>
+<p>Unchanged from <code>systems/weapon-specification.md</code>: tiers 1–3, each <strong>pick-one-of-three</strong>,
+behavioural not statistical, respec for 1 500 Valor. The family grammar above only decides
+<em>which</em> three are offered, not how the tier works.</p>
+<hr>
+<h2>6. Doctrines: how classes interlock</h2>
+<p>Doctrines remain passive items in a shared capacity pool (5 slots, 6 with an unlock), keyed
+to <strong>weapon families</strong> — so a doctrine tagged <em>Heavy</em> only applies to MG / Rocket Launcher,
+and a <em>Close</em> doctrine only to Shotgun / Knife / SMG. <code>[from GAME-DESIGN.md]</code></p>
+<p><strong>The class matrix is now legible in the loadout.</strong> A team of four is not "three DPS and
+one healer" — it is four different family-sets, and the Doctrine pool lets two Commandos
+play as a sniper and an infiltrator without respeccing.</p>
+<p><strong>A new doctrine family per class</strong>, each exclusive to that class's families:</p>
+<table>
+<thead>
+<tr>
+<th>Doctrine school</th>
+<th>Applies to</th>
+<th>Effect shape</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fieldcraft</strong></td>
+<td>Field Kit, Artillery</td>
+<td>deployables, emplacements, indirect fire</td>
+<td><em>Field Dressing</em>: repair continues while you move, at half rate</td>
+</tr>
+<tr>
+<td><strong>Ballistics</strong></td>
+<td>MG, Rocket Launcher</td>
+<td>sustained fire, ordnance</td>
+<td><em>Recoil Discipline</em>: MG recoil recovers 30 % faster while firing</td>
+</tr>
+<tr>
+<td><strong>Marksmanship</strong></td>
+<td>Rifle, Knife</td>
+<td>long range, precision</td>
+<td><em>Measured Shot</em>: the first shot after reloading deals ×2</td>
+</tr>
+<tr>
+<td><strong>Close Quarters</strong></td>
+<td>SMG, Shotgun, Grenade Launcher</td>
+<td>short range, aggression</td>
+<td><em>Point Blank</em>: below 8 m, all shotguns deal +25 %</td>
+</tr>
+</tbody>
+</table>
+<p>This gives the Engineer a doctrine school of its own (Fieldcraft) — which is what stops
+it being "Soldier with a spanner" at the build layer too.</p>
+<hr>
+<h2>7. The art direction for new classes</h2>
+<p>Read from the original's own renders and icons via vision on 2026-11-07 (art pulled from
+battlefield.fandom.com; the CDN needs a browser User-Agent — plain urllib gets 403).
+Contact sheet: <code>research/art/_contact_sheet.png</code>.</p>
+<p><strong>Character render rules:</strong>
+- <strong>Top-heavy heroic ratio.</strong> Not chibi — roughly 8 heads tall, small head, massive
+  shoulders and torso. The Commando reads as lean but the head stays small.
+- <strong>Angular, near-square jaw, minimal chin</strong>, neck flowing straight into the jawline.
+- <strong>Exaggerated hands and boots</strong> (~1.5× realistic) to sell action.
+- <strong>Contrapposto / casual-aggressive pose.</strong> Never a neutral standing pose; lean into a
+  hip or crouch.
+- <strong>Thick, variable-width black ink outline</strong>; interior detail lines thinner.
+- <strong>Hybrid cel-shading + soft digital-paint shadows</strong>, with a subtle canvas/paper texture
+  for the vintage-poster feel.
+- <strong>Sharp white rim highlights on leather</strong> (boots, belts, coats) — the gloss reads as
+  stylised, not realistic.
+- <strong>Weapons held away from the body</strong> to keep the silhouette readable: two-handed guns at
+  hip or chest height, never shouldered like a real rifle. Iconic silhouette over
+  mechanical detail.</p>
+<p><strong>Ability icon language (80×50):</strong>
+- The icon is a <strong>physical object</strong>, not a flat symbol — die-cut to the object's own
+  outline, or a pill-shaped metallic bezel.
+- Heavy <strong>bevel-and-emboss</strong> with a gloss highlight; reads as a 3D object under light.
+- Colour coding follows the ability's school (heal = green/white, ordnance = orange/red,
+  information = blue, movement = yellow).</p>
+<p><strong>Drafting rules for the four classes, from the render language:</strong>
+- <strong>Soldier</strong> — broad, layered, belt-heavy. The original's Royal Soldier render is
+  tall and vertical with a long coat line.
+- <strong>Gunner</strong> — heaviest shoulders, lowest stance, helmet-dominant; the Gunner logo is a
+  mass rather than a figure.
+- <strong>Commando</strong> — leanest silhouette, hood/cap, minimal kit, weapon held close and low.
+- <strong>Engineer</strong> (new) — <em>reads as a tradesman</em>: satchel, tool roll, a heavy apron or
+  mechanic's bib, goggles pushed up on the forehead, and a <strong>bolted-on mechanical
+  silhouette</strong> (a tool harness, or a small shoulder-mounted repair rig) so the class is
+  unmistakable in a 32 px minimap dot. The engineer's colour should be <strong>industrial
+  yellow-ochre</strong> — deliberately outside the Royals' blue-grey and Nationals' drab olive,
+  because the Engineer is the one class that serves <em>both</em> factions in the fiction.</p>
+<hr>
+<h2>8. What this does to the rest of the design</h2>
+<table>
+<thead>
+<tr>
+<th>Design element</th>
+<th>Effect of the class change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P1 — weapon choice is the game</strong></td>
+<td>Strengthened. Choice now has three levels: which class, which family, which weapon, which signature.</td>
+</tr>
+<tr>
+<td><strong>P2 — levelling unlocks options</strong></td>
+<td>Unchanged. Class and family are fixed at character creation; the tree is where options open.</td>
+</tr>
+<tr>
+<td><strong>Class specs (3 per class)</strong></td>
+<td>The Engineer needs three specs. Draft below.</td>
+</tr>
+<tr>
+<td><strong>Doctrine schools</strong></td>
+<td>One per class, each keyed to that class's families.</td>
+</tr>
+<tr>
+<td><strong>Anti-domination rule</strong></td>
+<td>Now has a matrix-level form: no class may hold a superset of another's families.</td>
+</tr>
+<tr>
+<td><strong>Weapon roster</strong></td>
+<td>The 185 base weapons must be re-cut so each family holds ~8–12 <em>mechanically distinct</em> weapons, not 34 near-clones.</td>
+</tr>
+<tr>
+<td><strong>Faction asymmetry</strong></td>
+<td>Unchanged. National = handling/utility, Royal = precision/reach. The Engineer's kit is the one place this softens — the Engineer works for whoever holds the field.</td>
+</tr>
+</tbody>
+</table>
+<h3>8.1 The Engineer's three specs (draft)</h3>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>Identity</th>
+<th>Built on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Artificer</strong></td>
+<td>Builds, repairs and multiplies deployables</td>
+<td><em>Field Repair</em> → emplacements that regrow; <em>Bulwark</em> deployables absorb damage</td>
+</tr>
+<tr>
+<td><strong>Gunner's Adjutant</strong></td>
+<td>Anti-vehicle artillery at range</td>
+<td><em>Shell</em> → longer range, faster reload, deeper craters; marks vehicles for the team</td>
+</tr>
+<tr>
+<td><strong>Pioneer</strong></td>
+<td>Forward mobility, path-opening, rapid redeploy</td>
+<td><em>Field Dressing</em> + movement → launches the Engineer into position, deploys on arrival</td>
+</tr>
+</tbody>
+</table>
+<h3>8.2 What still needs Omar's call</h3>
+<ol>
+<li><strong>Is the Engineer a new class, or a new <em>faction</em>?</strong> A fourth class is cheap and fits
+   the timeline. A fourth faction breaks the two-sided war premise in <code>lore/third-faction.md</code>.
+   Recommendation: <strong>class</strong>, and the Engineer is written as neutral — employed by whoever
+   holds the objective.</li>
+<li><strong>Does the Engineer get the two factions' vehicles, or its own?</strong> Neutralia sells arms to
+   both sides — an Engineer faction of "hired engineers" would make Neutralia concrete.
+   But it risks the third-faction-can't-be-played problem the lore doc already flags.</li>
+<li><strong>Should Artillery be a personal weapon at all?</strong> It is a map weapon in the original.
+   Recommendation: yes, as a <em>limited, slow, long-cooldown</em> personal artillery — that
+   limitation is what keeps it from dominating, and it gives the Engineer a real identity.</li>
+</ol>
+<hr>
+<h2>9. Sources</h2>
+<p><strong>Primary, fetched and read on 2026-11-07:</strong>
+- <code>https://deeprockgalactic.wiki.gg/wiki/Equipment</code> — DRG slot exclusivity, per-class kits, support tools <code><span class="verified">[verified]</span></code>
+- <code>https://wiki.teamfortress.com/wiki/Weapons</code> + per-class pages — TF2 pools, shared weapons <code><span class="verified">[verified]</span></code>
+- <code>https://warcraft.wiki.gg/wiki/Weapon</code> + <code>/wiki/Warrior</code> — WoW proficiencies; the Warrior <em>can</em> equip bows <code><span class="verified">[verified]</span></code>
+- <code>https://gdp.cse.chalmers.se/index.php?title=Orthogonal_Differentiation</code> — the concept, verbatim <code><span class="verified">[verified]</span></code>
+- <code>https://overwatch.fandom.com/wiki/Heroes</code> — "Every hero wields a unique weapon" <code><span class="verified">[verified]</span></code>
+- <code>https://help.ea.com/en/articles/apex-legends/abilities/</code> — the numeric-perk failure mode <code><span class="verified">[verified]</span></code>
+- <code>https://huntshowdown.wiki.gg/wiki/Weapons</code> — no classes, budget + traits <code><span class="verified">[verified]</span></code>
+- <code>https://www.newworld.com/en/news/articles/character-progression</code> — weapon mastery trees <code><span class="verified">[verified]</span></code>
+- <code>https://battlefield.fandom.com/wiki/Gunner</code> · <code>/wiki/Soldier</code> · <code>/wiki/Commando</code> · <code>/wiki/Abilities</code> — the original's exact class text and kits <code><span class="verified">[verified]</span></code>
+- <code>https://bfh-info.cs-heroes.cz/en/item/widget/</code> + individual widget pages — the widget roster and effects <code><span class="verified">[verified]</span></code></p>
+<p><strong>Measured from the project's own scraped data:</strong>
+- <code>research/02-weapon-roster.json</code> — 346 weapons, 185 base, 161 tier variants
+- <code>research/bfhinfo_items_detail.json</code> — per-weapon stats; the 34-GL→5-profiles collapse</p>
+<p><strong>Full precedent write-up:</strong> <code>research/04-class-weapon-family-exclusivity.md</code></p>
+<p><strong>Unfetched / corrected:</strong> the GDP3 pattern was first sought at
+<code>virt10.itu.chalmers.se</code> (timed out) and the earlier draft of this research cited DRG
+weapons by names that do not exist on the current wiki. Both corrected above.</p>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>class-and-weapon-families.md</code>.</footer>
+</div>
+</body>
+</html>

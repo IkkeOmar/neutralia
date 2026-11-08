@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEUTRALIA — Battlefield Heroes MMO design</title>
+<style>
+  :root{
+    --bg:#0b0d17; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.10); --purple:#7c5cfc; --cyan:#38bdf8;
+    --gold:#f0b429; --green:#34d399; --txt:#e8eaf2; --dim:#8b90a8; --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+       radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+       color:var(--txt);font:15px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       min-height:100vh;padding:38px 20px 70px}
+  .wrap{max-width:940px;margin:0 auto}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:.14em;font-weight:700}
+  h1 span{color:var(--purple)}
+  .sub{color:var(--dim);font-size:14px;margin-bottom:30px}
+  .sub b{color:var(--cyan);font-weight:600}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        backdrop-filter:blur(14px);padding:20px;margin-bottom:16px}
+  .card h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+           margin:0 0 14px;font-weight:600}
+  .links{display:grid;gap:10px}
+  a.cardlink{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
+             background:var(--panel2);border-radius:11px;padding:14px 16px;transition:.16s}
+  a.cardlink:hover{border-color:var(--purple);background:rgba(124,92,252,.12);transform:translateX(2px)}
+  a.cardlink .t{font-weight:700;font-size:16px;color:var(--cyan);display:block;margin-bottom:3px}
+  a.cardlink .d{font-size:13px;color:var(--dim)}
+  a.cardlink .u{font-size:11px;color:#6ee7b7;margin-top:6px;display:block}
+  .docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+  .doc{border:1px solid var(--line);border-radius:9px;padding:11px 13px;background:var(--panel2);
+       text-decoration:none;color:inherit;display:block;transition:.15s}
+  .doc:hover{border-color:var(--purple)}
+  .doc .n{font-weight:600;font-size:13.5px;color:var(--txt)}
+  .doc .d{font-size:11.5px;color:var(--dim);margin-top:3px}
+  .note{font-size:12.5px;color:var(--dim);line-height:1.6}
+  .note b{color:var(--cyan)}
+  .stat{display:flex;gap:22px;flex-wrap:wrap;margin-top:4px}
+  .stat div{font-size:12px;color:var(--dim)}
+  .stat b{display:block;font-size:21px;color:var(--txt);font-weight:700;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:600;
+       background:rgba(124,92,252,.18);color:#b7a4ff;border:1px solid rgba(124,92,252,.4);margin-right:5px}
+  .tag.g{background:rgba(52,211,153,.15);color:#6ee7b7;border-color:rgba(52,211,153,.35)}
+  .tag.c{background:rgba(56,189,248,.15);color:#8ad4ff;border-color:rgba(56,189,248,.35)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NEUTRALIA <span>// BFH-MMO DESIGN</span></h1>
+  <div class="sub">A design system for a browser-based third-person shooter in the lineage of <b>Battlefield Heroes</b> (2009). Working title: NEUTRALIA. Everything here is <b>design research and interactive prototypes</b> — not a running game.</div>
+
+  <div class="card">
+    <h2>Interactive prototypes</h2>
+    <div class="links">
+      <a class="cardlink" href="prototype/classes.html">
+        <span class="t">Class × Weapon Family system</span>
+        <span class="d">The four classes, the eleven weapon families, each class's exclusive utility, and the family node grammar. Every invariant is asserted programmatically.</span>
+        <span class="u">prototype/classes.html</span>
+      </a>
+      <a class="cardlink" href="prototype/index.html">
+        <span class="t">Weapon specialisation tree</span>
+        <span class="d">The per-weapon 8-point tree, three pick-one-of-three Signature tiers, Doctrine capacity pool, and the in-match promotion economy.</span>
+        <span class="u">prototype/index.html</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Design documents</h2>
+    <div class="docs">
+      <a class="doc" href="docs/GAME-DESIGN.md"><span class="n">GAME-DESIGN.md</span><span class="d">The master document — four nested progression layers</span></a>
+      <a class="doc" href="docs/class-and-weapon-families.md"><span class="n">class-and-weapon-families.md</span><span class="d">Orthogonal differentiation, the 4-class matrix, art direction</span></a>
+      <a class="doc" href="docs/weapon-specification.md"><span class="n">weapon-specification.md</span><span class="d">Per-weapon trees, Signatures, the Workbench analysis</span></a>
+      <a class="doc" href="docs/third-faction.md"><span class="n">third-faction.md</span><span class="d">The Neutralia faction, lore and quest structure</span></a>
+      <a class="doc" href="docs/FEASIBILITY.md"><span class="n">FEASIBILITY.md</span><span class="d">Gate 0–3 report with live API checks</span></a>
+      <a class="doc" href="docs/Battlefield-Heroes-MMO.md"><span class="n">Battlefield-Heroes-MMO.md</span><span class="d">Original brief</span></a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>The core idea</h2>
+    <div class="note">
+      A class is <b>not a stat block</b>. A class is <b>the set of weapon families it may use</b>,
+      plus one utility only it can perform. The 2009 original already had this backbone —
+      seven of its nine weapon families were class-locked — but the Soldier held six of the nine
+      and 97 of 185 weapons, so one class was a superset of the game.
+      <br><br>
+      This is <b>Orthogonal Differentiation</b>: differences that are <b>in type rather than in value</b>
+      (GDP3, Chalmers University of Technology; coined by Harvey Smith, 2003).
+      <br><br>
+      <span class="tag g">11 families</span><span class="tag c">4 classes</span><span class="tag">110 base weapons</span>
+      <span class="tag">no class is a superset</span>
+    </div>
+    <div class="stat" style="margin-top:16px">
+      <div><b>11</b>weapon families</div>
+      <div><b>4</b>classes</div>
+      <div><b>110</b>base weapons (target)</div>
+      <div><b>30</b>level cap</div>
+      <div><b>16</b>hero points</div>
+      <div><b>8</b>points per weapon tree</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Tooling &amp; research</h2>
+    <div class="note">
+      <b>Progression simulator</b> — <code>tools/simulate-design.py</code> (pure stdlib). Validates the
+      level curve against real scraped BFH numbers, the weapon-tree point economy, Doctrine capacity,
+      the class-matrix invariants, and measures the original roster's stat-clone ratios from source
+      data on every run.
+      <br><br>
+      <b>DOM tests</b> — <code>prototype/test-prototype.js</code> (39 checks) and
+      <code>prototype/test-classes.js</code> (44 checks) drive the pages in headless Chromium via CDP
+      and assert real DOM state, not what the markup claims.
+      <br><br>
+      <b>Research corpus</b> — <code>research/</code> holds the scraped primary sources (weapon roster,
+      item detail, abilities, maps, level curve) plus four written research reports.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Status</h2>
+    <div class="note">
+      Design phase. The original game's systems were measured from primary sources (the EA wiki,
+      bfh-info, and the scraped item database); every factual claim in the documents is marked
+      <code>[verified]</code> or traced to a cited file. Several earlier claims were wrong and have been
+      corrected in-place with the retraction noted — the corrections are part of the record, not hidden.
+    </div>
+  </div>
+</div>
+</body>
+</html>

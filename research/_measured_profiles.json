@@ -1,0 +1,47 @@
+{
+ "SMG": {
+  "n": 29,
+  "profiles": 11,
+  "descriptions": 16
+ },
+ "Knife": {
+  "n": 12,
+  "profiles": 1,
+  "descriptions": 7
+ },
+ "MG": {
+  "n": 29,
+  "profiles": 8,
+  "descriptions": 17
+ },
+ "Pistol": {
+  "n": 22,
+  "profiles": 9,
+  "descriptions": 12
+ },
+ "GL": {
+  "n": 34,
+  "profiles": 5,
+  "descriptions": 11
+ },
+ "Shotgun": {
+  "n": 18,
+  "profiles": 7,
+  "descriptions": 10
+ },
+ "Rifle": {
+  "n": 31,
+  "profiles": 10,
+  "descriptions": 17
+ },
+ "TNT": {
+  "n": 6,
+  "profiles": 4,
+  "descriptions": 3
+ },
+ "Grenade": {
+  "n": 4,
+  "profiles": 3,
+  "descriptions": 2
+ }
+}

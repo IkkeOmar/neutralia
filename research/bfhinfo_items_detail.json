@@ -1,0 +1,2100 @@
+{
+"3000": {
+"description": "A medium range laser SMG with the ability to charge up a powerful laser shot to deal damage to targets at long range.",
+"range": "3",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3001": {
+"description": "Close quarters melee weapon for those silent moments",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3002": {
+"description": "Close quarters melee weapon for those silent moments",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3003": {
+"description": "This weapon excels in closer range combat",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3004": {
+"description": "This weapon excels in closer range combat",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3005": {
+"description": "A trusty mid-range weapon.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "9"
+},
+"3006": {
+"description": "A trusty mid-range weapon.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "9"
+},
+"3007": {
+"description": "Long range anti-vehicle weapon that's a blast!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3008": {
+"description": "Long range anti-vehicle weapon that's a blast!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3009": {
+"description": "Keep your enemies close when using this Shotgun.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3010": {
+"description": "Keep your enemies close when using this Shotgun.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3011": {
+"description": "Good all around weapon for mid-range combat.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "30",
+"damage": "3"
+},
+"3012": {
+"description": "Good all around weapon for mid-range combat.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "30",
+"damage": "3"
+},
+"3013": {
+"description": "Sniper rifles are best when striking from a distance.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "8"
+},
+"3014": {
+"description": "Sniper rifles are best when striking from a distance.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "8"
+},
+"3015": {
+"description": "A close range SMG with a personality all its own.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3016": {
+"description": "More rounds and critical hit chance than the original Uwe's Overpowered!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3017": {
+"description": "Has more critical hit chance than the original Rudi's Ridiculous!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3019": {
+"description": "More rounds and critical hit chance than the original Ludwig's Loaded!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3020": {
+"description": "Has more critical hit chance than the original Cheeser!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3021": {
+"description": "Has more critical hit chance than the original Maxwell's Machinegun!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3022": {
+"description": "Has more critical hit chance than the original Backscratcher!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3023": {
+"description": "Has more rounds and allows you to get closer to your target than the original Roderick Rifle!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3024": {
+"description": "Has more rounds and allows you to get closer to your target than the original Gourmet!",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3025": {
+"description": "This sniper rifle's bite is much worse than its bark!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3026": {
+"description": "Adds rounds and a higher chance to critical hit than the original Carl's Cold Comfort!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3027": {
+"description": "Adds rounds and a higher chance to critical hit than the original Harry's Hand Cannon!",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3028": {
+"description": "Adds rounds and a higher chance to critical hit than the original Slugger!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3029": {
+"description": "Adds rounds and a higher chance to critical hit than the original Hubble's Double Trouble!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "13"
+},
+"3030": {
+"description": "Adds rounds and a higher chance to critical hit than the original Greg's Greasy Gun!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3031": {
+"description": "Adds rounds and a higher chance to critical hit than the original Charlie's Chopper!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3032": {
+"description": "More rounds and critical hit chance than the original Kommandant!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3033": {
+"description": "More rounds and critical hit chance than the original Wacky Machinegun!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3034": {
+"description": "More rounds and critical hit chance than the original Steiner's Shotgun!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "13"
+},
+"3035": {
+"description": "This weapon is superior in close range but is weak in mid and long range combat",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3036": {
+"description": "This weapon is superior in close range but is weak in mid and long range combat.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3037": {
+"description": "More rounds and critical hit chance than the original Gerhart's Greatest!",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3038": {
+"description": "Sound and fury all in one fierce package!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3039": {
+"description": "Has more rounds and allows you to get closer to your target than the original Groundbreaker!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3040": {
+"description": "Has more rounds and allows you to get closer to your target than the original Oscar's Farshot!",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3041": {
+"description": "A close range SMG with a personality all its own.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3042": {
+"description": "This sniper rifle's bite is much worse than its bark!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3043": {
+"description": "Sound and fury all in one fierce package!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3044": {
+"description": "This weapon excels in closer range combat!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3045": {
+"description": "A solid mid-range machine gun that loses damage if the target gets too close",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3046": {
+"description": "A solid mid-range machine gun that loses damage if the target gets too close",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3047": {
+"description": "Has higher chance to deal critical hits than the original Bernie's Bone Chewer!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3048": {
+"description": "Has more critical hit chance than the original Cheeser!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3049": {
+"description": "A solid mid-range machine gun that loses damage if the target gets too close.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3050": {
+"description": "This weapon is superior in close range but is weak in mid and long range combat.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3051": {
+"description": "Sound and fury all in one fierce package!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3052": {
+"description": "A solid mid-range machine gun that loses damage if the target gets too close.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3053": {
+"description": "This weapon is superior in close range but is weak in mid and long range combat.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3054": {
+"description": "Has more critical hit chance than the original Rudi's Ridiculous!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3055": {
+"description": "The bursts from this pistol are most effective when standing close to the target.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3056": {
+"description": "The bursts from this pistol are most effective when standing close to the target.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3057": {
+"description": "This weapon excels in closer range combat.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3058": {
+"description": "Same as the original Bone Chewer with a fresh new look!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3059": {
+"description": "Has higher chance to deal critical hits than the original Wolfgang's Wonderful!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3060": {
+"description": "Has more critical hit chance than the original Backscratcher!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3061": {
+"description": "This pistol has the best effect when targets are far away.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "8"
+},
+"3062": {
+"description": "This pistol has the best effect when targets are far away.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "8"
+},
+"3063": {
+"description": "Same as the original Wolfgang's Wonderful with a fresh new look!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3064": {
+"description": "Sound and fury all in one fierce package!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3065": {
+"description": "Has more critical hit chance than the original Maxwell's Machinegun!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3066": {
+"description": "Same as the original Royal Knife with a fresh new look!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3067": {
+"description": "More range and damage than the original Royal Knife!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3068": {
+"description": "Same as the original Konrad's Knife with a fresh new look!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3069": {
+"description": "More range and damage than the original Konrad's Knife!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3070": {
+"description": "This rifle has a lot of recoil but rewards those who go for the head.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3071": {
+"description": "This lightning fast sniper rifle rewards a quick trigger finger more than an accurate eye.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "6"
+},
+"3072": {
+"description": "Sniper rifles are best when striking from a distance.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "8"
+},
+"3073": {
+"description": "Has more rounds and allows you to get closer to your target than the original Pipsqueak's Popper!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3074": {
+"description": "Has more rounds and allows you to get closer to your target than the original Oscar's Farshot!",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3075": {
+"description": "Same as the original Pipsqueak's Popper with a fresh new look!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3076": {
+"description": "This sniper rifle's bite is much worse than its bark!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3077": {
+"description": "Sniper rifles are best when striking from a distance.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "8"
+},
+"3078": {
+"description": "This rifle has a lot of recoil but rewards those who go for the head.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3079": {
+"description": "This lightning fast sniper rifle rewards a quick trigger finger more than an accurate eye.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "6"
+},
+"3080": {
+"description": "Has more rounds and allows you to get closer to your target than the original Stefan's Sharpshooter!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3081": {
+"description": "Get up close and personal when using this rapid fire shotgun.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3082": {
+"description": "Get up close and personal when using this rapid fire shotgun.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3083": {
+"description": "Same as the original Stefan's Sharpshooter with a fresh new look!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3084": {
+"description": "Has more rounds and allows you to get closer to your target than the original Groundbreaker!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3085": {
+"description": "Has more rounds and allows you to get closer to your target than the original Gourmet!",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3086": {
+"description": "This sniper rifle's bite is much worse than its bark!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3087": {
+"description": "Slow rate of fire and tight spread makes this shotgun most effective at long range.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3088": {
+"description": "Slow rate of fire and tight spread makes this shotgun most effective at medium range.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3089": {
+"description": "Has more rounds and allows you to get closer to your target than the original Roderick Rifle!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3090": {
+"description": "Super shiny M249 to show off to your friends!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3091": {
+"description": "Super shiny PKM to show off to your friends!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3092": {
+"description": "Super shiny M95 to show off to your friends!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3093": {
+"description": "Super shiny SVD to show off to your friends!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3094": {
+"description": "Super shiny M16 to show off to your friends!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3095": {
+"description": "Keep your enemies at a distance when using this slow firing SMG.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "25",
+"damage": "3"
+},
+"3096": {
+"description": "Keep your enemies at a distance when using this slow firing SMG.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "25",
+"damage": "3"
+},
+"3097": {
+"description": "Super shiny AK74 to show off to your friends!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3098": {
+"description": "Good all around weapon for mid-range combat.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "30",
+"damage": "3"
+},
+"3099": {
+"description": "Less accurate than the other SMG weapons this gun requires enemies to be close for maximum effectiveness.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3100": {
+"description": "Adds rounds and a higher chance to critical hit than the original Charlie's Chopper!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3101": {
+"description": "Adds rounds and a higher chance to critical hit than the original Greg's Greasy Gun!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3102": {
+"description": "Same as the original Tommy's Typewriter with a fresh new look!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3103": {
+"description": "More rounds and critical hit chance than the original Tommy's Typewriter!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3104": {
+"description": "A close range SMG with a personality all its own.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3105": {
+"description": "Good all around weapon for mid-range combat.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "30",
+"damage": "3"
+},
+"3106": {
+"description": "Keep your enemies at a distance when using this slow firing SMG.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "25",
+"damage": "3"
+},
+"3107": {
+"description": "Less accurate than the other SMG weapons this gun requires enemies to be close for maximum effectiveness.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3108": {
+"description": "More rounds and critical hit chance than the original Kommandant!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3109": {
+"description": "More rounds and critical hit chance than the original Wacky Machinegun!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3110": {
+"description": "More rounds and critical hit chance than the original Rudolf's Rescue!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3111": {
+"description": "Same as the original Rudolf's Rescue with a fresh new look!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3112": {
+"description": "A close range SMG with a personality all its own.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3113": {
+"description": "Keep your enemies at a distance when using this slow firing SMG.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "25",
+"damage": "3"
+},
+"3114": {
+"description": "Keep your enemies close when using this Shotgun.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3115": {
+"description": "Slow rate of fire and tight spread makes this shotgun most effective at long range.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3116": {
+"description": "Get up close and personal when using this rapid fire shotgun.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3117": {
+"description": "More rounds and critical hit chance than the original Stewart's Shotty!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3118": {
+"description": "Adds rounds and a higher chance to critical hit than the original Hubble's Double Trouble!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "13"
+},
+"3119": {
+"description": "Adds rounds and a higher chance to critical hit than the original Slugger!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3120": {
+"description": "Keep your enemies close when using this Shotgun.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3121": {
+"description": "Slow rate of fire and tight spread makes this shotgun most effective at medium range.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3122": {
+"description": "Get up close and personal when using this rapid fire shotgun.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3123": {
+"description": "Less accurate than the other SMG weapons this gun requires enemies to be close for maximum effectiveness.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3124": {
+"description": "Less accurate than the other SMG weapons this gun requires enemies to be close for maximum effectiveness.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3125": {
+"description": "More rounds and critical hit chance than the original Friedrich's Fly Swatter!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3126": {
+"description": "More rounds and critical hit chance than the original Steiner's Shotgun!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "13"
+},
+"3127": {
+"description": "More rounds and critical hit chance than the original Uwe's Overpowered!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3128": {
+"description": "Same as the original Friedrich's Fly Swatter with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3129": {
+"description": "A trusty mid-range weapon.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "9"
+},
+"3130": {
+"description": "The bursts from this pistol are most effective when standing close to the target.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3131": {
+"description": "Same as the original Garreth Custom with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3132": {
+"description": "More rounds and critical hit chance than the original Garreth Custom!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3133": {
+"description": "This pistol has the best effect when targets are far away.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "8"
+},
+"3134": {
+"description": "Adds rounds and a higher chance to critical hit than the original Carl's Cold Comfort!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3135": {
+"description": "This lightning fast sniper rifle rewards a quick trigger finger more than an accurate eye.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "6"
+},
+"3136": {
+"description": "This lightning fast sniper rifle rewards a quick trigger finger more than an accurate eye.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "6"
+},
+"3137": {
+"description": "Adds rounds and a higher chance to critical hit than the original Harry's Hand Cannon!",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3138": {
+"description": "A trusty mid-range weapon.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "9"
+},
+"3139": {
+"description": "More rounds and critical hit chance than the original Ludwig's Loaded!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3140": {
+"description": "The bursts from this pistol are most effective when standing close to the target.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3141": {
+"description": "This pistol has the best effect when targets are far away.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "8"
+},
+"3142": {
+"description": "Same as the original Florenz' Flurry with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3143": {
+"description": "More rounds and critical hit chance than the original Florenz' Flurry.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3144": {
+"description": "More rounds and critical hit chance than the original Gerhart's Greatest!",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3145": {
+"description": "This rifle has a lot of recoil but rewards those who go for the head.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3146": {
+"description": "This rifle has a lot of recoil but rewards those who go for the head.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3147": {
+"description": "Same as the original Stewart's Shotty with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3148": {
+"description": "A long range SMG with a personality all it's own.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3149": {
+"description": "A Tier 1 AK for those long range fights!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3150": {
+"description": "An Elite MG best suited to close range encounters.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3151": {
+"description": "This Tier 1 MG is most powerful when used against close range targets!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3152": {
+"description": "This Tier 1 M-21 has a lot of kick!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3153": {
+"description": "This Tier 1 silenced rifle has a lot of kick!",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3154": {
+"description": "This light and fast sniper rifle's winter camo paint job is perfect for battle on the new snowy maps! Performs on par with the SV98.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3155": {
+"description": "Tossin this bundle of bombs at a vehicle will cause it to stick delivering a powerful blast",
+"range": "2",
+"ammo": "1",
+"damage": "3"
+},
+"3156": {
+"description": "Tossin this bundle of bombs at a vehicle will cause it to stick delivering a powerful blast",
+"range": "2",
+"ammo": "1",
+"damage": "3"
+},
+"3157": {
+"description": "Although small, this bomb delivers a big hit to enemy infantry",
+"range": "3",
+"ammo": "1",
+"damage": "4"
+},
+"3158": {
+"description": "Although small, this bomb delivers a big hit to enemy infantry",
+"damage": "4"
+},
+"3160": {
+"description": "Same as the original Tank Buster with a fresh new look!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3161": {
+"description": "Same as the original Bone Chewer with a fresh new look!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3162": {
+"description": "Same as the original Garreth Custom with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3163": {
+"description": "Same as the original Stewart's Shotty with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3164": {
+"description": "Same as the original Tommy's Typewriter with a fresh new look!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3165": {
+"description": "Same as the original Pipsqueak's Popper with a fresh new look!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3166": {
+"description": "Same as the original Wolfgang's Wonderful with a fresh new look!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3167": {
+"description": "Same as the original Florenz' Flurry with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3168": {
+"description": "Same as the original Friedrich's Fly Swatter with a fresh new look!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "12"
+},
+"3169": {
+"description": "Same as the original Rudolf's Rescue with a fresh new look!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3170": {
+"description": "Same as the original Stefan's Sharpshooter with a fresh new look!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3171": {
+"description": "Same as the original Faust's Panzerfist with a fresh new look!",
+"damage": "4"
+},
+"3172": {
+"description": "Same as the original Royal Knife with a fresh new look!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3173": {
+"description": "Same as the original Konrad's Knife with a fresh new look!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3174": {
+"description": "Adds critical hit chance and damage that can't be found on the original Faust's Panzerfist!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3175": {
+"description": "Adds critical hit chance and damage that can't be found on the original Tank Buster!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3176": {
+"description": "Has higher chance to deal critical hits than the original Wolfgang's Wonderful!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3177": {
+"description": "Has higher chance to deal critical hits than the original Bernie's Bone Chewer!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3178": {
+"description": "More rounds and critical hit chance than the original Rudolf's Rescue!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3179": {
+"description": "More rounds and critical hit chance than the original Tommy's Typewriter!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3180": {
+"description": "More rounds and critical hit chance than the original Florenz' Flurry.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3181": {
+"description": "More rounds and critical hit chance than the original Garreth Custom!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3182": {
+"description": "More rounds and critical hit chance than the original Friedrich's Fly Swatter!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3183": {
+"description": "More rounds and critical hit chance than the original Stewart's Shotty!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3184": {
+"description": "Has more rounds and allows you to get closer to your target than the original Stefan's Sharpshooter!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3185": {
+"description": "Has more rounds and allows you to get closer to your target than the original Pipsqueak's Popper!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3186": {
+"description": "More range and damage than the original Royal Knife!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3187": {
+"description": "More range and damage than the original Konrad's Knife!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3190": {
+"description": "This modern mid-range uber SMG comes equipped with a functional scope attachment. Zoom in and take out the enemy!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3191": {
+"description": "This uber mid-ranged MG not only has a unique arctic camo look, but also comes equipped with a functional scope that lets you zoom in to take out the enemy!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3192": {
+"description": "This light and fast sniper rifle's winter camo paint job is perfect for battle on the new snowy maps. Performs on par with the M-21.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3193": {
+"description": "This modern mid-range super SMG comes equipped with a functional scope attachment. Zoom in and take out the enemy!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3194": {
+"description": "This super mid-ranged MG not only has a unique arctic camo look, but also comes equipped with a functional scope that lets you zoom in to take out the enemy!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3195": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3196": {
+"description": "Insane rate of fire combined with wild bullet spread makes this an ideal weapon for intimate combat encounters.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3197": {
+"description": "The ideal weapon for the patient accuracy focused Hero. High base damage more than makes up for this weapons lack of critical hits.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3198": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3199": {
+"description": "Insane Rate of Fire combined with wild bullet spread makes this an ideal weapon for intimate combat encounters.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3200": {
+"description": "The ideal weapon for the patient accuracy focused Hero. High base damage more than makes up for this weapons lack of critical hits.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3201": {
+"description": "Super Accuracy and Super Damage makes this slow reloading weapon very dangerous. Remember to go for Head Shots for bonus damage!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "1"
+},
+"3202": {
+"description": "Super Accuracy and Super Damage makes this slow reloading weapon very dangerous. Remember to go for Head Shots for bonus damage!",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "1"
+},
+"3203": {
+"description": "The ideal close quarters weapon when taking on multiple enemies.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3204": {
+"description": "The ideal close quarters weapon when taking on multiple enemies.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3205": {
+"description": "Show your dominant close quarters skill! This Machete can only be had after taking out 1000 enemies with the normal Machete weapon.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3206": {
+"description": "Show your dominant close quarters skill! This Machete can only be had after taking out 1000 enemies with the normal Machete weapon.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3207": {
+"description": "A deadly space engineer melee weapon.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3208": {
+"description": "Fires a large cannonball with a big bang. Don't forget to make tactical use of the cannonball's bounce property!",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "2",
+"damage": "5"
+},
+"3209": {
+"description": "Fires a large cannonball with a big bang. Don't forget to make tactical use of the cannonball's bounce property!",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "2",
+"damage": "5"
+},
+"3210": {
+"description": "Fires a large cannonball with a big bang. Don't forget to make tactical use of the cannonball's bounce property!",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "2",
+"damage": "5"
+},
+"3211": {
+"description": "Fires a large cannonball with a big bang. Don't forget to make tactical use of the cannonball's bounce property!",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "2",
+"damage": "5"
+},
+"3212": {
+"description": "With a 3 round accurate burst fire capability and an added underslung grenade launcher it can tackle all combat situations!",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3213": {
+"description": "With a 3 round accurate burst fire capability and an added underslung grenade launcher it can tackle all combat situations!",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3214": {
+"description": "Cut, slice and dice with the symbolical weapon from the Far East. Be sure to make every swing hit as the attacks are slow but long and powerful!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3215": {
+"description": "Cut, slice and dice with the symbolical weapon from the Far East. Be sure to make every swing hit as the attacks are slow but long and powerful!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3217": {
+"description": "A high rate of fire LMG with the ability to employ a short beam of focused energy to fend off anyone who dares come close.",
+"range": "3",
+"rate_of_fire": "5",
+"ammo": "120",
+"damage": "3"
+},
+"3218": {
+"description": "A powerful long range pistol with short range shotgun capability to fend off those who like getting a little too close.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "10"
+},
+"3219": {
+"description": "A powerful long range pistol with short range shotgun capability to fend off those who like getting a little too close.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "10"
+},
+"3220": {
+"description": "A deadly up close and personal machine gun with an explosive alternate fire for those tougher targets.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "100"
+},
+"3221": {
+"description": "A deadly up close and personal machine gun with an explosive alternate fire for those tougher targets.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "100"
+},
+"3224": {
+"description": "Rocket launcher with seeking capability, the skies are not safe anymore",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3225": {
+"description": "Rocket launcher with seeking capability, the skies are not safe anymore",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3226": {
+"description": "This heavy sniper rifle will make short work of both infantry and armor alike, but steady your aim, as a miss can be costly",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "1"
+},
+"3227": {
+"description": "This heavy sniper rifle will make short work of both infantry and armor alike, but steady your aim, as a miss can be costly",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "1",
+"damage": "5"
+},
+"3228": {
+"description": "This tool is a deadly close range weapon with the ability to melt the thickest steel",
+"range": "1",
+"ammo": "120",
+"damage": "3"
+},
+"3229": {
+"description": "This tool is a deadly close range weapon with the ability to melt the thickest steel",
+"range": "1",
+"ammo": "120",
+"damage": "3"
+},
+"3230": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3231": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3232": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3233": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3234": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3235": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3236": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3237": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3238": {
+"description": "This ingenious rifle accelerates bullets through strong magnetic fields to deadly speeds.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3239": {
+"description": "This ingenious rifle accelerates bullets through strong magnetic fields to deadly speeds.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3240": {
+"description": "A high rate of fire LMG with the ability to employ a short beam of focused energy to fend off anyone who dares come close.",
+"range": "3",
+"rate_of_fire": "5",
+"ammo": "120",
+"damage": "3"
+},
+"3241": {
+"description": "A medium range laser SMG with the ability to charge up a powerful laser shot to deal damage to targets at long range.",
+"range": "3",
+"rate_of_fire": "4",
+"ammo": "40",
+"damage": "3"
+},
+"3242": {
+"description": "A deadly space engineer melee weapon.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3245": {
+"description": "There\u2019s a new gunslinger in town! Duel your enemies with this mid- range revolver.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3246": {
+"description": "There\u2019s a new gunslinger in town! Duel your enemies with this mid- range revolver.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "12"
+},
+"3247": {
+"description": "Clear the saloon up with this long range double barreled shotgun.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3248": {
+"description": "Clear the saloon up with this long range double barreled shotgun.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "11"
+},
+"3249": {
+"description": "Kicks like a wild horse when fired, but makes a mess to those who stand in it\u2019s way.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3250": {
+"description": "Kicks like a wild horse when fired, but makes a mess to those who stand in it\u2019s way.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3251": {
+"description": "An exclusive golden version of the Super Cheeser",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3252": {
+"description": "An exclusive golden version of the Uber Backscratcher",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3253": {
+"description": "An exclusive golden version of the Uber Rescue",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3254": {
+"description": "An exclusive golden version of the Super Typewriter",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3255": {
+"description": "An exclusive golden version of the Uber Sharpshooter",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3256": {
+"description": "An exclusive golden version of the Super Popper",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3257": {
+"description": "An exclusive golden version of the M32 MGL",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3258": {
+"description": "An exclusive golden version of the MGL 140",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3259": {
+"description": "Mount up and rush into battle with this long reaching two handed sword!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3260": {
+"description": "Mount up and rush into battle with this long reaching two handed sword!",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3261": {
+"description": "Fire arrows at a blazing rate with this ancient state-of-the-art automatic cross-bow.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3262": {
+"description": "Fire arrows at a blazing rate with this ancient state-of-the-art automatic cross-bow.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3263": {
+"description": "Use this cross-bow to fire a deadly burst of arrows into your target!",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3264": {
+"description": "Use this cross-bow to fire a deadly burst of arrows into your target!",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3265": {
+"description": "This high-precision pistol is best used at long ranges.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3266": {
+"description": "This high-precision pistol is best used at long ranges.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3267": {
+"description": "Pull! Pick out enemy heroes from a distance with this competition grade shotgun.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3268": {
+"description": "Pull! Pick out enemy heroes from a distance with this competition grade shotgun.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3269": {
+"description": "Practice your shooting stance in the mirror before using this long distance rifle.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3270": {
+"description": "Practice your shooting stance in the mirror before using this long distance rifle.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3271": {
+"description": "\"Take care\" of your target up close and silent.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3272": {
+"description": "\"Take care\" of your target up close and silent.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3273": {
+"description": "A silent, but violent long-range rifle that can catch you off guard if you're not focused on the mission at hand.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3274": {
+"description": "A silent, but violent long-range rifle that can catch you off guard if you're not focused on the mission at hand.",
+"range": "5",
+"rate_of_fire": "4",
+"ammo": "8"
+},
+"3275": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3277": {
+"description": "Don't let the size fool you! The awsome power that lies within strikes people with fear, and you flying.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3278": {
+"description": "Don't let the size fool you! The awsome power that lies within strikes people with fear, and you flying.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3283": {
+"description": "This bulky grenade launcher is great for laying down areas of infantry destruction.",
+"range": "4",
+"ammo": "6",
+"damage": "4"
+},
+"3289": {
+"description": "Need to clear out a trench of hostiles? This is the gun for the job! If you can hold it steady, that is.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3290": {
+"description": "Need to clear out a trench of hostiles? This is the gun for the job! If you can hold it steady, that is.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "110"
+},
+"3291": {
+"description": "A perfect weapon for those surprise attacks deep behind enemy lines.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3292": {
+"description": "For digging graves.",
+"range": "1",
+"rate_of_fire": "3"
+},
+"3293": {
+"description": "Handle the recoil well, and you will be rewarded by striking critical hits on your enemy.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3294": {
+"description": "Handle the recoil well, and you will be rewarded by striking critical hits on your enemy.",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "35"
+},
+"3295": {
+"description": "Semi-auto rifle with an underslug grenade launcher to help you clear your path.",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3296": {
+"description": "Semi-auto rifle with an underslug grenade launcher to help you clear your path.",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3297": {
+"description": "Take aim and be sure to lead your target with this powerful bow from another world.",
+"range": "4",
+"rate_of_fire": "1"
+},
+"3298": {
+"description": "Tame the demonic forces and blast your foes if they ever dare to get close.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3299": {
+"description": "Tame the demonic forces and blast your foes if they ever dare to get close.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "15"
+},
+"3300": {
+"description": "Take aim and be sure to lead your target with this powerful bow from another world.",
+"range": "4",
+"rate_of_fire": "1"
+},
+"3301": {
+"description": "Unleash the destructive force within the stone to barrage your enemies with pure evil.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "60"
+},
+"3302": {
+"description": "Spooky long range anti-vehicle weapon that's a blast!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3303": {
+"description": "Unleash the destructive force within the stone to barrage your enemies with pure evil.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "60"
+},
+"3304": {
+"description": "Spooky long range anti-vehicle weapon that's a blast!",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3305": {
+"description": "A short range SMG with a little extra, namely an underslung shotgun.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3306": {
+"description": "A short range SMG with a little extra, namely an underslung shotgun.",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3307": {
+"description": "Engage enemies with super-cooled bullets to slow them enough to take that final shot.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3308": {
+"description": "Tight spread shotgun, equipped it with a grenade launcher just to be sure.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3309": {
+"description": "Tight spread shotgun, equipped it with a grenade launcher just to be sure.",
+"range": "4",
+"rate_of_fire": "1",
+"ammo": "6"
+},
+"3311": {
+"description": "Powerful pistol best used at long ranges.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3312": {
+"description": "Powerful pistol best used at long ranges.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "11"
+},
+"3313": {
+"description": "Warning: Wear ear protection while firing this powerful weapon!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3314": {
+"description": "Warning: Wear ear protection while firing this powerful weapon!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3315": {
+"description": "A vehicle's worst enemy. Not very pleasant for infantry either, to be honest.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3316": {
+"description": "A vehicle's worst enemy. Not very pleasant for infantry either, to be honest.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3317": {
+"description": "Best used in close range combat.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3318": {
+"description": "Best used in close range combat.",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "130"
+},
+"3321": {
+"description": "Engage enemies with super-cooled bullets to slow them enough to take that final shot.",
+"range": "5",
+"rate_of_fire": "3",
+"ammo": "10"
+},
+"3322": {
+"description": "Someone getting too hot? Chill them down with a lethal dose of snow!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "160"
+},
+"3323": {
+"description": "It's getting hot in here. Oh, I'm on fire!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "90",
+"damage": "3"
+},
+"3324": {
+"description": "Long range focused weapon with the ability to discharge a sphere of pure energy.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3326": {
+"description": "Fires projectiles with enough speed and electrical power to turn the air into plasma.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3327": {
+"description": "Fires projectiles with enough speed and electrical power to turn the air into plasma.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "5"
+},
+"3329": {
+"description": "Long range focused weapon with the ability to discharge a sphere of pure energy.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "30"
+},
+"3332": {
+"description": "Someone getting too hot? Chill them down with a lethal dose of snow!",
+"range": "2",
+"rate_of_fire": "5",
+"ammo": "160"
+},
+"3333": {
+"description": "It's getting hot in here. Oh, I'm on fire!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "90",
+"damage": "3"
+},
+"3338": {
+"description": "Teleport back to a location of your choice",
+"damage": "1"
+},
+"3339": {
+"description": "Teleport back to a location of your choice",
+"damage": "1"
+},
+"3340": {
+"description": "A deadly fast firing weapon with two firing modes, just make sure to make effective use of their ranges",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3341": {
+"description": "A deadly fast firing weapon with two firing modes, just make sure to make effective use of their ranges",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3342": {
+"description": "A deadly smg with an alternate fire to push your enemies and distrupt their movement",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "45",
+"damage": "3"
+},
+"3343": {
+"description": "A deadly smg with an alternate fire to push your enemies and distrupt their movement",
+"range": "3",
+"rate_of_fire": "3",
+"ammo": "45",
+"damage": "3"
+},
+"3346": {
+"description": "Lock on to the target and release the swarm",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "80"
+},
+"3347": {
+"description": "Lock on to the target and release the swarm",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "80"
+},
+"3348": {
+"description": "Push back soundwave that also deals damage",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "5"
+},
+"3349": {
+"description": "Push back soundwave that also deals damage",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "5"
+},
+"3350": {
+"description": "Disperse enemy crowds with a cloud of tear gas.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3351": {
+"description": "Disperse enemy crowds with a cloud of tear gas.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3352": {
+"description": "Heal up your teammates to full health, and a little bit extra.",
+"range": "1",
+"rate_of_fire": "3",
+"ammo": "30"
+},
+"3353": {
+"description": "Heal up your teammates to full health, and a little bit extra.",
+"range": "1",
+"rate_of_fire": "1",
+"ammo": "20"
+},
+"3354": {
+"description": "Instill panic in your enemies to make them run from the battlefield!",
+"range": "3",
+"ammo": "1",
+"damage": "2"
+},
+"3355": {
+"description": "Instill panic in your enemies to make them run from the battlefield!",
+"range": "3",
+"ammo": "1",
+"damage": "2"
+},
+"3356": {
+"description": "Give your enemies their worst surprise party ever.",
+"range": "4",
+"ammo": "1"
+},
+"3357": {
+"description": "Give your enemies their worst surprise party ever.",
+"range": "4",
+"ammo": "1"
+},
+"3358": {
+"description": "Excels at moderate range and brings you closer to the fight.",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3359": {
+"description": "Excels at moderate range and brings you closer to the fight.",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3360": {
+"description": "Weaken your enemies to inflict more damage.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3361": {
+"description": "Weaken your enemies to inflict more damage.",
+"range": "4",
+"ammo": "1",
+"damage": "4"
+},
+"3362": {
+"description": "An exclusive golden version of the Mk1 Bad Boy.",
+"range": "5",
+"rate_of_fire": "1",
+"ammo": "1",
+"damage": "5"
+},
+"3363": {
+"description": "An exclusive golden version of the PanzerHunter39.",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "1"
+},
+"3364": {
+"description": "An exclusive golden version of the Brass-Bender's Battle Arm.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3365": {
+"description": "An exclusive golden version of the Destroyer Drone's Demolisher.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3366": {
+"description": "An exclusive golden version of the M16-203 Battle Rifle.",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3367": {
+"description": "An exclusive golden version of the AK-74 Battle Rifle.",
+"range": "3",
+"rate_of_fire": "1",
+"ammo": "36",
+"damage": "3"
+},
+"3372": {
+"description": "Soldiers' version of the Commando rifle",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3373": {
+"description": "Soldiers' version of the Commando rifle",
+"range": "3",
+"rate_of_fire": "2",
+"ammo": "8"
+},
+"3374": {
+"description": "Super shiny M16 to show off to your friends!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3375": {
+"description": "Start a snowball fight! Chill down your opponents with this fast-firing snowball launcher.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "10",
+"damage": "2"
+},
+"3376": {
+"description": "Super shiny AK-74 to show off to your friends!",
+"range": "2",
+"rate_of_fire": "4",
+"ammo": "45",
+"damage": "3"
+},
+"3377": {
+"description": "Super shiny M249 to show off to your friends!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3378": {
+"description": "Super shiny PKM to show off to your friends!",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "120"
+},
+"3379": {
+"description": "Super shiny M95 to show off to your friends!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3380": {
+"description": "Super shiny SVD to show off to your friends!",
+"range": "5",
+"rate_of_fire": "2",
+"ammo": "7"
+},
+"3381": {
+"description": "Start a snowball fight! Chill down your opponents with this fast-firing snowball launcher.",
+"range": "4",
+"rate_of_fire": "2",
+"ammo": "10",
+"damage": "2"
+}
+}

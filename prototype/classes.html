@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEUTRALIA — Class & Weapon Family Prototype</title>
+<style>
+  :root{
+    --bg:#0b0d17; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.10); --purple:#7c5cfc; --cyan:#38bdf8;
+    --gold:#f0b429; --red:#f2545b; --green:#34d399; --orange:#fb923c;
+    --txt:#e8eaf2; --dim:#8b90a8; --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+       radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+       color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       min-height:100vh;padding:26px 20px 60px}
+  .wrap{max-width:1280px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:.14em;font-weight:700}
+  h1 span{color:var(--purple)}
+  .sub{color:var(--dim);font-size:13px;margin-bottom:22px}
+  .sub b{color:var(--cyan);font-weight:600}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        backdrop-filter:blur(14px);padding:16px;margin-bottom:16px}
+  .mxscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+  .mxscroll table.mx{min-width:520px}
+  .mxhint{display:none;font-size:11px;color:var(--dim);margin-top:8px}
+  @media(max-width:560px){.mxhint{display:block}}
+  .card h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+           margin:0 0 12px;font-weight:600}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+  .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:16px 0 7px}
+  .note{font-size:12px;color:var(--dim);line-height:1.55}
+  .note b{color:var(--cyan)}
+
+  /* matrix */
+  table.mx{width:100%;border-collapse:collapse;font-size:13px}
+  table.mx th, table.mx td{padding:8px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.05)}
+  table.mx th:first-child, table.mx td:first-child{text-align:left;padding-left:2px}
+  table.mx thead th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  table.mx tbody tr:hover{background:rgba(255,255,255,.03)}
+  table.mx td.cl{font-weight:600}
+  .dot{display:inline-block;width:15px;height:15px;border-radius:5px;vertical-align:-3px}
+  .dot.on{background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 0 9px rgba(124,92,252,.55)}
+  .dot.new{background:linear-gradient(135deg,var(--gold),var(--orange));box-shadow:0 0 9px rgba(240,180,41,.5)}
+  .dot.split{background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 0 9px rgba(56,189,248,.45)}
+  .fam{font-weight:500}
+  .fam small{display:block;color:var(--dim);font-size:10.5px;font-weight:400}
+  tr.sel{background:rgba(124,92,252,.12)!important}
+  tr.sel td.cl{color:#b7a4ff}
+
+  /* class tabs */
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);
+       color:var(--txt);font-size:13px;cursor:pointer;font-family:inherit;transition:.15s;font-weight:600}
+  .tab:hover{border-color:var(--purple)}
+  .tab.on{background:linear-gradient(135deg,var(--purple),#5b3fd6);border-color:transparent}
+  .tab .hp{color:var(--dim);font-weight:400;margin-left:5px;font-size:11px}
+  .tab.on .hp{color:rgba(255,255,255,.7)}
+  .tab.newtag{border-color:rgba(240,180,41,.5)}
+
+  .util{border-left:3px solid var(--gold);padding:10px 0 10px 13px;margin:12px 0;
+        background:rgba(240,180,41,.055);border-radius:0 9px 9px 0}
+  .util .n{font-weight:700;color:var(--gold);font-size:14px}
+  .util .d{font-size:13px;color:var(--dim);margin-top:3px}
+  .util .why{font-size:11.5px;color:#6ee7b7;margin-top:5px}
+
+  .famgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:8px}
+  .famcard{border:1px solid var(--line);border-radius:10px;padding:10px 11px;background:var(--panel2)}
+  .famcard .fn{font-weight:600;font-size:13px;margin-bottom:3px}
+  .famcard .fb{font-size:11px;color:var(--dim)}
+  .famcard.newf{border-color:rgba(240,180,41,.42);background:rgba(240,180,41,.07)}
+  .famcard.newf .fn{color:var(--gold)}
+  .famcard .fnew{font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+
+  .grammar{display:grid;gap:7px}
+  .grow{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--panel2);
+        display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;font-size:12.5px}
+  .grow .gf{font-weight:600;color:var(--cyan)}
+  .grow .gb{color:var(--dim)}
+  .grow .gb em{font-style:normal;color:var(--txt)}
+
+  .inv{display:grid;gap:6px}
+  .invrow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;
+          padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .invrow:last-child{border-bottom:0}
+  .invrow .v{font-weight:600;font-variant-numeric:tabular-nums}
+  .pass{color:var(--green);font-weight:700}
+  .fail{color:var(--red);font-weight:700}
+  .ref{color:var(--dim)}
+  .chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:600;letter-spacing:.05em}
+  .chip.g{background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+  .chip.p{background:rgba(124,92,252,.18);color:#b7a4ff;border:1px solid rgba(124,92,252,.4)}
+  .chip.c{background:rgba(56,189,248,.15);color:#8ad4ff;border:1px solid rgba(56,189,248,.35)}
+  .chip.o{background:rgba(251,146,60,.15);color:#fdba74;border:1px solid rgba(251,146,60,.35)}
+  .warn{border-left:2px solid var(--gold);padding:8px 0 8px 11px;margin:12px 0;font-size:12px;color:var(--dim)}
+  .warn b{color:var(--gold)}
+  .eqbox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--panel2);margin-top:12px}
+  .eqbox .q{font-style:italic;color:var(--dim);font-size:13px;margin-bottom:7px}
+  .eqbox .src{font-size:11px;color:#6ee7b7}
+  .arteq{font-size:11.5px;color:var(--dim);line-height:1.65}
+  .srccite{font-size:11px;color:#6ee7b7;margin-top:8px}
+  .arteq b{color:var(--txt)}
+  .splits{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+  .spec{border:1px solid var(--line);border-radius:10px;padding:10px 11px;background:var(--panel2)}
+  .spec .sn{font-weight:700;color:var(--purple);font-size:13px}
+  .spec .sd{font-size:12px;color:var(--dim);margin-top:3px}
+  .spec .sb{font-size:11px;color:#6ee7b7;margin-top:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NEUTRALIA <span>// CLASS &amp; WEAPON FAMILIES</span></h1>
+  <div class="sub">A class is a <b>set of weapon families it may use</b>, plus one utility only it can perform — not a stat block. Prototype of <code>systems/class-and-weapon-families.md</code>.</div>
+
+  <div class="card">
+    <h2>Class × Weapon Family matrix</h2>
+    <div class="mxscroll"><table class="mx" id="matrix"></table></div>
+    <div class="mxhint">Swipe the table sideways to see all four classes.</div>
+    <div class="note" style="margin-top:12px">
+      <span class="chip o">New</span> = family the 2009 original never had &nbsp; <span class="chip c">Split</span> = shipped in 2009 but conflated with another family in one category &nbsp; <span class="chip p">Original</span> = the 2009 category as-is &nbsp;
+      <span class="chip g">Invariant</span> rows below are asserted by <code>tools/simulate-design.py</code>.
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Class</h2>
+        <div class="tabs" id="tabs"></div>
+        <div id="clsPanel"></div>
+      </div>
+
+      <div class="card">
+        <h2>Family node grammar — each family decides a different kind of trade</h2>
+        <div class="grammar" id="grammar"></div>
+        <div class="note" style="margin-top:12px">
+          A shotgun's branch is <b>slug vs scatter</b>; an MG's is <b>sustain vs burst</b>;
+          a rifle's is <b>marksman vs duelist</b>. Eleven families that all read as
+          "more damage vs more range" is one family with a reskin on.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Invariants</h2>
+        <div class="inv" id="inv"></div>
+      </div>
+
+      <div class="card">
+        <h2>The concept</h2>
+        <div class="eqbox">
+          <div class="q">"Differences in abilities of game entities that are in type rather than in value."</div>
+          <div class="note"><b>Orthogonal Differentiation</b> — GDP3 Game Design Pattern Library, Chalmers University of Technology / University of Gothenburg. Coined by Harvey Smith (GDC 2003), formalised by Björk &amp; Holopainen (2004).</div>
+          <div class="src">gdp.cse.chalmers.se · verified 2026-11-07</div>
+        </div>
+        <div class="note" style="margin-top:12px">
+          <b>The original already had the backbone:</b> 7 of its 9 weapon families were
+          class-locked. The flaw was where the boundary was drawn — the Soldier held 6 of
+          9 families and 97 of 185 weapons; Gunner and Commando held 2 each.
+          <b>One class was a superset of the game.</b>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Art direction — the Engineer</h2>
+        <div class="arteq">
+          <b>Render rules</b> (read from the original's own art): top-heavy heroic
+          proportion, <b>not</b> chibi — ~8 heads tall, small head, massive shoulders.
+          Angular near-square jaw, minimal chin. Exaggerated hands and boots (~1.5×) to
+          sell action. Thick variable-width black ink outline, thinner interior detail
+          lines. Cel-shading with soft digital-paint shadows, subtle canvas texture.
+          Sharp white rim highlights on leather. Weapons held <b>away from the body</b> for
+          silhouette readability — never shouldered like a real rifle.
+          <br><br>
+          <b>The Engineer</b> reads as a tradesman: satchel, tool roll, mechanic's bib,
+          goggles pushed up on the forehead, and a bolted-on mechanical silhouette so the
+          class is unmistakable as a 32 px minimap dot. Industrial yellow-ochre —
+          deliberately outside the Royals' blue-grey and Nationals' drab olive, because
+          the Engineer serves whichever faction holds the field.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CLASSES=[
+ {id:"Soldier",hp:110,new:false,
+  role:"Close-quarters, team-scale sustain",
+  utility:{n:"Combat Medicine",d:"Instant heal that scales with the number of allies healed.",
+           why:"A healing AoE that scales with team size is a support identity — giving it to a shooter means that class stops being a shooter."},
+  fams:[["SMG","High ROF, short range, fast recovery"],["Shotgun","Cone burst, brutal up close"],
+        ["Grenade Launcher","Arcing indirect explosive"],
+        ["TNT","Placed charge: area denial, breaching"]],
+  specs:[["Medic","Scales Combat Medicine, revives, deployable cover","Sixth Sense + Combat Medicine"],
+         ["Demolitions","Satchel charges, mines, breach; throws players and vehicles aside","Blasting Strike"],
+         ["Marksman","SMG at rifle range; scales 6th Sense into team spotting","6th Sense + Burning Bullets"]],
+  orig:"Original kit: Sixth Sense, Burning Bullets, Combat Medicine, Grenade Spam, Blasting Strike. Burning Bullets is the mechanical signature — the SMG sets enemies on fire, damage-over-time as a weapon property, not a bolted-on status effect."},
+
+ {id:"Gunner",hp:150,new:false,
+  role:"Heavy weapons, anti-vehicle, the only rocket gunner",
+  utility:{n:"Frenzy Fire",d:"Narrows spread to focus one target and heals on every 4th hit.",
+           why:"Focus-fire plus self-sustain is a heavy-weapon behaviour. On a Commando it would make the knife irrelevant."},
+  fams:[["MG","Sustained, heavy, punishing to use badly"],["Grenade Launcher","Arcing indirect explosive"],
+        ["Rocket Launcher","Flat-trajectory, direct-fire anti-vehicle"]],
+  specs:[["Heavy","Frenzy Fire focus-fire MG, sustained; scales Hero Shield","Hero Shield + Frenzy Fire"],
+         ["Anti-Tank","GL and Rocket specialisation, vehicle killing; scales Explosive Keg","Explosive Keg"],
+         ["Sapper","I Eats Grenades ordnance play, repair, area denial","I Eats Grenades + Explosive Keg"]],
+  orig:"Original kit: Hero Shield, Leg It, Explosive Keg, Frenzy Fire, I Eats Grenades. The Gunner is the class that dies in the open and comes back firing. The original's own page: the only class with Rocket Launchers."},
+
+ {id:"Commando",hp:80,new:false,
+  role:"Fastest, weakest, the only one who sees",
+  utility:{n:"Mark Target",d:"Earns points for designating enemies, and reveals stealthed Commandos.",
+           why:"Information for the team, not for yourself — it converts stealth from a hiding mechanic into a team resource."},
+  fams:[["Shotgun","Cone burst, brutal up close"],["Rifle","Marksman: slow, precise, long"],["Knife","Melee, close, the Commando's signature"]],
+  specs:[["Recon","Stealth, Troop Trap, spotting, sabotage","Stealth + Troop Trap"],
+         ["Sniper","Piercing Shot, long range, marked kills via Mark Target","Piercing Shot + Mark Target"],
+         ["Infiltrator","Poisoned Blade, unlock, supply theft, Elixir speed","Poisoned Blade + Elixir"]],
+  orig:"Original kit: Stealth, Elixir, Mark Target, Troop Trap, Piercing Shot, Poisoned Blade. Six abilities spanning stealth, marking, knives and poison — three identities, none of them deep, which is why the specs split it three ways."},
+
+ {id:"Engineer",hp:130,new:true,
+  role:"Fieldcraft, vehicles, emplacements",
+  utility:{n:"Field Repair",d:"Repairs a vehicle or deployable in the field, mid-fight.",
+           why:"Nobody else has the toolkit — it is the Engineer's reason to exist."},
+  fams:[["Pistol","Sidearm: low damage, fast, cheap to draw"],
+        ["Artillery","Lobbed shell, long sight-lines, indirect"],
+        ["Field Kit","Deployables: repair, shield, cover, spotting"]],
+  specs:[["Artificer","Builds, repairs and multiplies deployables","Field Repair → emplacements that regrow"],
+         ["Gunner's Adjutant","Anti-vehicle artillery at range","Shell → longer range, deeper craters"],
+         ["Pioneer","Forward mobility, path-opening, rapid redeploy","Field Dressing + movement"]],
+  orig:"Built from widgets the original already sold as consumable premium items — Supreme Wrench (\"repairs a major portion of your vehicle armor over time; any damage taken will cancel the effect\"), Metallo's Rocket Jump, Titan Security Thruster Fuel, Jeep Jump, Frost's Amassing Force. The original sold the concept as a purchase; we give it a permanent home as a class."}
+];
+
+const FAMILIES=[
+ {n:"SMG",br:"Spread ↔ Focus",b:"pellet cone vs single-target",eg:"Phantom (friendly dot when not firing), Interceptor (speed on destroying deployables)"},
+ {n:"Pistol",br:"Rapid ↔ Precise",b:"spam vs tap",eg:"Executioner (a kill refreshes 25% of magazine)"},
+ {n:"Shotgun",br:"Slug ↔ Scatter",b:"single heavy pellet vs wide cone",eg:"Meat Grinder (each pellet can crit independently)"},
+ {n:"MG",br:"Sustain ↔ Burst",b:"long belt vs short bursts",eg:"Frenzy (spread collapses on a held trigger)"},
+ {n:"Rifle",br:"Marksman ↔ Duelist",b:"one-shot discipline vs hipfire",eg:"Overwatch (first shot after 2s unscoped ×2), Saboteur (+30% vs vehicles)"},
+ {n:"Knife",br:"Slash ↔ Throw",b:"close vs thrown",eg:"Poisoned Blade (DoT on knife hits)"},
+ {n:"Grenade Launcher",br:"Bounce ↔ Direct",b:"arcing vs flat",eg:"Sapper (kills drop an ammo crate)"},
+ {n:"Rocket Launcher",br:"Cluster ↔ Pierce",b:"multi-warhead vs single-tap",eg:"Demolition (destroyed vehicles detonate)"},
+ {n:"Artillery",br:"Bunker ↔ Spread",b:"one deep crater vs shrapnel",eg:"Siege (artillery damage from the sky is doubled)"},
+ {n:"TNT",br:"Breach ↔ Trap",b:"open doors vs deny approach",eg:"Ambush (arms faster, shorter fuse)"},
+ {n:"Field Kit",br:"Repair ↔ Fortify",b:"keep it alive vs make it strong",eg:"Bulwark (deployables absorb damage while you build)"}
+];
+
+// origin: "orig" = the 2009 game had this family as its own category
+//         "split" = the 2009 game had it, but CONFLATED with another family in one category
+//         "new"   = the 2009 game never had this family at all
+const FAMILY_ORIGIN={SMG:"orig",Pistol:"orig",Shotgun:"orig","Grenade Launcher":"orig",
+  MG:"orig",Rifle:"orig",Knife:"orig",TNT:"orig",
+  "Rocket Launcher":"split",   // shipped in 2009 (Gunner only) but filed under "GL"
+  Artillery:"new",            // never a personal weapon
+  "Field Kit":"new"};        // the 2009 widgets were consumable premium items, not a family
+
+// The 2009 original's actual class->family allocation (measured from the scraped roster):
+// Soldier 6 families / 97 weapons, Gunner 2 / 45, Commando 2 / 43.
+const ORIGINAL_CLASS_FAMILIES={Soldier:["SMG","Pistol","Shotgun","Grenade Launcher","TNT","Grenade"],
+  Gunner:["MG","Grenade Launcher"],Commando:["Rifle","Knife"]};
+
+let sel="Soldier";
+const $=id=>document.getElementById(id);
+
+function famOf(c){return c.fams.map(f=>f[0]);}
+function owns(c,f){return famOf(c).includes(f);}
+
+function renderMatrix(){
+  const classes=CLASSES.map(c=>c.id);
+  let h="<thead><tr><th>Family</th>";
+  for(const c of CLASSES) h+=`<th>${c.id}${c.new?'<br><span style="color:#f0b429">NEW</span>':""}</th>`;
+  h+="</tr></thead><tbody>";
+  for(const f of FAMILIES){
+    const org=FAMILY_ORIGIN[f.n];
+    const badge=org==="new"?' <span class="chip o">new</span>':(org==="split"?' <span class="chip c">split</span>':'');
+    h+=`<tr data-fam="${f.n}"><td class="fam">${f.n}${badge}</td>`;
+    for(const c of CLASSES){
+      h+=`<td class="cl" data-cls="${c.id}">${owns(c,f.n)?`<span class="dot ${org==="new"?'new':(org==="split"?'split':'on')}"></span>`:'<span class="dot" style="background:rgba(255,255,255,.07)"></span>'}</td>`;
+    }
+    h+="</tr>";
+  }
+  h+="<tr><td class='fam'><b>Families held</b></td>";
+  for(const c of CLASSES) h+=`<td class="cl"><b>${famOf(c).length}</b></td>`;
+  h+="</tr></tbody>";
+  $("matrix").innerHTML=h;
+  document.querySelectorAll("#matrix td.cl[data-cls]").forEach(td=>{
+    td.style.cursor="pointer";
+    td.onclick=()=>select(td.dataset.cls);
+  });
+  document.querySelectorAll("#matrix tbody tr[data-fam]").forEach(tr=>{
+    tr.style.cursor="pointer";
+    tr.onclick=()=>{const c=[...document.querySelectorAll("#matrix td.cl[data-cls]")]
+      .filter(td=>td.parentElement===tr && td.querySelector(".dot.on,.dot.new"))[0];
+      if(c) select(c.dataset.cls);};
+  });
+}
+
+function renderTabs(){
+  $("tabs").innerHTML=CLASSES.map(c=>
+    `<button class="tab ${c.id===sel?'on':''} ${c.new?'newtag':''}" data-id="${c.id}">${c.id}${c.new?' ✦':''}<span class="hp">${c.hp} HP</span></button>`
+  ).join("");
+  document.querySelectorAll("#tabs .tab").forEach(b=>b.onclick=()=>select(b.dataset.id));
+}
+
+function renderClass(){
+  const c=CLASSES.find(x=>x.id===sel);
+  let h=`<div class="lbl">Role</div><div style="font-size:14px">${c.role}${c.new?' <span class="chip o">new class</span>':""}</div>`;
+  h+=`<div class="util"><div class="n">${c.utility.n} — exclusive utility</div>
+       <div class="d">${c.utility.d}</div><div class="why">Why it cannot belong to anyone else: ${c.utility.why}</div></div>`;
+  h+=`<div class="lbl">Weapon families — ${famOf(c).length}</div><div class="famgrid">`;
+  for(const [n,d] of c.fams){
+    const org=FAMILY_ORIGIN[n];
+    h+=`<div class="famcard ${org==="new"?'newf':''}"><div class="fn">${n}</div><div class="fb">${d}</div>${org==="new"?'<div class="fnew">new family — never existed in 2009</div>':(org==="split"?'<div class="fnew">split from the original GL category</div>':'')}</div>`;
+  }
+  h+=`</div><div class="lbl">Specs</div><div class="splits">`;
+  for(const [sn,sd,sb] of c.specs)
+    h+=`<div class="spec"><div class="sn">${sn}</div><div class="sd">${sd}</div><div class="sb">${sb}</div></div>`;
+  h+=`</div><div class="lbl">Source</div><div class="note">${c.orig}</div>`;
+  $("clsPanel").innerHTML=h;
+}
+
+function renderGrammar(){
+  $("grammar").innerHTML=FAMILIES.map(f=>
+    `<div class="grow"><div class="gf">${f.n}</div><div class="gb"><em>${f.br}</em> — ${f.b}<br>${f.eg}</div></div>`
+  ).join("");
+}
+
+function renderInv(){
+  const counts={}; CLASSES.forEach(c=>counts[c.id]=famOf(c).length);
+  const widest=Math.max(...Object.values(counts)), narrowest=Math.min(...Object.values(counts));
+  const spread=widest-narrowest;
+
+  // no class is a strict subset of another
+  const supersets=[];
+  for(const a of CLASSES) for(const b of CLASSES){
+    if(a.id===b.id) continue;
+    const fa=famOf(a), fb=famOf(b);
+    if(fa.length && fb.length && fa.every(f=>fb.includes(f)) && fa.length<fb.length) supersets.push(`${a.id} < ${b.id}`);
+  }
+  // every family used
+  const dead=FAMILIES.filter(f=>!CLASSES.some(c=>owns(c,f.n)));
+  // original matrix for contrast
+  const origCounts=Object.fromEntries(Object.entries(ORIGINAL_CLASS_FAMILIES).map(([c,f])=>[c,f.length]));
+  const origSpread=Math.max(...Object.values(origCounts))-Math.min(...Object.values(origCounts));
+
+  const row=(n,v,cls,detail)=>`<div class="invrow"><span>${n}</span><span class="v ${cls}">${v}</span></div>${detail?`<div class="note" style="font-size:11px;padding-bottom:5px">${detail}</div>`:""}`;
+  $("inv").innerHTML=
+    row("Families total",FAMILIES.length,"ref")+
+    row("Families usable by no class",dead.length,dead.length?"fail":"pass",dead.length?dead.map(f=>f.n).join(", "):"no dead content")+
+    row("Superset class pairs",supersets.length,supersets.length?"fail":"pass",supersets.length?supersets.join(", "):"no class is a strict subset of another")+
+    row("Classes without exclusive utility",CLASSES.filter(c=>!c.utility||!c.utility.n).length,"pass")+
+    row("Family-count spread",spread,spread<=3?"pass":"fail",`widest ${widest} − narrowest ${narrowest}`)+
+    row("Original spread (for contrast)",origSpread,"ref",`Soldier ${origCounts.Soldier} / Gunner ${origCounts.Gunner} / Commando ${origCounts.Commando} — the measured 2009 flaw`)+
+    row("Target weapons per family",10,"ref","re-cut roster: 11 × 10 = 110 base, vs the original's 185 in 9");
+}
+
+function select(id){ sel=id; renderTabs(); renderClass();
+  document.querySelectorAll("#matrix tbody tr").forEach(tr=>tr.classList.remove("sel"));
+}
+
+renderMatrix(); renderTabs(); renderClass(); renderGrammar(); renderInv();
+</script>
+</body>
+</html>

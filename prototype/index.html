@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEUTRALIA — Weapon Specialisation Prototype</title>
+<style>
+  :root{
+    --bg:#0b0d17; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.10); --purple:#7c5cfc; --cyan:#38bdf8;
+    --gold:#f0b429; --red:#f2545b; --green:#34d399;
+    --txt:#e8eaf2; --dim:#8b90a8; --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+       radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+       color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       min-height:100vh;padding:26px 20px 60px}
+  .wrap{max-width:1240px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:.14em;font-weight:700}
+  h1 span{color:var(--purple)}
+  .sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+  .sub b{color:var(--cyan);font-weight:600}
+  .grid{display:grid;grid-template-columns:300px 1fr 320px;gap:18px;align-items:start}
+  @media(max-width:1100px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        backdrop-filter:blur(14px);padding:16px}
+  .card h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+           margin:0 0 12px;font-weight:600}
+  .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:14px 0 6px}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;
+       border-bottom:1px solid rgba(255,255,255,.05)}
+  .row:last-child{border-bottom:0}
+  .row b{color:var(--cyan);font-variant-numeric:tabular-nums}
+  .chip{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;
+        letter-spacing:.05em}
+  .chip.r{background:rgba(124,92,252,.18);color:#b7a4ff;border:1px solid rgba(124,92,252,.4)}
+  .chip.n{background:rgba(56,189,248,.15);color:#8ad4ff;border:1px solid rgba(56,189,248,.35)}
+  .chip.g{background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+  .btn{width:100%;padding:9px;margin-top:7px;border-radius:9px;border:1px solid var(--line);
+       background:var(--panel2);color:var(--txt);font-size:13px;cursor:pointer;font-family:inherit;
+       transition:.15s}
+  .btn:hover:not(:disabled){background:rgba(124,92,252,.2);border-color:var(--purple)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .btn.pri{background:linear-gradient(135deg,var(--purple),#5b3fd6);border-color:transparent;font-weight:600}
+  .wp{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
+      color:var(--txt);text-align:left;cursor:pointer;margin-bottom:8px;font-family:inherit;transition:.15s}
+  .wp:hover:not(.lock){border-color:var(--purple);background:rgba(124,92,252,.14)}
+  .wp.lock{opacity:.42;cursor:not-allowed}
+  .wp.sel{border-color:var(--cyan);background:rgba(56,189,248,.12)}
+  .wp .nm{font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+  .wp .nm em{font-style:normal;color:var(--dim);font-size:11px;white-space:nowrap}
+  .wp .ef{font-size:12px;color:var(--dim);margin-top:3px}
+  .wp .ax{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);margin-top:4px}
+  .sig{border:1px solid rgba(240,180,41,.42);background:rgba(240,180,41,.09);border-radius:10px;
+       padding:11px;margin-bottom:8px;cursor:pointer;transition:.15s}
+  .sig:hover{background:rgba(240,180,41,.16)}
+  .sig .nm{font-weight:600;color:var(--gold);font-size:14px}
+  .sig .ef{font-size:12px;color:var(--dim);margin-top:3px}
+  .sig.picked{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+  .axes{display:grid;grid-template-columns:70px 1fr 34px;gap:5px;align-items:center;font-size:11px;margin-top:4px}
+  .bar{height:7px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));
+         transition:width .35s ease}
+  .bar i.hi{background:linear-gradient(90deg,var(--gold),#f97316)}
+  .axis-name{color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+  .note{font-size:12px;color:var(--dim);line-height:1.5}
+  .note b{color:var(--cyan)}
+  .warn{border-left:2px solid var(--gold);padding:8px 0 8px 11px;margin:12px 0;font-size:12px;color:var(--dim)}
+  .warn b{color:var(--gold)}
+  .log{font-size:11px;color:var(--dim);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+       max-height:190px;overflow-y:auto;line-height:1.65}
+  .log div{border-bottom:1px solid rgba(255,255,255,.04);padding:3px 0}
+  .log .k{color:var(--cyan)}
+  .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .head .ttl{font-weight:600;font-size:15px}
+  .tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:5px;
+       background:rgba(255,255,255,.08);color:var(--dim)}
+  .tree-wrap{position:relative}
+  .branch{position:relative;padding-left:20px;margin-left:9px;border-left:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NEUTRAL<span>IA</span></h1>
+  <div class="sub">Weapon specialisation prototype — <b>pick-one-of-three</b> signatures, per-weapon trees, Doctrine slots. Single file, no deps, no server.</div>
+
+  <div class="grid">
+    <!-- LEFT: character -->
+    <div>
+      <div class="card">
+        <h2>Character</h2>
+        <div class="row"><span>Class</span><b id="clsName">Soldier</b></div>
+        <div class="row"><span>Level</span><b id="lvl">1</b></div>
+        <div class="row"><span>Hero Points</span><b id="hp">1</b></div>
+        <div class="row"><span>Class Points</span><b id="cp">1</b></div>
+        <div class="row"><span>Doctrine slots</span><b id="ds">0</b></div>
+        <div class="row"><span>Spec</span><b id="spec">—</b></div>
+        <button class="btn" id="lvlUp">Level up (simulate play)</button>
+        <button class="btn" id="specBtn" disabled>Choose spec at L10</button>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Weapon skill points</h2>
+        <div class="note">Earned by <b>using</b> that weapon — not by leveling.</div>
+        <div class="row" style="margin-top:10px"><span>StG 44</span><b id="p1">0/8</b></div>
+        <div class="row"><span>MP40</span><b id="p2">0/8</b></div>
+        <div class="row"><span>Lee-Enfield</span><b id="p3">0/8</b></div>
+        <div class="row"><span>MG 42</span><b id="p4">0/8</b></div>
+        <button class="btn pri" id="useBtn">Play weapon (grant 1 point)</button>
+        <div class="lbl">Equipped</div>
+        <button class="btn" id="equipBtn">Cycle equipped weapon</button>
+      </div>
+    </div>
+
+    <!-- CENTRE: tree -->
+    <div>
+      <div class="card">
+        <div class="head">
+          <div class="ttl" id="wName">StG 44</div>
+          <span class="tag" id="wTag">National · Assault Rifle</span>
+        </div>
+        <div class="axes" id="axesTop"></div>
+        <div class="lbl">Tree — 5 core nodes, then signature tiers</div>
+        <div id="tree"></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Signature — pick one of three</h2>
+        <div class="note">Behavioural change, never a flat stat. Binds to the weapon; respecs for 1500 Valor.</div>
+        <div id="sigs" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: doctrines + log -->
+    <div>
+      <div class="card">
+        <h2>Doctrines</h2>
+        <div class="note">Capacity pool <b>5</b>. Key to weapon mechanics, not flat stats.</div>
+        <div class="lbl">Equipped <span id="dsCap">0/5</span></div>
+        <div id="doctrines"></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Event log</h2>
+        <div class="log" id="log"></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Invariants</h2>
+        <div class="note" id="inv"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const AXES=["DPS","Range","Mobility","Handling","Utility","Team"];
+const WEAPONS=[
+ {id:"stg",name:"StG 44",f:"National",t:"Assault Rifle",cls:"Soldier",
+  base:[6,6,7,6,5,6],tree:[
+   {n:"Stabilised receiver",ax:"Handling",d:"−25% vertical recoil",eff:[0,0,0,2,0,0]},
+   {n:"Marksmanship",ax:"Range",d:"×1.4 effective range, falloff from 70m",eff:[0,3,0,0,0,0],branch:true},
+   {n:"Close-quarters",ax:"Handling",d:"×1.8 ADS speed, −15% damage",eff:[-1,0,2,2,0,0],branch:true},
+   {n:"Marksman kit",ax:"Team",d:"Marked kills reveal target 2s to teammates",eff:[0,1,0,0,2,3]},
+   {n:"Burst trigger",ax:"DPS",d:"Sustained fire becomes ×2.2 burst",eff:[3,0,0,-1,0,0]}
+  ],
+  sigs:[{n:"Executioner",d:"A kill instantly refreshes 25% of magazine"},
+        {n:"Sapper",d:"Kills drop a 15-second ammo crate"},
+        {n:"Ghost",d:"Standing still 3s grants full concealment for 1 shot"}]},
+ {id:"mp40",name:"MP40",f:"Royal",t:"Suppressed SMG",cls:"Commando",
+  base:[4,3,9,8,7,4],tree:[
+   {n:"Match trigger",ax:"Handling",d:"−15% recoil on burst",eff:[0,0,0,2,0,0]},
+   {n:"Suppressed",ax:"Utility",d:"No tracers, −40% audio detection radius",eff:[0,0,0,0,3,1],branch:true},
+   {n:"Drum magazine",ax:"DPS",d:"45-round drum, +30% sustained",eff:[3,0,-1,0,0,0],branch:true},
+   {n:"Ambusher",ax:"Mobility",d:"+12% speed while not firing 2s",eff:[0,0,3,0,1,0]},
+   {n:"Deployable kit",ax:"Team",d:"Destroying enemy deployables grants +40% speed 4s",eff:[0,0,2,0,2,2]}
+  ],
+  sigs:[{n:"Phantom",d:"Not firing 4s → you appear as a FRIENDLY dot on enemy minimaps"},
+        {n:"Interceptor",d:"Destroying enemy deployables grants +40% movement speed 4s"},
+        {n:"Saboteur",d:"Destroyed enemy deployables drop the enemy's own valor"}]},
+ {id:"lee",name:"Lee-Enfield",f:"Royal",t:"Sniper Rifle",cls:"Commando",
+  base:[8,9,3,6,4,7],tree:[
+   {n:"Match barrel",ax:"Range",d:"−10% falloff beyond 150m",eff:[0,2,0,0,0,0]},
+   {n:"Stability",ax:"Handling",d:"−40% recoil, +1 zoom step",eff:[0,1,0,3,0,0],branch:true},
+   {n:"Speed",ax:"DPS",d:"×1.6 fire rate, −15% damage",eff:[1,0,1,-1,0,0],branch:true},
+   {n:"Spotter",ax:"Team",d:"Hits mark target on all team displays",eff:[0,1,0,0,2,3]},
+   {n:"Saboteur rig",ax:"Utility",d:"Destroying a vehicle awards squad-wide damage buff",eff:[0,0,0,0,3,3]}
+  ],
+  sigs:[{n:"Overwatch",d:"First shot after 2s unscoped deals ×2"},
+        {n:"Spotter",d:"Marks last 8s and shows enemy COUNT, not positions"},
+        {n:"Saboteur",d:"+30% damage to vehicles"}]},
+ {id:"mg42",name:"MG 42",f:"National",t:"Machine Gun",cls:"Gunner",
+  base:[7,5,3,3,6,7],tree:[
+   {n:"Bipod",ax:"Handling",d:"−20% recoil when standing still",eff:[0,0,0,2,0,0]},
+   {n:"Sustained",ax:"DPS",d:"No penalty at full auto, +15% sustained",eff:[3,0,0,1,0,0],branch:true},
+   {n:"Deployable",ax:"Utility",d:"Can set up a portable MG emplacement",eff:[0,0,-1,0,3,3],branch:true},
+   {n:"Suppressor kit",ax:"Team",d:"Sustained fire slows enemy morale — −15% accuracy taken",eff:[0,0,0,0,2,3]},
+   {n:"Vehicle mount",ax:"Mobility",d:"+30% damage while mounted in a vehicle",eff:[2,0,0,0,1,2]}
+  ],
+  sigs:[{n:"Frenzy",d:"Every 4th hit heals 4% — Frenzy Fire as a weapon property"},
+        {n:"Suppressor",d:"Standing still 3s makes you undetectable to vehicles"},
+        {n:"Anchor",d:"While emplaced, you cannot be flanked — enemies must enter your arc"}]}
+];
+const DOCTRINES=[
+ {n:"Field Surgery",tag:"Support",d:"Self-revive in 4s (instead of 8s), but heals 20% less"},
+ {n:"Mass Casualty",tag:"Support",d:"Heal radius +40%, but cooldown +2s"},
+ {n:"Focus",tag:"Close",d:"Burning Bullets burn 3s longer and spread to targets within 6m"},
+ {n:"Overpressure",tag:"Heavy",d:"Explosive Keg detonates 1s early and slows 40% instead of 25%"},
+ {n:"Silent Running",tag:"Close",d:"While crouched, spotting radius for you drops to 8m"},
+ {n:"Motor Pool",tag:"Heavy",d:"Vehicle handling +15%, but you take 20% more vehicle damage"},
+ {n:"Marksman",tag:"Marksman",d:"Marked enemies take +12% damage from all sources"},
+ {n:"Quick Hands",tag:"Close",d:"Reload 25% faster, but magazine capacity −20%"},
+ {n:"Trauma Surgeon",tag:"Support",d:"Revives remove 30% of the target's max HP"},
+ {n:"Ammunition Discipline",tag:"Heavy",d:"Reloads are interrupted less, but you carry 15% less ammo"},
+ {n:"Lone Wolf",tag:"Marksman",d:"+20% damage when no teammate is within 12m"},
+ {n:"Iron Discipline",tag:"Heavy",d:"Cannot be suppressed, but move 10% slower"}
+];
+const SPECS=["Medic","Demolitions","Marksman"];
+
+// --- POINT ECONOMY (must sum to 8 per weapon) ---
+// core: tree[0]=1, branch(3a|3b)=2, tree[3]=1, tree[4]=1  -> 5 core points
+// signatures: 3 tiers x 1 point, each pick-one-of-three   -> 3 points
+// TOTAL = 8
+const COST = { node0: 1, branch: 2, node3: 1, node4: 1, sigTier: 1 };
+const CORE_COST = COST.node0 + COST.branch + COST.node3 + COST.node4;   // 5
+const SIG_TIERS = 3;
+const WEAPON_POINT_CAP = CORE_COST + SIG_TIERS * COST.sigTier;         // 8
+let S={
+  lvl:1,hp:1,cp:1,spec:null,
+  pts:{stg:0,mp40:0,lee:0,mg42:0},
+  equipped:"stg",
+  owned:{stg:{nodes:[],sigs:[]},mp40:{nodes:[],sigs:[]},lee:{nodes:[],sigs:[]},mg42:{nodes:[],sigs:[]}},
+  docs:[], equippedDocs:[], log:[]
+};
+const $=id=>document.getElementById(id);
+function log(k,m){S.log.unshift({k,m});if(S.log.length>60)S.log.pop();renderLog();}
+function renderLog(){$("log").innerHTML=S.log.map(l=>`<div><span class="k">${l.k}</span> ${l.m}</div>`).join("");}
+function docSlots(){const m={3:1,6:2,10:2,15:3,20:4,25:5,30:5};let s=0;for(const k in m)if(S.lvl>=+k)s=m[k];return s;}
+function w(i){return WEAPONS.find(x=>x.id===i);}
+function curAxes(id){const W=w(id),O=S.owned[id];const a=W.base.slice();
+  for(const ni of O.nodes){const node=W.tree[ni];for(let i=0;i<6;i++)a[i]+=node.eff[i];}
+  for(let i=0;i<6;i++)a[i]=Math.max(1,Math.min(10,a[i]));
+  return a;}
+function respecCost(){return 1500;}
+function sigTiersDone(id){return S.owned[id].sigs.length;}
+function coreDone(id){return S.owned[id].nodes.length>=4;}
+
+function renderTree(){
+  const id=S.equipped,W=w(id),O=S.owned[id],p=S.pts[id];
+  $("wName").textContent=W.name;
+  $("wTag").textContent=`${W.f} · ${W.t}`;
+  const a=curAxes(id);
+  $("axesTop").innerHTML=AXES.map((n,i)=>`<div class="axis-name">${n}</div>
+    <div class="bar"><i class="${i===0||i===5?'hi':''}" style="width:${a[i]/10*100}%"></i></div>
+    <div style="text-align:right;color:var(--dim)">${a[i]}</div>`).join("");
+  let h=`<div class="wp ${p>=COST.node0?'':'lock'} ${O.nodes.includes(0)?'sel':''}" data-n="0">
+    <div class="nm"><span>1 · ${W.tree[0].n}</span><em>${W.tree[0].ax}</em></div>
+    <div class="ef">${W.tree[0].d}</div>
+    <div class="ax">cost ${COST.node0} point${COST.node0>1?'s':''}</div></div>`;
+  const b1=O.nodes.includes(1),b2=O.nodes.includes(2);
+  h+=`<div class="branch"><div class="wp ${p>=COST.branch?'':'lock'} ${b1||b2?'sel':''}" data-n="1">
+      <div class="nm"><span>2 · Branch</span><em>${b1||b2?'committed':`${p}/${COST.branch}`}</em></div>
+      <div class="ef">${b1||b2?'Committed — the other path is closed':`Choose one path. Cost ${COST.branch} points.`}</div></div>
+    <div class="branch">`;
+  for(const ni of [1,2]){
+    const n=W.tree[ni],sel=O.nodes.includes(ni);
+    const avail=p>=COST.branch&&!b1&&!b2;
+    h+=`<div class="wp ${sel?'sel':''} ${avail||sel?'':'lock'}" data-n="${ni}">
+      <div class="nm"><span>${ni===1?'3a':'3b'} · ${n.n}</span><em>${n.ax}</em></div>
+      <div class="ef">${n.d}</div></div>`;
+  }
+  h+=`</div></div>`;
+  for(const ni of [3,4]){
+    const n=W.tree[ni],sel=O.nodes.includes(ni);
+    const cost=ni===3?COST.node3:COST.node4;
+    const avail=(b1||b2)&&p>=cost&&!sel;
+    h+=`<div class="wp ${sel?'sel':''} ${avail||sel?'':'lock'}" data-n="${ni}">
+      <div class="nm"><span>${ni===3?'4':'5'} · ${n.n}</span><em>${n.ax}</em></div>
+      <div class="ef">${n.d}</div>
+      <div class="ax">cost ${cost} point${cost>1?'s':''}</div></div>`;
+  }
+  $("tree").innerHTML=h;
+  $("tree").querySelectorAll(".wp").forEach(el=>el.onclick=()=>{
+    const ni=+el.dataset.n;buyNode(ni);
+  });
+  renderSigs();
+}
+function renderSigs(){
+  const id=S.equipped,W=w(id),O=S.owned[id],p=S.pts[id];
+  const box=$("sigs");
+  const tier=sigTiersDone(id);
+  // tier 1 requires core complete; tiers 2 and 3 require the previous tier
+  const tiersDone=O.sigs.length;
+  let h="";
+  if(tiersDone>0){
+    const s=O.sigs[tiersDone-1];
+    h+=`<div class="sig picked"><div class="nm">${s.n} ✓</div><div class="ef">${s.d}</div>
+        <div class="ax">tier ${tiersDone} of ${SIG_TIERS}</div></div>`;
+  }
+  const coreOk=coreDone(id);
+  const nextAvail=coreOk && tiersDone<SIG_TIERS && p>=COST.sigTier;
+  if(tiersDone<SIG_TIERS){
+    if(nextAvail){
+      h+=W.sigs.map((s,i)=>`<div class="sig" data-s="${i}">
+        <div class="nm">${s.n}</div><div class="ef">${s.d}</div></div>`).join("");
+      h+=`<div class="note" style="margin-top:6px">Tier ${tiersDone+1} of ${SIG_TIERS}. Pick one — cost ${COST.sigTier} point. The other two stay available if you respec.</div>`;
+    } else {
+      h+=`<div class="note">${coreOk
+        ? `Tier ${tiersDone+1} of ${SIG_TIERS} — need ${COST.sigTier} point (you have ${p}).`
+        : `Locked. Finish the core tree first (${O.nodes.length}/4 nodes), then signatures unlock. You have ${p} points.`}</div>`;
+    }
+  } else {
+    h+=`<div class="note">All ${SIG_TIERS} signature tiers chosen. This weapon is <b>mastered</b>.</div>`;
+  }
+  const rs=h+=`<button class="btn" id="rsBtn">Respec last signature (${respecCost()} Valor)</button>`;
+  box.innerHTML=rs;
+  box.querySelectorAll(".sig").forEach(el=>el.onclick=()=>{
+    const s=W.sigs[+el.dataset.s];O.sigs.push(s.n);S.pts[id]=Math.max(0,S.pts[id]-COST.sigTier);
+    log("SIGNATURE",`${W.name} tier ${O.sigs.length}: ${s.n}`);render();});
+  const rb=document.getElementById('rsBtn');
+  if(rb)rb.onclick=()=>{
+    const last=O.sigs.pop();
+    S.pts[id]=Math.max(0,S.pts[id]+COST.sigTier);
+    log("RESPEC",`${W.name} signature cleared: ${last} (−${respecCost()} Valor)`);render();};
+}
+function buyNode(ni){
+  const id=S.equipped,W=w(id),O=S.owned[id],p=S.pts[id];
+  if(O.nodes.includes(ni))return;
+  if(ni===0){
+    if(p<COST.node0)return log("LOCKED",`Need ${COST.node0} point (have ${p})`);
+    O.nodes.push(0);S.pts[id]=p-COST.node0;log("NODE",`${W.name}: ${W.tree[0].n}`);render();return;
+  }
+  if(ni===1||ni===2){
+    if(p<COST.branch)return log("LOCKED",`Need ${COST.branch} points (have ${p})`);
+    if(O.nodes.includes(1)||O.nodes.includes(2))return log("LOCKED","Branch already committed");
+    O.nodes.push(ni);S.pts[id]=p-COST.branch;log("NODE",`${W.name}: ${W.tree[ni].n}`);render();return;
+  }
+  if(ni===3||ni===4){
+    const cost=ni===3?COST.node3:COST.node4;
+    if(!O.nodes.includes(1)&&!O.nodes.includes(2))return log("LOCKED","Commit to a branch first");
+    if(p<cost)return log("LOCKED",`Need ${cost} point (have ${p})`);
+    O.nodes.push(ni);S.pts[id]=p-cost;log("NODE",`${W.name}: ${W.tree[ni].n}`);render();
+  }
+}
+function renderDocs(){
+  const slots=docSlots(),cap=5;
+  $("dsCap").textContent=`${S.equippedDocs.length}/${cap}`;
+  const h=S.docs.map((d,i)=>{
+    const on=S.equippedDocs.includes(i);
+    const fit=d.tag==="Close"&&!["stg","mp40"].includes(S.equipped)||d.tag==="Marksman"&&!["lee"].includes(S.equipped)||d.tag==="Heavy"&&!["mg42"].includes(S.equipped);
+    return `<div class="wp ${on?'sel':''} ${fit?'':'lock'}" data-d="${i}">
+      <div class="nm"><span>${d.n}</span><em>${d.tag}</em></div>
+      <div class="ef">${d.d}</div>
+      ${fit?'':'<div class="ax">does not key to your equipped weapon</div>'}</div>`;
+  }).join("");
+  $("doctrines").innerHTML=h||'<div class="note">No doctrines yet.</div>';
+  $("doctrines").querySelectorAll(".wp").forEach(el=>el.onclick=()=>{
+    const i=+el.dataset.d;
+    if(S.equippedDocs.includes(i)){S.equippedDocs=S.equippedDocs.filter(x=>x!==i);log("DOCTRINE",`Unequipped ${S.docs[i].n}`);}
+    else{if(S.equippedDocs.length>=cap)return log("FULL",`Capacity ${cap} reached`);S.equippedDocs.push(i);log("DOCTRINE",`Equipped ${S.docs[i].n}`);}
+    render();});
+}
+function renderInv(){
+  const mastered=WEAPONS.filter(x=>S.owned[x.id].nodes.length>=4&&S.owned[x.id].sigs.length>=SIG_TIERS).length;
+  const items=[
+    ["Level grants combat stats","NONE — options only","g"],
+    ["Weapons fully mastered",`${mastered} of ${WEAPONS.length}`,"g"],
+    ["Points to master all",`${WEAPONS.length*WEAPON_POINT_CAP}`,"r"],
+    ["Weapon point cap",`${WEAPON_POINT_CAP} per weapon`,"g"],
+    ["Doctrine capacity",`${S.equippedDocs.length}/5`,"g"],
+    ["Spec chosen",S.spec||"at L10","g"],
+    ["Signature respec","1500 Valor","g"]
+  ];
+  $("inv").innerHTML=items.map(([k,v,c])=>`<div class="row"><span>${k}</span><b style="color:var(--${c==='r'?'red':c==='g'?'green':'cyan'})">${v}</b></div>`).join("");
+}
+function render(){
+  $("clsName").textContent="Soldier";
+  $("lvl").textContent=S.lvl;$("hp").textContent=S.hp;$("cp").textContent=S.cp;
+  $("ds").textContent=docSlots();$("spec").textContent=S.spec||"—";
+  $("specBtn").disabled=!(S.lvl>=10&&!S.spec);
+  $("specBtn").textContent=S.spec?`Spec: ${S.spec}`:"Choose spec at L10";
+  $("p1").textContent=`${S.pts.stg}/${WEAPON_POINT_CAP}`;$("p2").textContent=`${S.pts.mp40}/${WEAPON_POINT_CAP}`;
+  $("p3").textContent=`${S.pts.lee}/${WEAPON_POINT_CAP}`;$("p4").textContent=`${S.pts.mg42}/${WEAPON_POINT_CAP}`;
+  renderTree();renderDocs();renderInv();renderLog();
+}
+$("lvlUp").onclick=()=>{
+  if(S.lvl>=30)return log("CAP","Level 30 reached");
+  S.lvl++;S.cp++;
+  if(S.lvl%2===0)S.hp++;
+  if(S.lvl===3||S.lvl===6||S.lvl===15||S.lvl===20||S.lvl===25){
+    const pool=DOCTRINES.filter(d=>!S.docs.includes(d));
+    if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)];S.docs.push(pick);
+      log("DOCTRINE",`Unlocked: ${pick.n}`);}
+  }
+  log("LEVEL",`Now level ${S.lvl} — HP ${S.hp}, CP ${S.cp}, Doctrine slots ${docSlots()}`);
+  render();
+};
+$("specBtn").onclick=()=>{
+  S.spec=SPECS[Math.floor(Math.random()*SPECS.length)];
+  log("SPEC",`Committed to ${S.spec} (respec free, 24h downtime)`);render();};
+$("useBtn").onclick=()=>{
+  const id=S.equipped;
+  if(S.pts[id]>=WEAPON_POINT_CAP)return log("MAX",`${w(id).name} already mastered (${WEAPON_POINT_CAP}/${WEAPON_POINT_CAP})`);
+  S.pts[id]++;log("USE",`${w(id).name} +1 skill point (${S.pts[id]}/${WEAPON_POINT_CAP})`);render();};
+$("equipBtn").onclick=()=>{
+  const ids=WEAPONS.map(x=>x.id);S.equipped=ids[(ids.indexOf(S.equipped)+1)%ids.length];
+  log("EQUIP",w(S.equipped).name);render();};
+render();
+</script>
+</body>
+</html>

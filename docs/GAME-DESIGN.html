@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAME-DESIGN</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>GAME DESIGN — Battlefield Heroes MMO (working title: NEUTRALIA)</h1>
+<p>Status: design in progress. Research inputs land in <code>research/</code>. System specs in <code>systems/</code>.
+Last updated: 2026-11-07</p>
+<hr>
+<h2>1. Thesis</h2>
+<p>Battlefield Heroes (2009) was a 5-minute browser shooter: two cartoon factions, three classes,
+50 tickets, a metagame of 28 campaigns, and a shutdown in July 2015.</p>
+<p>An MMO built on it must keep the visual language, the class skeleton, and the <em>scale of the
+map fight</em> — and replace the round-based economy with a persistent world. The central design
+problem is not rendering an MMO. It is making progression horizontal rather than vertical, so
+that a 2026 newcomer and a 2019 veteran fight on the same terms.</p>
+<p>Everything below follows from three pillars.</p>
+<p><strong>P1 — Weapon choice is the game.</strong>
+A player who cannot explain why they use a rifle over a shotgun has no reason to log in.
+Every weapon must differ functionally from every other along at least three axes. Cosmetics
+are the <em>reward</em> for depth, never a substitute for it.</p>
+<p><strong>P2 — Leveling unlocks options, never power.</strong>
+Level 30 and level 1 have identical combat statistics. Level grants access to branches,
+doctrines, and signatures — a wider choice set, not bigger numbers. Vertical power exists
+only inside a single match, and only for the player who earns it there.</p>
+<p><strong>P3 — The war you fight is not the war that exists.</strong>
+The 1936 Royal–National conflict is a proxy war fought for someone else's benefit. The
+third faction is not a bolt-on; it is the premise.</p>
+<hr>
+<h2>2. Progression architecture — four nested layers</h2>
+<p>Each layer answers a different question, and each is tuned on a different timescale.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Question it answers</th>
+<th>Timescale</th>
+<th>Currency</th>
+<th>Resettable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. Class spec</strong></td>
+<td>"What role do I play?"</td>
+<td>Weeks–months</td>
+<td>Class Points</td>
+<td>Yes (free, 24h downtime)</td>
+</tr>
+<tr>
+<td><strong>B. Weapon spec</strong></td>
+<td>"How does this weapon behave?"</td>
+<td>Weeks</td>
+<td>Weapon Skill Points</td>
+<td>Yes (Valor)</td>
+</tr>
+<tr>
+<td><strong>C. Doctrine</strong></td>
+<td>"What am I specifically good at?"</td>
+<td>Days–weeks</td>
+<td>Drop / rep</td>
+<td>Yes (free, 30s cooldown)</td>
+</tr>
+<tr>
+<td><strong>D. Field promotion</strong></td>
+<td>"What am I good at <em>right now</em>?"</td>
+<td>One match</td>
+<td>Valor (in-match)</td>
+<td>Lost on death</td>
+</tr>
+</tbody>
+</table>
+<p>The separation is deliberate. A player changes role rarely (A), tunes a weapon persistently
+(B), swaps playstyle freely (C), and gambles for a temporary edge inside a fight (D).</p>
+<p><strong>Three separate point pools, and the third one is the load-bearing change:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pool</th>
+<th>Source</th>
+<th>Spends on</th>
+<th>Cap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hero Points</strong> (16)</td>
+<td>Character level — 1 at level 1, +1 every even level</td>
+<td>Class abilities, max level 5 each</td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Class Points</strong> (30)</td>
+<td>Character level — 1 per level</td>
+<td>The spec tree</td>
+<td>30</td>
+</tr>
+<tr>
+<td><strong>Weapon Skill Points</strong></td>
+<td><strong>Using that weapon.</strong> Not character level.</td>
+<td>That weapon's tree</td>
+<td>8 per weapon</td>
+</tr>
+</tbody>
+</table>
+<p>Hero Points are the original's economy, unchanged — the original let players reset
+abilities for a full refund, and we keep that.</p>
+<p><strong>Weapon Skill Points are earned by playing the weapon, not by leveling.</strong> This is the
+single change that makes weapon choice mean something: with 8 weapons owned and 8 points
+each, a player who spreads playtime across the set masters <em>none</em> of them. A player who
+commits masters exactly one.</p>
+<p><em>(This was found by running the numbers — the first draft granted weapon points from
+character level, which allowed a maxed player to fully specialize 3–5 weapons and made
+the whole tree optional. <code>tools/simulate-design.py</code> now asserts this invariant.)</em></p>
+<h3>Layer A — Class spec (identity)</h3>
+<p>WoW pre-Mists-of-Pandaria style, reworked — but fixing the specific thing WoW got wrong.
+The old talent tree failed because it produced "dip to capstone, spend leftovers
+elsewhere": tons of <em>filler</em> talents taken only to reach the next tier, and one
+community-solved cookie-cutter build per spec. The tree pretended to offer choice and
+actually offered one answer.</p>
+<p><strong>The rule: a spec must be granted, not bought with filler.</strong> Each of the three BFH
+classes has three specializations. Choosing a branch at level 10 commits 4 of 6
+subsequent Class Points to it; the remaining 2 stay free. There are no filler nodes — a
+point you cannot spend on something meaningful is a point you are punished for missing.</p>
+<p><strong>Respec cost matters more than respec availability.</strong> Shadowlands Covenants proved this:
+heavy, hard-to-switch binding creates a meta trap where a balance patch strands you in an
+off-meta choice and the "meaningful choice" becomes a resentful sunk cost. Our rule:
+class spec respec is <strong>free</strong>, but takes 24 hours of downtime. The friction is real
+enough to matter, cheap enough never to trap anyone.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Spec A</th>
+<th>Spec B</th>
+<th>Spec C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soldier</td>
+<td><strong>Medic</strong> — scales <em>Combat Medicine</em> (scales with # healed), revives, deployable cover</td>
+<td><strong>Demolitions</strong> — satchel charges, mines, breach; scales <em>Blasting Strike</em> (throws players <em>and vehicles</em> aside)</td>
+<td><strong>Marksman</strong> — SMG at rifle range, scales <em>6th Sense</em> into long-range team spotting</td>
+</tr>
+<tr>
+<td>Gunner</td>
+<td><strong>Heavy</strong> — <em>Frenzy Fire</em> focus-fire MG, sustained; scales <em>Hero Shield</em></td>
+<td><strong>Anti-Tank</strong> — GL/Rocket specialisation, vehicle killing; scales <em>Explosive Keg</em></td>
+<td><strong>Sapper</strong> — <em>I Eats Grenades</em> ordnance play, repair, area denial</td>
+</tr>
+<tr>
+<td>Commando</td>
+<td><strong>Recon</strong> — <em>Stealth</em>, <em>Troop Trap</em>, spotting, sabotage</td>
+<td><strong>Sniper</strong> — <em>Piercing Shot</em>, long range, marked kills via <em>Mark Target</em></td>
+<td><strong>Infiltrator</strong> — <em>Poisoned Blade</em>, unlock, supply theft, <em>Elixir</em> speed</td>
+</tr>
+</tbody>
+</table>
+<p>Every spec is built on an ability that <strong>already shipped in 2009</strong> — the specs are a
+reorganization of the original's kit, not an invention on top of it. Full ability list in
+<code>research/02-bfh-system-inventory.md</code>.</p>
+<p>The Commando split (Recon / Sniper / Infiltrator) is deliberate: in the original, Commando
+carried 6 abilities spanning stealth, marking, knives <em>and</em> poison — three identities, none
+of them deep. Splitting it creates three viable team compositions from one base class.</p>
+<h3>Layer B — Weapon spec (mechanics)</h3>
+<p>Every weapon carries its own short tree. Not a shared talent tree — a per-weapon tree,
+because the point is that <em>this</em> weapon behaves differently from <em>that</em> weapon.</p>
+<p>Full rules in <code>systems/weapon-specification.md</code>.</p>
+<h3>Layer C — Doctrine (flex)</h3>
+<p>Doctrines are passive items occupying a shared capacity pool. They are earned from
+reputation, quest lines, and drops. They are the layer that lets two players of the same
+class play differently without respecing: a Medic running <em>Field Surgery</em> (fast self-revive,
+lower heal potency) is a different player from one running <em>Mass Casualty</em> (slower, larger
+AoE heal).</p>
+<p><strong>Three rules, each taken from a shipped game that got it right:</strong></p>
+<ol>
+<li><strong>Doctrines key to weapon mechanics, not to flat stats.</strong> A Doctrine that says "+8%
+   damage" is a stat. A Doctrine that says "your SMG's Burning Bullets burn 3 seconds
+   longer and spread to targets within 6m" is a build. <em>(Hunt: Showdown trait model — the
+   trait combo, not the gun, is the identity.)</em></li>
+<li><strong>A shared capacity pool is the constraint.</strong> 5 slots, 6 with a Doctrine unlock. This
+   forces trade-offs. Free-form slots with no cap produce no decisions. <em>(Hunt weapon
+   capacity.)</em></li>
+<li><strong>Per-school exclusive perks create identity without lockout.</strong> Doctrines tagged
+   <em>Close</em>, <em>Heavy</em>, <em>Marksman</em>, <em>Support</em> only apply to weapons of that kind. Your build
+   is legible at a glance and nobody is locked out of content. <em>(Destiny's Incandescent /
+   Headstone model — it removed elemental affinity entirely because affinity <em>lockout</em>
+   forced duplicate grinding, and kept the synergy.)</em></li>
+</ol>
+<p><strong>Drop model — hybrid with a deterministic floor:</strong>
+- <strong>Fixed/crafted sources</strong> for the core starter set. Basic competence is never gated
+  behind RNG.
+- <strong>Random drops with pity/dupe-protection</strong> for the chase tier, where scarcity makes it
+  feel earned.
+- <strong>Pick-one-of-three whenever a rare Doctrine drops</strong>, so RNG becomes a <em>choice</em> rather
+  than a lottery. <em>(Deep Rock Galactic's Blank Core lesson — the moment is owned, not
+  won.)</em></p>
+<p><strong>The gap between "good enough" and "perfect" must stay wide.</strong> Chris Wilson's rule from
+Path of Exile: you can clear the hardest content with roughly 70 % of the items, and the
+perfect items are bragging rights, not a power wall. <em>(Principle 5 in
+<code>research/03-build-design-systems.md</code>.)</em></p>
+<p>Applied here: a level-30 player with a competent build clears the hardest content. A
+player with the <em>perfect</em> Signature and the ideal Doctrine set is faster, more elegant,
+and carries visible flair — but not categorically stronger. If the perfect build were
+required to clear content, every new player would hit a wall, and the chase would stop
+being a chase and become a tax.</p>
+<p>This is also the rule that keeps horizontal progression honest: the reward for mastering a
+weapon is <em>how you play it</em>, not a damage number that makes the alternatives obsolete.</p>
+<h3>Layer D — Field promotion (in-match)</h3>
+<p>In-match valor buys temporary upgrades, spent from a loadout of 3 tokens carried on the
+player. <strong>Tokens are lost on death.</strong> A promoted player pushing an objective with +30%
+damage and a temporary ability is a real, visible threat — and a real, visible loss when
+they die. This is the tension that a static "grind to level" system cannot produce.</p>
+<hr>
+<h2>3. Level-up: exactly what it does</h2>
+<p>Level cap <strong>30</strong>, matching the original. The original's numbers are kept: <strong>1 Hero Point
+at level 1, +1 at every even level → 16 Hero Points maximum</strong>, ~3.2 million XP to cap,
+and a curve that flattens hard (the level 30 step is 105,6 % of the previous one). Full
+curve in <code>research/02-bfh-system-inventory.md</code>.</p>
+<ul>
+<li><strong>Every level:</strong> +1 Class Point. Hero Points on even levels (16 max). Weapon Skill Points
+  come from <strong>using</strong> the weapon, not from leveling.</li>
+<li><strong>Level 3:</strong> unlocks Doctrine slot 1.</li>
+<li><strong>Level 6:</strong> unlocks Doctrine slot 2.</li>
+<li><strong>Level 10:</strong> <strong>class spec choice</strong> — commit to a branch.</li>
+<li><strong>Level 15:</strong> unlocks Doctrine slot 3.</li>
+<li><strong>Level 20:</strong> unlocks Doctrine slot 4.</li>
+<li><strong>Level 25:</strong> unlocks Doctrine slot 5.</li>
+<li><strong>Level 30:</strong> unlocks Doctrine slot 5 (max) and the third Signature tier becomes
+  reachable on any weapon with the points for it.</li>
+</ul>
+<p><strong>Signature tiers are per weapon, not per character.</strong> A weapon's first Signature tier
+unlocks once its 5-point core tree is complete; tiers 2 and 3 follow. Each tier is a
+pick-one-of-three.</p>
+<p><strong>Level grants zero combat statistics.</strong> No HP, no damage, no mobility. This is the
+load-bearing decision of the whole design. It means:</p>
+<ul>
+<li>A day-one player is not a worse player; they are a more constrained one.</li>
+<li>Monetization cannot sell power, because power does not exist outside the match.</li>
+<li>Veteran gear is expressed as options (doctrines, signatures, talent branches), so new
+  content widens the build space for everyone rather than invalidating old players.</li>
+</ul>
+<p><strong>The original already had the respec.</strong> The 2009 game let players reset ability upgrades
+for a full Hero Point refund. We keep that — free respec up to the Signature, Signature
+respec for 1 500 Valor. The one thing we add is the class-spec respec (free, 24h downtime),
+because that is the one binding choice the original never had.</p>
+<p>What <em>does</em> scale with progress: knowledge, loadout breadth, and access to faction content.
+War effort and faction standing are tracked separately from character level, so a level-1
+player who contributes to the faction war gets rewarded in the faction track, not the
+character track.</p>
+<hr>
+<h2>4. Functional weapon differentiation — the rules</h2>
+<p>Every weapon must differ from every other weapon along at least <strong>three</strong> of six axes:</p>
+<ol>
+<li><strong>DPS profile</strong> — burst vs sustained vs spike</li>
+<li><strong>Range</strong> — effective distance and falloff shape</li>
+<li><strong>Mobility</strong> — movement speed, sprint, ADS timing, strafe</li>
+<li><strong>Handling</strong> — recoil, spread, reload, swap</li>
+<li><strong>Utility</strong> — slows, reveals, marks, denies, heals</li>
+<li><strong>Team function</strong> — what role the weapon enables a player to fill</li>
+</ol>
+<p><strong>Anti-domination rule.</strong> No weapon may be strictly better than another. If A beats B on
+every axis at every level, one of them is cut. Every new weapon entering the roster must
+be submitted with a comparison against the two weapons it most resembles.</p>
+<p><strong>Specialization tree.</strong> Each weapon has 5 nodes plus 1 Signature:</p>
+<ul>
+<li>Nodes 1–3: small mechanical shifts (branching at node 2 into two mutually exclusive paths)</li>
+<li>Nodes 4–5: substantial shifts that change the weapon's role in a fight</li>
+<li><strong>Signature:</strong> the top node — one permanent choice that defines the weapon's identity</li>
+</ul>
+<p><em>Corrected 2026-11-07:</em> an earlier draft attributed this to "the Worms Weapon Factory
+'special' slot". That does not exist — Worms 4's factory is a budgeted custom-weapon
+builder with an overheat gauge, and the Forts Weapon Factory is a crate-producing
+building. The honest origin is <strong>Battlefield Heroes' own Workbench</strong> (December 2012),
+which attached per-weapon <em>Secondary Fire</em> and <em>Special Features</em> — but as a flat slot
+swap bought with real money, with no progression and no branching.</p>
+<p>So the tree is not an invention. <strong>The contribution is that it is earned, branchable, and
+sized.</strong> The original let you buy a behaviour for money and apply it in one slot; ours
+makes you earn a behaviour through use, choose it from three, and live with it for
+months. That is a bigger difference than it sounds, and it is the difference between
+<em>a system</em> and <em>a content pipeline</em>.</p>
+<p><strong>The original's Workbench Special Features are the style guide for what a Signature
+should feel like</strong> — <em>Dr. Bullet</em> (heal on crit chains), <em>Berserk</em> (more damage when low),
+<em>Meep meep!</em> (faster when low), <em>I Feel Lucky</em> (+5 % crit, −2 min damage at both ranges).
+None is a flat stat; each is a rule about how you fight.</p>
+<p><strong>Faction asymmetry.</strong> Nationals and Royals use different weapons with different stats.
+This is the original's strongest asset and it should be intensified, not flattened. A
+National rifle and a Royal rifle of the same archetype should not be stat-swapped versions
+of each other — they should have different falloff curves, different handling, and different
+Doctrine interactions.</p>
+<hr>
+<h2>5. The third faction</h2>
+<p>Full treatment in <code>lore/third-faction.md</code>. Summary:</p>
+<p>The Royal Kingdom and the National Federation have been at war since 25 August 1936 over a
+disputed Olympic track-cycling result. Neither side knows that both were armed, supplied,
+and directed by <strong>Neutralia</strong> — the only major power that signed neither the Royal Pact
+nor the National Compact. Neutralia has profited from the conflict for 79 years and is now
+the world's dominant power without firing a shot.</p>
+<p>This recontextualizes the original's own content. <em>Summer of Heroes</em> (2011) put pirates,
+superheroes and telekinetic wizards into the war. In the new canon, those were not
+supernatural accidents: they were <strong>products</strong> — Neutralia's "extraordinary hero" program,
+marketed to both sides, which is how the company that sells arms to everyone comes to
+control the war.</p>
+<p><strong>Faction structure:</strong> three banners, one persistent world.
+- <strong>National Army</strong> — 7 countries, capital Kyiv. Grassroots, improvised, anti-establishment.
+- <strong>Royal Army</strong> — 6 countries, capital Paris. Institutional, professional, hierarchy.
+- <strong>Neutralia</strong> — neutral until the endgame, offers contracts to both sides, and is the
+  antagonist.</p>
+<p>The truce that ended the original game becomes the opening: the truce was real, and it was
+the moment both nations discovered what they had been fighting.</p>
+<hr>
+<h2>6. Quest structure</h2>
+<p>Three parallel quest tracks, deliberately layered so a player always has something to do:</p>
+<p><strong>Track 1 — Contracts (repeatable, daily).</strong>
+Neutralia hires both sides. Objectives are deliberately <em>communal</em> — "hold Valley for 8
+minutes", "destroy 40 structures", "escort a convoy". Neutralia pays in neutral currency and
+in reputation with Neutralia. Doing them advances Neutralia standing and counts against
+your own faction's war effort. This is the friction that makes faction identity a choice
+rather than a formality.</p>
+<p><strong>Track 2 — Commendations (tutorializing, persistent).</strong>
+The original's missions ("kill five enemies in a row without dying") become a permanent,
+tracked series. Each teaches one mechanic — movement, suppression, promotion, vehicle
+entry. Completing a commendation unlocks a Doctrine. This is how complex systems get taught
+without a tutorial that lies.</p>
+<p><strong>Track 3 — War effort (faction, world-scale).</strong>
+The metagame of 28 campaigns from the original, rebuilt as a persistent regional war with a
+shared progress bar per territory. Both factions contribute to a <em>world</em> conflict meter —
+and when it crosses a threshold, Neutralia responds. Seasonal cadence: ~8 weeks per season.</p>
+<p><strong>Dungeons and raids</strong> map onto the original's map vocabulary: a base is a bunker
+instance, a hangar is an aircraft hangar instance, a town raid is a multi-phase urban
+instance where the boss is a named commander of either faction.</p>
+<hr>
+<h2>7. What we are <em>not</em> doing on this server</h2>
+<p>Resource reality of this host: 3 vCPU, 3.7 GB RAM, 27 GB free disk, no GPU.</p>
+<ul>
+<li>No game binaries. The original client is closed-source and Windows-only; running it here
+  would need Wine plus a full FESL/Theater stack, and would not produce a reusable artifact.</li>
+<li>No server emulator stood up here. The open implementations (abarichello/bfheroesFesl,
+  bfhz/battlefieldHeroesBackend, lucasluqui/bfheroes-offline) are protocol references —
+  valuable to <em>read</em>, expensive to <em>run</em>, and they need a real client to talk to.</li>
+<li>No Docker images of game server stacks. Disk and RAM do not allow it, and there is no
+  client to connect.</li>
+</ul>
+<p>What happens here instead: research, protocol reading, design, and at most a tiny web
+prototype of the <em>design systems</em> (spec trees, promotion math) in a scratch directory — a
+few hundred KB, no daemon, no port exposure.</p>
+<hr>
+<h2>8. Open design questions</h2>
+<ol>
+<li><strong>Faction switching.</strong> Can a player change banner? If the war effort is per-faction and
+   contracts advance Neutralia, is cross-faction play a feature (like classic WoW) or a bug?</li>
+<li><strong>Doctrine drop economy.</strong> Random drops create build lottery; fixed drops create a
+   meta. A hybrid (fixed core, random affix) needs testing.</li>
+<li><strong>Vehicle crew.</strong> The original had 4 vehicles per faction. Are vehicles player-owned
+   persistent mounts (with their own trees) or map objects?</li>
+<li><strong>The endgame.</strong> What does a maxed player do? Neutralia must have a raiding tier that is
+   not "kill the boss harder" — the third faction needs its own build vocabulary.</li>
+</ol>
+<hr>
+<h2>9. What is built and verified</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Verified by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design master</td>
+<td><code>GAME-DESIGN.md</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Weapon system spec</td>
+<td><code>systems/weapon-specification.md</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Class × weapon-family system</strong></td>
+<td><code>systems/class-and-weapon-families.md</code></td>
+<td><strong>NEW 2026-11-07</strong> — matrix, 4th class, art direction</td>
+</tr>
+<tr>
+<td><strong>Class-exclusivity precedent research</strong></td>
+<td><code>research/04-class-weapon-family-exclusivity.md</code></td>
+<td><strong>NEW</strong> — DRG, TF2, WoW, Overwatch, Hunt, New World, GDP3</td>
+</tr>
+<tr>
+<td>Lore / third faction / quests</td>
+<td><code>lore/third-faction.md</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Feasibility report</td>
+<td><code>FEASIBILITY.md</code></td>
+<td>Gate 0–3, live API checks</td>
+</tr>
+<tr>
+<td>BFH system inventory</td>
+<td><code>research/02-bfh-system-inventory.md</code></td>
+<td>Scraped from battlefield.fandom.com + bfh-info</td>
+</tr>
+<tr>
+<td>Artillery reference</td>
+<td><code>research/01-weapon-factory-mechanics.md</code></td>
+<td>Tank Stars, Worms, Cannonheim, ShellShock Live</td>
+</tr>
+<tr>
+<td>BFH Workbench analysis</td>
+<td><code>systems/weapon-specification.md</code> §1b</td>
+<td>battlefield.fandom.com + bfh-info</td>
+</tr>
+<tr>
+<td>Build-system principles</td>
+<td><code>research/03-build-design-systems.md</code></td>
+<td>DRG, PoE, WoW, Hunt, Destiny 2, Valorant/Warframe</td>
+</tr>
+<tr>
+<td>Progression simulator</td>
+<td><code>tools/simulate-design.py</code></td>
+<td><code>ALL CHECKS PASSED</code> — asserts the invariants</td>
+</tr>
+<tr>
+<td>Interactive prototype</td>
+<td><code>prototype/index.html</code></td>
+<td><code>39/39</code> DOM checks pass in headless Chromium</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The prototype is the reference implementation of the progression design.</strong> It implements
+the three point pools, the per-weapon tree with its branch, the three pick-one-of-three
+signature tiers, Doctrine capacity and its per-weapon keying, and the in-match promotion
+cost curve. Click through it to feel whether the choices are real.</p>
+<p><strong>What the simulator caught.</strong> The first draft granted Weapon Skill Points from character
+level. The simulator proved that let a maxed player fully specialize 3–5 weapons, which
+made the entire tree optional and killed the design's central premise. The fix — points
+earned by <em>using</em> the weapon — is now asserted in both the simulator and the DOM test.</p>
+<p><strong>What the research corrections caught (2026-11-07).</strong> Three claims in this design were
+wrong and have been fixed against primary sources:</p>
+<ol>
+<li><strong>The "Worms random special effect" tier system does not exist.</strong> Worms 4's Weapon
+   Factory is a budgeted custom-weapon builder with an overheat gauge; the Forts Weapon
+   Factory is a crate-producing building; the W.M.D. weapon table has no tier column. The
+   pick-one-of-three Signature rule is now correctly sourced to <strong>Deep Rock Galactic's</strong>
+   Overclock offer.</li>
+<li><strong>BFH's Widgets were functional, not cosmetic.</strong> Bandages, Terrific Health Tonic
+   (instant 50 HP), Sarge's Stamina Boost (+10 max HP) and the telekinetic Amassing Force
+   were sold for real money. The "premium buys cosmetics only" rule now stands as a
+   deliberate <em>correction</em> of the original rather than a description of it.</li>
+<li><strong>The 346-weapon arithmetic was wrong.</strong> It is 185 base weapons plus 161 tier
+   variants — and the 185 base weapons occupy only <strong>55 distinct stat profiles</strong> (34
+   grenade launchers → 5), though they carry <strong>95 distinct behaviours</strong>, so they were not
+   interchangeable. The original reskinned itself twice.</li>
+</ol>
+<p><strong>And one finding that improves the design rather than correcting it:</strong> Battlefield Heroes
+shipped a <strong>Workbench</strong> in December 2012 — per-weapon upgrade slots with <em>Secondary Fire</em>
+and <em>Special Features</em> rows. The original already had per-weapon behavioural upgrades.
+They were bought with real money, applied as flat slot swaps, and never grown into depth.
+See <code>systems/weapon-specification.md</code> §1b.</p>
+<hr>
+<h2>10. Class × weapon-family system (added 2026-11-07)</h2>
+<p>The class is no longer a stat block. <strong>A class is the set of weapon families it may use,
+plus one utility only it can perform.</strong> The full system is in
+<code>systems/class-and-weapon-families.md</code>.</p>
+<p>The concept is <strong>Orthogonal Differentiation</strong> — <em>"differences in abilities of game
+entities that are in type rather than in value"</em> (GDP3 / Chalmers; coined by Harvey Smith
+2003). The original already had the backbone: <strong>7 of its 9 weapon families were
+class-locked.</strong> The flaw was where the boundary was drawn — the Soldier held 6 of 9
+families and 97 of 185 weapons, while the Gunner and Commando held 2 each. One class was
+a superset of the game.</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th style="text-align: center;">Soldier</th>
+<th style="text-align: center;">Gunner</th>
+<th style="text-align: center;">Commando</th>
+<th style="text-align: center;"><strong>Engineer</strong> (new)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMG</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td>Shotgun</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>MG</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Rifle</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Knife</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Grenade Launcher</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Rocket Launcher</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Artillery</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td>TNT / Demolition</td>
+<td style="text-align: center;">●</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Field Kit / Support</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">●</td>
+</tr>
+<tr>
+<td><strong>Families</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariant (asserted by the simulator): no class is a strict subset of another's
+families, every family is usable by someone, and every class has exactly one exclusive
+utility.</strong> The original's spread was 6-2 = 4 families; ours is 4-3 = 1.</p>
+<p><strong>The fourth class is the Engineer</strong> — Pistol, Artillery, Field Kit, with
+<em>Field Repair</em> as its exclusive utility. It is built from <strong>widgets the original already
+sold as consumable premium items</strong> (Supreme Wrench, Metallo's Rocket Jump, Titan
+Security Thruster Fuel, Jeep Jump): the original sold the concept as a purchase, we give
+it a permanent home as a class. It serves whichever faction holds the field, which is
+also what makes Neutralia concrete in fiction.</p>
+<p><strong>A new roster target follows from this:</strong> 11 families × 10 weapons = <strong>110 base
+weapons</strong>, each required to differ from its two nearest family-mates on ≥3 of 6 axes —
+against an original that shipped 185 base weapons in 9 families, with 34 grenade
+launchers sharing 5 stat profiles and 12 knives sharing exactly 1.</p>
+<p><strong>Art direction for the new class</strong> (read from the original's renders via vision, 2026-11-07):
+top-heavy heroic proportion rather than chibi, angular jaw, exaggerated hands and boots,
+thick variable-width ink outline, cel-shading with soft digital-paint shadows, weapons held
+away from the body for silhouette readability. The Engineer reads as a tradesman — satchel,
+tool roll, goggles on the forehead, a bolted-on mechanical silhouette, industrial
+yellow-ochre deliberately outside both factions' palettes.</p>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>GAME-DESIGN.md</code>.</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>weapon-specification</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Weapon Specification System</h1>
+<p>Companion to <code>GAME-DESIGN.md</code>. Implements pillar P1 — weapon choice must be functional.</p>
+<p><strong>All numbers below are drawn from the actual Battlefield Heroes data</strong> (scraped from
+battlefield.fandom.com and bfh-info.cs-heroes.cz on 2026-11-07; raw data in
+<code>research/02-weapon-roster.json</code> and <code>research/wt_Weapon_Variants.txt</code>).</p>
+<hr>
+<h2>1. The problem this solves — measured, not asserted</h2>
+<p>The original Battlefield Heroes shipped <strong>346 weapons</strong>. The breakdown, from the scraped
+roster:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Count</th>
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMG</td>
+<td>64</td>
+<td>Soldier</td>
+</tr>
+<tr>
+<td>Rifle</td>
+<td>64</td>
+<td>Commando</td>
+</tr>
+<tr>
+<td>MG</td>
+<td>62</td>
+<td>Gunner</td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td>44</td>
+<td>Soldier</td>
+</tr>
+<tr>
+<td>Grenade Launcher</td>
+<td>40</td>
+<td>Soldier + Gunner</td>
+</tr>
+<tr>
+<td>Shotgun</td>
+<td>40</td>
+<td>Soldier + Gunner</td>
+</tr>
+<tr>
+<td>Knife</td>
+<td>22</td>
+<td>Commando</td>
+</tr>
+<tr>
+<td>Sticky TNT</td>
+<td>6</td>
+<td>Soldier</td>
+</tr>
+<tr>
+<td>Grenade</td>
+<td>4</td>
+<td>Soldier</td>
+</tr>
+</tbody>
+</table>
+<p><strong>346 weapons. Nine functional archetypes. And the arithmetic is worse than "9 × 5".</strong></p>
+<p>Measured against the scraped roster and stat detail:</p>
+<ul>
+<li><strong>185 base weapons</strong>, <strong>161 tier variants</strong> (37 Super, 37 Uber, 21 Stolen, 21 Pilfered,
+  13 Dapper, 13 Stylish, 16 Golden).</li>
+<li>The 185 base weapons <strong>share their stat profiles heavily</strong>: only <strong>55 distinct 4-axis
+  stat profiles</strong> across all 185 (range, rate of fire, ammo, damage), so only 7 weapons
+  have a unique profile. <strong>34 grenade launchers collapse to 5</strong> — <em>M32 MGL</em> and
+  <em>Tank Buster</em> differ only in magazine count. Across the rest: 29 SMGs → 11 profiles,
+  29 MGs → 8, 31 rifles → 10, 22 pistols → 9, 18 shotguns → 7, <strong>12 knives → 1</strong>.</li>
+<li><strong>But they are not interchangeable.</strong> The same 185 weapons carry <strong>95 distinct
+  behaviour descriptions</strong>. <em>Tank Buster</em> is a "long range anti-vehicle weapon";
+  <em>M32 MGL</em> is a "bulky grenade launcher... great for laying down areas of infantry
+  destruction". The Knife family is the extreme case — <strong>12 knives, one stat profile,
+  7 distinct behaviours</strong> (<em>Sensei's Striking Edge</em>: "slow but long and powerful";
+  <em>Dirk's Digger</em>: "for digging graves").</li>
+</ul>
+<p>The tier system on top:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Stat effect</th>
+<th>Cost</th>
+<th>Release</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base</strong></td>
+<td>—</td>
+<td>Valor / Play4Free Funds</td>
+<td>launch</td>
+</tr>
+<tr>
+<td><strong>Dapper</strong> (Roy) / <strong>Stylish</strong> (Nat)</td>
+<td><strong>statistically identical</strong>, cosmetic only</td>
+<td>Battlefunds / P4F</td>
+<td>Heroes of the Fall</td>
+</tr>
+<tr>
+<td><strong>Super</strong> / <strong>Uber</strong></td>
+<td>"statistically and cosmetically different... featuring <strong>minor stat changes</strong>"</td>
+<td>Battlefunds / VP / P4F</td>
+<td>Winter Armistice</td>
+</tr>
+<tr>
+<td><strong>Stolen</strong> / <strong>Pilfered</strong></td>
+<td>identical, but the <em>enemy's</em> weapon</td>
+<td>Battlefunds</td>
+<td>19 May 2010</td>
+</tr>
+<tr>
+<td><strong>Golden</strong></td>
+<td>premium</td>
+<td>—</td>
+<td>later</td>
+</tr>
+</tbody>
+</table>
+<p>Faction split is exactly 173 / 173. Class split: Soldier 178, Commando 86, Gunner 82.</p>
+<p><strong>This is the actual design problem, stated in numbers.</strong> The original reskinned itself
+twice: 185 base weapons occupying <strong>55 stat profiles but 95 distinct behaviours</strong>, then
+161 cosmetic-and-minor-stat variants on top. Weapon choice was therefore mostly <em>cosmetic
+choice</em>, and the "minor stat changes" on Super/Uber were <strong>paid</strong> upgrades — a
+pay-to-win layer bolted onto a reskin farm. Precisely the model that cannot survive into
+an MMO where horizontal progression is the whole point.</p>
+<p><em>(Correction, 2026-11-07: an earlier draft of this paragraph said the base weapons were
+"functionally ~25" and were "near-duplicates". The measured behaviour data shows that was
+too strong — 95 distinct behaviours across 185 weapons is not 25. The stat-clone ratios
+are real and measured; the interchangeability claim was wrong. See
+<code>systems/class-and-weapon-families.md</code> §2.1.)</em></p>
+<p><strong>The pivot:</strong> keep the 9 archetypes (they are good — 3 classes × primary + secondary),
+and make the <em>depth per archetype</em> the content instead of the <em>count</em>.</p>
+<p><strong>Follow-on (2026-11-07):</strong> the class×family re-cut and the fourth class now live in
+<code>systems/class-and-weapon-families.md</code>. The 9 archetypes are re-cut into <strong>11 families</strong>
+across <strong>4 classes</strong>, and the roster target drops to <strong>110 base weapons</strong> — 10 per family,
+each required to differ on ≥3 of 6 axes.</p>
+<hr>
+<h2>1b. What the original already had: the Workbench</h2>
+<p><strong>Added 2026-11-07.</strong> An earlier draft of this document claimed the original "had no way
+to express" a behaviour-only weapon option. That was wrong. <strong>Battlefield Heroes shipped
+exactly that system</strong> — and it shipped it <em>last</em>, in December 2012, as a late content
+patch.</p>
+<p>The <strong>Workbench</strong> (introduced 5 December 2012) lets you modify any weapon you own
+permanently. Each weapon has a limited number of upgrade slots, and <strong>only one upgrade of
+each type can be equipped at a time</strong> — equipping a second of the same type deletes the
+first. Three categories:</p>
+<p><strong>1. Upgrades</strong> (mostly flat stats, per weapon class): <em>Super Packin'</em> (MG ammo +10),
+<em>Packin' I–III</em> (ammo +2/+3/+4, crit +1 %/+1 %/+1 %, crit damage +1/+1/+2), <em>Fingers
+Crossed I–III</em> (crit), <em>Come Closer I–III</em> (short-range distance), <em>Just Right I–III</em>
+(short-range min. damage, with range falloff), <em>Rifle Focus I–III</em> (recoil), <em>Highly
+Explosive I–III</em> (explosion damage/radius/force), <em>Go Away! I–III</em> (pushback), <em>Super
+Crit</em>, <em>Standard Scope</em> (equips a scope but <strong>blocks the secondary-fire slot</strong>).</p>
+<p><strong>2. Secondary Fire</strong> — this is the important one. These are <em>new behaviours bolted onto
+the weapon</em>:
+| Secondary Fire | Effect | Applies to |
+|---|---|---|
+| <strong>Explosive Shot</strong> | Adds a burst of explosive firepower | MGs |
+| <strong>Quick Fire</strong> | Raises the weapon's rate of fire | MGs |
+| <strong>Push Beam</strong> | Fires a beam that <strong>pushes enemies away</strong> | SMGs |
+| <strong>Underslug Grenade Launcher</strong> | Equips the weapon with a grenade launcher | SMGs, Shotguns |
+| <strong>Shotgun Attachment</strong> | Equips the sidearm with a shotgun | Sidearms |
+| <strong>Laser Beam / Laser Charge / Punk Shotgun / Energy Ball</strong> | Replaces the firing mode entirely | various |</p>
+<p><strong>3. Special Features</strong> — <em>conditional</em> behaviours, not stats:
+| Special Feature | Effect |
+|---|---|
+| <strong>Dr. Bullet</strong> | Regain 5 HP every 3rd critical hit |
+| <strong>Berserk</strong> | Deal 17 % more damage at 20 HP or below |
+| <strong>Explosion Demotion</strong> | Take 20 % less explosion damage |
+| <strong>Meep meep!</strong> | Run faster at 30 HP or below (scales with Leg It) |
+| <strong>Heavy 'n Steady</strong> | Take 35 % less explosion force |
+| <strong>I Feel Lucky</strong> | <strong>+5 % crit chance, but −2 min damage at short <em>and</em> medium range</strong> |</p>
+<p><strong>I Feel Lucky is the exact principle this document was built on, shipped in 2009-era code:</strong>
+a real trade — you gain crit, you lose flat damage — expressed as a <em>gamble</em> the player
+opts into, because it narrows their effective band.</p>
+<p><strong>What the Workbench gets right, and what it does not:</strong></p>
+<ul>
+<li><em>Right:</em> per-weapon identity. <em>Push Beam</em> on an SMG makes that SMG a different weapon.
+  <em>Meep meep!</em> is a real playstyle. One upgrade per type forces a coherent build instead of
+  a pile of stacking bonuses.</li>
+<li><em>Wrong:</em> it is a <strong>slot-swap grid, not a tree</strong>. No progression path, no branching, no
+  depth. You either own the upgrade or you do not. There is no <em>earning</em> a signature; you
+  buy it — and it was priced in <strong>Play4Free Funds</strong>, i.e. real money.</li>
+<li><em>Wrong:</em> the upgrade slots were not standardised, so the best build was whichever weapon
+  happened to have the most slots.</li>
+</ul>
+<p><strong>So the pivot stands, but it is now sharper and better founded.</strong> The original shipped a
+<em>flat</em> version of this system two years in and then never built depth on top of it. Our
+contribution is not "per-weapon upgrades exist" — <strong>the original did that</strong> — it is that
+they become a <strong>branching tree earned through use</strong>, with a behaviour-only Signature at
+the end that cannot be bought.</p>
+<hr>
+<h2>2. The six axes</h2>
+<p>Every weapon is defined across six axes. A weapon is valid only if it differs from every
+other weapon in the same archetype by at least <strong>three</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>What it controls</th>
+<th>Range in this design</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DPS profile</strong></td>
+<td>How damage arrives</td>
+<td>burst 3×100 / sustained 8×25 / spike 1×250</td>
+</tr>
+<tr>
+<td><strong>Range</strong></td>
+<td>Effective distance, falloff shape</td>
+<td>sharp falloff past 40m / flat to 90m / short-range only</td>
+</tr>
+<tr>
+<td><strong>Mobility</strong></td>
+<td>Move speed, sprint, ADS time</td>
+<td>fast strafe + slow ADS / slow + instant ADS</td>
+</tr>
+<tr>
+<td><strong>Handling</strong></td>
+<td>Recoil, spread, reload, swap</td>
+<td>high recoil + fast reload / low recoil + slow swap</td>
+</tr>
+<tr>
+<td><strong>Utility</strong></td>
+<td>Secondary effects</td>
+<td>slow / reveal / mark / deny / heal / resupply</td>
+</tr>
+<tr>
+<td><strong>Team function</strong></td>
+<td>The role it enables</td>
+<td>solo-ko, team-stabilize, zone-control, objective-hold</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Anti-domination check.</strong> Before a weapon ships it must be compared against the two
+weapons it most resembles. If it wins on all six axes, it is cut. If it wins on four, one
+win must be paid for on one of the other two.</p>
+<p><strong>Functional floor.</strong> A weapon's category is defined by what it does, not what it looks
+like. A "rifle" that cannot contest mid-range is not a rifle in this system regardless of
+its model.</p>
+<hr>
+<h2>3. The per-weapon tree</h2>
+<p>Each owned weapon has its own tree. Shared currency (Valor, earned by playing) buys nodes.
+Short tree, meaningful branch.</p>
+<pre><code>        [Node 1]              cost 1
+             |
+        [Node 2] ──┬── [Node 3a] ──┐   cost 2 for the branch
+                    └── [Node 3b] ──┤
+                                    ├── [Node 4] ── [Node 5]      cost 1 each
+                                    └── [Node 4′]
+        [Signature tier 1]   cost 1  — pick one of three
+        [Signature tier 2]   cost 1  — pick one of three
+        [Signature tier 3]   cost 1  — pick one of three
+                                    TOTAL = 8 points per weapon
+</code></pre>
+<ul>
+<li><strong>Node 1</strong> — small mechanical shift. Always a straight upgrade of an existing behaviour.</li>
+<li><strong>Node 2</strong> — the branch point. Two mutually exclusive paths, each pushing one axis hard
+  in one direction. This is where identity starts.</li>
+<li><strong>Node 3a / 3b</strong> — commit to a path. Respec allowed for Valor.</li>
+<li><strong>Node 4 / 4′</strong> — role shift. A mid-range shooter becomes either an objective-holding
+  tool or a pure duelist.</li>
+<li><strong>Node 5</strong> — capstone: a change that interacts with other systems (a suppressor that
+  also cuts spotting radius; a shotgun that also breaks vehicle tracks).</li>
+<li><strong>Signature tiers 1–3</strong> — three separate pick-one-of-three choices, each unlocking a
+  further permanent change to what the weapon does.</li>
+</ul>
+<p><strong>Weapon Skill Points accrue in combat.</strong> Per-weapon use XP, so levelling a weapon means
+playing that weapon — not clicking a button, and not leveling your character. The tree
+itself is spent out of combat at a bench, and the whole tree respecs cheaply and freely
+up to the Signature.</p>
+<h3>The Signature is the load-bearing node</h3>
+<p>A Signature must be a <strong>behavioural change</strong>, not a stat. A new fire mode, a new
+interaction, a new rule about what the weapon can do — not "+8% damage".</p>
+<p><strong>Name the behaviour, not the bonus.</strong> Tank Stars names its <em>weapons</em> <em>Volley</em>, <em>Vertical
+Slam</em>, <em>Splitter Chain</em>, <em>Napalm Strike</em> — almost none of them describe a number, because
+a player reading "Vertical Slam" understands what they will be doing at the 30 % mark (it
+fires up to 3 guided rockets that loop in the air and track a target they fly over). The
+original Battlefield Heroes' Workbench Special Features follow the same discipline:
+<em>Dr. Bullet</em>, <em>Berserk</em>, <em>Meep meep!</em>, <em>I Feel Lucky</em> — none of them is a number. Our
+Signatures follow the same rule: <em>Executioner</em>, <em>Phantom</em>, <em>Overwatch</em>, <em>Interceptor</em>,
+<em>Saboteur</em>. If a Signature name can be replaced with "+8 % damage" without anyone
+noticing, the name failed.</p>
+<p><strong>It is offered pick-one-of-three.</strong> This is the single most important interaction
+decision in the system. The source is <strong>Deep Rock Galactic</strong>: a weapon Overclock is
+normally <em>rolled</em> at drop time, but a Blank Matrix Core lets the player <strong>choose</strong> — 2
+weapon options and 1 cosmetic — so the <em>choice</em> becomes the memory and the grind is only
+the setup. <em>(Not Worms: an earlier draft of this document attributed a random "special
+effect" upgrade tier to the Worms Weapon Factory. That system does not exist — Worms 4's
+factory is a budgeted custom-weapon builder with an overheat gauge, and the Forts Weapon
+Factory is a crate-producing building. Checked against the primary wikis on 2026-11-07.)</em> When a rare drop happens, offering three Signature options turns
+a lottery into a choice, and the moment becomes <em>owned</em> rather than <em>won</em> — the player
+remembers choosing, not getting lucky. <em>(Deep Rock Galactic's Blank Core lesson.)</em></p>
+<p><strong>It binds, but respecs for a non-trivial yet affordable cost.</strong> Weight without a trap.
+Fully free respec makes the choice meaningless; hard-lock traps people in a bad pick
+after a balance change and turns the "meaningful choice" into a resentful sunk cost
+<em>(Shadowlands Covenants)</em>. Our rule: <strong>the Signature respecs for 1 500 Valor</strong> — two
+hours of play, never a trap.</p>
+<p><strong>Why three tiers rather than one.</strong> A single Signature is a single decision, and after a
+month of play every player has made it and never thinks about it again. Three tiers means
+the weapon keeps asking the player a question, and the weapon's identity evolves over the
+first three months of ownership rather than being fixed on day one.</p>
+<p><strong>Total investment per weapon: 8 points.</strong> With 8 weapons owned, mastering the set costs
+64 points — and points are earned per weapon by playing it. A player who spreads playtime
+across the set masters <em>none</em> of them. A player who commits masters exactly one.</p>
+<p><em>(The first draft of this document granted weapon points from character level, which let a
+maxed player fully specialize 3–5 weapons and made the whole tree optional. The numbers
+were run and the design was corrected. <code>tools/simulate-design.py</code> now asserts this
+invariant, and <code>prototype/test-prototype.js</code> asserts it in the live DOM.)</em></p>
+<hr>
+<h2>4. The three real BFH classes, as they actually were</h2>
+<p>Extracted from the wikitext, not invented. Health and ability counts are the original's.</p>
+<h3>Soldier — 110 HP, "combines aspects of the Assault and Medic kits"</h3>
+<p>Weapons: SMG (primary, 64), Pistol (44), Shotgun (40), GL (20), Grenade (4), Sticky TNT (6)</p>
+<table>
+<thead>
+<tr>
+<th>Ability</th>
+<th>Actual effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sixth Sense</strong></td>
+<td>You and your team see all nearby enemies for a short time</td>
+</tr>
+<tr>
+<td><strong>Burning Bullets</strong></td>
+<td>SMG shots set enemies on fire, damage over time (extinguished by Combat Medicine)</td>
+</tr>
+<tr>
+<td><strong>Combat Medicine</strong></td>
+<td>Instantly heals player and nearby allies; amount scales with number healed</td>
+</tr>
+<tr>
+<td><strong>Grenade Spam</strong></td>
+<td>Throws multiple grenades at a target</td>
+</tr>
+<tr>
+<td><strong>Blasting Strike</strong></td>
+<td>Strikes with such force that nearby players <em>and vehicles</em> are thrown aside</td>
+</tr>
+</tbody>
+</table>
+<p>Note <em>Combat Medicine</em> scales with player count — it was already a <strong>cooperative</strong> ability
+in 2009. That is a gift to the MMO design: the class fantasy was already team-scale, not
+solo-sustain.</p>
+<h3>Gunner — 150 HP (highest), "the go-to class for Anti-Vehicle Warfare"</h3>
+<p>Weapons: MG (primary, 62), GL (20)</p>
+<table>
+<thead>
+<tr>
+<th>Ability</th>
+<th>Actual effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Leg It</strong></td>
+<td>Increases movement speed of player and nearby allies</td>
+</tr>
+<tr>
+<td><strong>Frenzy Fire</strong></td>
+<td>Improves MG accuracy to focus a single target; heals a % of health every 4th hit</td>
+</tr>
+<tr>
+<td><strong>Explosive Keg</strong></td>
+<td>Hurls a large explosive barrel that can be shot to explode early; causes enemies hit to run slower</td>
+</tr>
+<tr>
+<td><strong>Hero Shield</strong></td>
+<td>Absorbs damage for player and nearby allies for a few seconds</td>
+</tr>
+<tr>
+<td><strong>I Eats Grenades</strong></td>
+<td>Gobbles up all nearby explosives for a short time; each grenade eaten recovers health</td>
+</tr>
+</tbody>
+</table>
+<h3>Commando — 80 HP (weakest), "can do the most damage per hit", fastest infantry</h3>
+<p>Weapons: Rifle (primary, 64), Knife (22)</p>
+<table>
+<thead>
+<tr>
+<th>Ability</th>
+<th>Actual effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stealth</strong></td>
+<td>Cloaking from enemy view</td>
+</tr>
+<tr>
+<td><strong>Elixir</strong></td>
+<td>Increases speed and defense for a short time</td>
+</tr>
+<tr>
+<td><strong>Mark Target</strong></td>
+<td>Receive points for designating enemy targets for your team; can reveal enemy Commandos using Stealth</td>
+</tr>
+<tr>
+<td><strong>Troop Trap</strong></td>
+<td>Place an explosive that triggers when enemies approach too close <em>or when it is shot</em></td>
+</tr>
+<tr>
+<td><strong>Piercing Shot</strong></td>
+<td>Increases damage done by sniper rifles</td>
+</tr>
+<tr>
+<td><strong>Poisoned Blade</strong></td>
+<td>Knife damage poisons the victim, losing health over time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Two design golds in the original, already present:</strong>
+1. <em>Mark Target</em> / <em>Sixth Sense</em> — <strong>team information as an ability</strong>. The Commando earns
+   points for marking; the Soldier reveals for the whole team. Information warfare was
+   native to the class kit.
+2. <em>Poisoned Blade</em> / <em>Burning Bullets</em> — <strong>damage-over-time as a weapon property</strong>, not a
+   status effect bolted on. The knife and the SMG have their own identity.</p>
+<hr>
+<h2>4b. Worked examples</h2>
+<p>Illustrative. Final numbers come from the roster research in
+<code>research/02-bfh-system-inventory.md</code>.</p>
+<h3>4b.1 National Army assault rifle — "StG 44"</h3>
+<p>Base: 24 damage, 600 RPM, 4-round mag, moderate falloff past 45m, 4.2 m/s strafe.</p>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Axis</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Handling</td>
+<td>−25% vertical recoil</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>branch</strong></td>
+<td><em>Marksmanship</em> → <em>Close-quarters</em></td>
+</tr>
+<tr>
+<td>3a</td>
+<td>Range</td>
+<td>×1.4 effective range, falloff starts at 70m</td>
+</tr>
+<tr>
+<td>3b</td>
+<td>Handling</td>
+<td>×1.8 ADS speed, −15% damage</td>
+</tr>
+<tr>
+<td>4a</td>
+<td>Team function</td>
+<td>Marks kills reveal the target for 2s to teammates</td>
+</tr>
+<tr>
+<td>4b</td>
+<td>DPS profile</td>
+<td>Sustained fire becomes burst-fire, ×2.2 burst damage</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Utility</td>
+<td>Suppressed fire: no tracers, −40% audio detection radius</td>
+</tr>
+<tr>
+<td><strong>Signature A</strong></td>
+<td>—</td>
+<td><em>Executioner</em>: a kill instantly refreshes 25% of magazine</td>
+</tr>
+<tr>
+<td><strong>Signature B</strong></td>
+<td>—</td>
+<td><em>Sapper</em>: kills drop a 15-second ammo crate</td>
+</tr>
+<tr>
+<td><strong>Signature C</strong></td>
+<td>—</td>
+<td><em>Ghost</em>: standing still for 3s grants full concealment for 1 shot</td>
+</tr>
+<tr>
+<td><strong>Signature D</strong> (L30)</td>
+<td>—</td>
+<td><em>Marksman</em>: every 5th kill grants +20% movement speed for 3s</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Signature D is the model to copy.</strong> It is not a bigger number — it is a <em>new interaction</em>
+(kills feed mobility) that changes how the weapon is played: the SMG becomes a hit-and-move
+weapon rather than a static spray. All four signatures change behaviour, never just damage.</p>
+<h3>4b.2 Royal Army sniper rifle — "Lee-Enfield"</h3>
+<p>Base: 85 damage, 45 RPM, 5-round mag, very sharp falloff past 120m, slow ADS.</p>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Axis</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Range</td>
+<td>−10% falloff beyond 150m</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>branch</strong></td>
+<td><em>Stability</em> → <em>Speed</em></td>
+</tr>
+<tr>
+<td>3a</td>
+<td>Handling</td>
+<td>−40% recoil, +1 zoom step</td>
+</tr>
+<tr>
+<td>3b</td>
+<td>DPS profile</td>
+<td>×1.6 fire rate, −15% damage</td>
+</tr>
+<tr>
+<td>4a</td>
+<td>Utility</td>
+<td>Hits mark the target (shows on all team displays)</td>
+</tr>
+<tr>
+<td>4b</td>
+<td>Mobility</td>
+<td>+12% movement speed while scoped, −25% while unscoped</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Team function</td>
+<td>Destroying a vehicle with this weapon awards a squad-wide damage buff</td>
+</tr>
+<tr>
+<td><strong>Signature A</strong></td>
+<td>—</td>
+<td><em>Overwatch</em>: the first shot after 2s unscoped deals ×2</td>
+</tr>
+<tr>
+<td><strong>Signature B</strong></td>
+<td>—</td>
+<td><em>Spotter</em>: marks last for 8s and shows enemy count, not positions</td>
+</tr>
+<tr>
+<td><strong>Signature C</strong></td>
+<td>—</td>
+<td><em>Saboteur</em>: +30% damage to vehicles</td>
+</tr>
+<tr>
+<td><strong>Signature D</strong> (L30)</td>
+<td>—</td>
+<td><em>Marksman</em>: a marked target takes +15% damage from all sources</td>
+</tr>
+</tbody>
+</table>
+<p><em>Spotter</em> and <em>Marksman</em> build on the original's own <em>Mark Target</em> ability — the
+Commando's kit already had team information as a mechanic. The Signature system extends
+what the game already did well.</p>
+<h3>4b.3 Commando SMG — suppressed "MP40"</h3>
+<p>Base: 14 damage, 900 RPM, 30-round mag, short range, fast movement.</p>
+<p>This weapon's identity is <strong>information denial</strong>, not damage. Its tree pushes utility and
+mobility, and its signatures remove the enemy team's advantage rather than dealing more
+damage:</p>
+<ul>
+<li><strong>Signature A</strong> — <em>Phantom</em>: while not firing for 4s, the player appears as a friendly
+  dot on enemy minimaps.</li>
+<li><strong>Signature B</strong> — <em>Interceptor</em>: destroying enemy deployables (sandbags, ammo crates)
+  grants +40% movement speed for 4s.</li>
+<li><strong>Signature C</strong> — <em>Saboteur</em>: destroyed enemy deployables drop the enemy's own valor.</li>
+</ul>
+<p><strong>Signature A is the strongest idea in this document.</strong> It is purely about <em>information</em>,
+with zero damage attached, and it inverts the enemy's scouting advantage rather than
+out-shooting anyone.</p>
+<p><em>Corrected 2026-11-07:</em> an earlier draft said this "could not exist in the original's
+model". That is no longer defensible — the Workbench (see §1b) could attach a <em>Special
+Feature</em> to any weapon, and the original already had information-warfare abilities
+(<em>Sixth Sense</em> reveals for the whole team; <em>Mark Target</em> counters stealth). What the
+original could not do was make a signature <em>earned and permanent</em> — Workbench upgrades
+were bought with real money and applied as slot swaps, with no progression. <strong>The gap is
+in the economy and the depth, not in the expressive range.</strong> That is a more useful and
+more honest framing, and it is also a better argument for the design: we are not
+inventing a capability, we are making the capability <em>earned, branchable, and paid for
+with play</em>.</p>
+<hr>
+<h2>5. Three specs per class</h2>
+<p>WoW pre-Mists-of-Pandaria style, reworked. Each class has three specializations. Choosing
+a branch at level 10 commits 4 of 6 subsequent Class Points to it; 2 stay free.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Spec A</th>
+<th>Spec B</th>
+<th>Spec C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Soldier</strong></td>
+<td><strong>Medic</strong> — scales Combat Medicine, revives, deployable cover</td>
+<td><strong>Demolitions</strong> — satchel charges, mines, breach; scales Blasting Strike</td>
+<td><strong>Marksman</strong> — SMG at rifle range, scales Sixth Sense into long-range spotting</td>
+</tr>
+<tr>
+<td><strong>Gunner</strong></td>
+<td><strong>Heavy</strong> — Frenzy Fire focus, sustained MG, scales Hero Shield</td>
+<td><strong>Anti-Tank</strong> — GL/Rocket specialisation, vehicle killing, scales Explosive Keg</td>
+<td><strong>Sapper</strong> — I Eats Grenades ordnance play, repair, area denial</td>
+</tr>
+<tr>
+<td><strong>Commando</strong></td>
+<td><strong>Recon</strong> — Stealth, Troop Trap, spotting, sabotage</td>
+<td><strong>Sniper</strong> — Piercing Shot, long range, marked kills</td>
+<td><strong>Infiltrator</strong> — Poisoned Blade, unlock, supply theft, speed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The Commando split is deliberate.</strong> In the original, Commando was a single sniper
+archetype with 6 abilities covering stealth, marking and knives all at once — a class
+carrying three identities and none of them deeply. Splitting it into Recon / Sniper /
+Infiltrator creates three viable team compositions from one base class.</p>
+<hr>
+<h2>6. Field promotion (in-match)</h2>
+<p>Separate from the persistent tree. In-match valor buys temporary upgrades from <strong>3 tokens
+carried on the player</strong>. Tokens are lost on death.</p>
+<table>
+<thead>
+<tr>
+<th>Cost</th>
+<th>Upgrade</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50</td>
+<td><em>Rearm</em></td>
+<td>Refill magazine, no reload animation</td>
+</tr>
+<tr>
+<td>100</td>
+<td><em>Overcharge</em></td>
+<td>+25% damage to the next 8 shots</td>
+</tr>
+<tr>
+<td>150</td>
+<td><em>Marksman</em> (temporary)</td>
+<td>Reveal all enemies within 60m for 3s</td>
+</tr>
+<tr>
+<td>250</td>
+<td><em>Deployable</em></td>
+<td>Spawn a temporary sandbag or ammo crate</td>
+</tr>
+<tr>
+<td>400</td>
+<td><em>Special</em></td>
+<td>Class-specific temporary ability</td>
+</tr>
+</tbody>
+</table>
+<p>Cost curve matters: 400 valor buys either two Overcharges or one Deployable. Tokens are
+the scarce resource, not money — so a player who spends early is weak late in the match.</p>
+<hr>
+<h2>7. Faction asymmetry</h2>
+<p>National and Royal weapons are <strong>not</strong> stat-swapped variants. The original's roster has
+perfect 173/173 symmetry, which is a design dead end — same numbers, different names.</p>
+<p><strong>We keep the symmetry of availability but break the symmetry of behaviour:</strong></p>
+<ul>
+<li><strong>National weapons</strong> — high handling, lower range, faster recovery, more utility.
+  Grassy, improvised, forgiving. Utility leans on the original's own kit: Burning Bullets,
+  Blasting Strike, Poisoned Blade.</li>
+<li><strong>Royal weapons</strong> — precision, reach, heavier handling, higher burst damage.
+  Institutional, deliberate, punishing to use badly. Utility leans on suppression and
+  control: Hero Shield, Leg It, Frenzy Fire.</li>
+</ul>
+<p>A National rifle and a Royal rifle of the same archetype differ in falloff <em>shape</em>, not
+falloff <em>amount</em>. Two players at the same level with the same Doctrine still fight
+differently because their tools behave differently.</p>
+<p><strong>Doctrine interaction.</strong> Each weapon declares which doctrine families it interacts with —
+some doctrines only work with close-range weapons, some with heavy. This makes loadouts
+cohere rather than being a bag of unrelated percentages.</p>
+<hr>
+<h2>8. Anti-patterns</h2>
+<ul>
+<li><strong>Stat inflation.</strong> Upgrading a weapon should change <em>behaviour</em>, not just numbers. If
+  Node 5 is "+8% damage", the weapon is still the same weapon — the tree failed.</li>
+<li><strong>Dominant branch.</strong> If one branch of Node 2 is strictly better, the branch is a fake
+  choice. Every branch must be better in a different situation.</li>
+<li><strong>Respec as punishment.</strong> Respec must be affordable. A player who experiments should not
+  be locked into a bad tree for a month.</li>
+<li><strong>Horizontal bloat.</strong> Nine weapons with identical function and different names is a
+  worse roster than five weapons with distinct functions. <strong>The original had 346 and it
+  was the problem, not the solution.</strong></li>
+<li><strong>Signature dilution.</strong> If a signature is a flat bonus, it is a cosmetic tier. Each
+  signature must change <em>what the weapon does in a fight</em>.</li>
+<li><strong>Paid power tiers.</strong> Super/Uber were bought with premium currency for "minor stat
+  changes". In this design, <strong>no premium currency may purchase any stat</strong>. Premium buys
+  cosmetics, Doctrine <em>variants</em>, and storage — nothing else.</li>
+</ul>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>weapon-specification.md</code>.</footer>
+</div>
+</body>
+</html>

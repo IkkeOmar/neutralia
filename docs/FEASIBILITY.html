@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FEASIBILITY</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>FEASIBILITY REPORT — Battlefield Heroes MMO</h1>
+<p>Date: 2026-11-07
+Method: <code>creativity</code> skill, Gate 0–3. Research only — nothing built.</p>
+<hr>
+<h2>PREMISE</h2>
+<blockquote>
+<p>"Battlefield Heroes is already open sourced and playable online (RisingHub), so we can clone
+and copy the game and build an MMO out of it."</p>
+</blockquote>
+<h2>VERDICT</h2>
+<p><strong>PARTIALLY TRUE — and the true part is not the part the plan depends on.</strong></p>
+<ul>
+<li>The <strong>game client is NOT open source.</strong> It has never been open-sourced. EA's assets
+  (models, textures, audio, animation) are likewise closed.</li>
+<li>The <strong>backend protocol IS open.</strong> The FESL/Theater/GameSpy stack has multiple working
+  open-source reimplementations. These are the reusable, legally clean foundation.</li>
+<li><strong>RisingHub is a running private server, not a source tree.</strong> It runs the original
+  closed client with a patched backend. It proves the protocol is reimplementable; it does
+  not give us a codebase to fork.</li>
+</ul>
+<p>So the project is <strong>not</strong> "clone and extend". It is <strong>"reimplement the backend, and build
+new art, new engine, new content"</strong> — or <strong>"build a new game that shares BFH's design
+DNA"</strong>. The second framing is where the MMO actually lives.</p>
+<hr>
+<h2>EVIDENCE</h2>
+<h3>Gate 0 — What is actually open</h3>
+<p>Verified live via GitHub API on 2026-11-07 (not from blog posts):</p>
+<table>
+<thead>
+<tr>
+<th>Repository</th>
+<th>Language</th>
+<th>License (API)</th>
+<th>Last push</th>
+<th>Stars</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>abarichello/bfheroesFesl</code></td>
+<td>Go</td>
+<td><strong>The Unlicense</strong> (public domain)</td>
+<td>2018-10-01</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>lucasluqui/bfheroes-offline</code></td>
+<td>Python</td>
+<td><strong>none declared</strong></td>
+<td>2025-08-07</td>
+<td>16</td>
+</tr>
+<tr>
+<td><code>g91/BFHeroes_MasterServer</code></td>
+<td>Python</td>
+<td><strong>GPL-3.0</strong></td>
+<td>2018-07-27</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>bfhz/battlefieldHeroesBackend</code></td>
+<td>Go</td>
+<td>—</td>
+<td><strong>repo now 404s</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Notes that matter:</p>
+<ul>
+<li><code>bfhz/battlefieldHeroesBackend</code> was <strong>deleted or renamed</strong>. Its README is still
+  reachable via cached web pages, but the repository itself is gone. Any plan citing it
+  must cite the surviving forks instead.</li>
+<li>The <strong>Unlicense</strong> on <code>bfheroesFesl</code> is the cleanest asset here: public domain, no
+  attribution obligation, no copyleft. It credits Aluigi, TechnoGods, the1domo and
+  piquus in its README — attribution is good practice even when not required.</li>
+<li><code>lucasluqui/bfheroes-offline</code> has <strong>no license file</strong>. That is legally ambiguous: without
+  an explicit grant, default copyright applies and the code is not ours to reuse. Treat as
+  <strong>read-only reference</strong>.</li>
+<li><code>g91/BFHeroes_MasterServer</code> is <strong>GPL-3.0</strong> — any derivative work must be GPL-3.0. If we
+  ever ship a server, that license governs it. Fine for a project, relevant for a
+  commercial one.</li>
+<li><code>lucasluqui/bfheroes-offline</code> was pushed <strong>2025-08-07</strong> — under a year old. The offline
+  emulator is alive; the multiplayer server emulators have not been touched since 2018.</li>
+</ul>
+<h3>Gate 0 — The protocol layer, in detail</h3>
+<p>BFH uses the <strong>GameSpy protocol family</strong> (also in BF2/BF2142/NFS), structured as five
+components:</p>
+<ol>
+<li><strong>gameClient.exe</strong> — front-end, runs on the player's machine. Closed.</li>
+<li><strong>gameServer.exe</strong> — per-match coordinator, hosts the shared match area. Open
+   reimplementation exists (<code>bfheroesFesl</code>).</li>
+<li><strong>FESL login server</strong> — authentication, account, stats. Open reimplementations exist.</li>
+<li><strong>Theater server</strong> — player/server data, matchmaking, ranking, levelling, server
+   bookmarks. Open reimplementations exist.</li>
+<li><strong>Magma</strong> — HTTP/XML API for login, validation, <code>web_token</code> sessions, store,
+   entitlements, friends, server bookmarks. Open reimplementation exists.</li>
+</ol>
+<p>Fixed ports in the <code>bfheroesFesl</code> config (these are the ground truth the emulators are
+validated against, and they match the original <code>Readme.txt</code> inside the game files):</p>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FESL client</td>
+<td>18270</td>
+</tr>
+<tr>
+<td>FESL server</td>
+<td>18051</td>
+</tr>
+<tr>
+<td>Theater client</td>
+<td>18275</td>
+</tr>
+<tr>
+<td>Theater server</td>
+<td>18056</td>
+</tr>
+<tr>
+<td>HTTP bind</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPS bind</td>
+<td>443</td>
+</tr>
+<tr>
+<td>LevelDB</td>
+<td><code>_data/lvl.db</code></td>
+</tr>
+</tbody>
+</table>
+<p>UDP packets are encoded with the <strong>GameSpy XOR</strong> scheme. The original <code>Readme.txt</code> shipped
+with the game lists these ports — that is our golden reference for verifying any
+reimplementation.</p>
+<h3>Gate 0 — RisingHub's actual status</h3>
+<p>RisingHub (risinghub.net) is a <strong>live private server</strong>: a launcher (<code>DarkLauncher.exe</code>)
+fetches the original client, patches it, and points it at RisingHub's own backend. The
+site is live and shipping content as of 2026 (recent updates include Atomic Avenue, new
+t-shirts, Moonwalk Emote, a "Demon of Chaos" gene fix).</p>
+<p>What this means for us:
+- The <strong>game is alive and playable</strong> — correct, and a good sign for community interest.
+- The <strong>client is unobtainable-as-source</strong> — correct, we have a binary, not a repo.
+- <strong>Private servers are a legal grey area</strong> and their assets are not ours. Do not depend
+  on RisingHub for anything; do not mirror its assets.</p>
+<h3>Gate 0 — Other live projects (2026)</h3>
+<ul>
+<li>A <strong>solo Unity3D rebuild</strong> is in active development (r/BattlefieldHeroes, Sept 2026) —
+  described as "the most promising BFH project yet".</li>
+<li>A <strong>1.126 client-fix project</strong> (r/BattlefieldHeroes, Sept 2026) by a 15–20-year private
+  server developer. He reports a working client with store, settings, customisation,
+  friends, server browsing, fixed protocol handlers, character data and multiplayer
+  replication. He asks whether to make it public if a playerbase exists.</li>
+<li><strong>Older:</strong> the "Open Heroes" project and the Phoenix Network fork, both largely dormant
+  since ~2018.</li>
+</ul>
+<p><strong>These are the highest-value leads.</strong> The 1.126 project in particular is someone who has
+already done the hardest part (a working patched client). Whether to approach him is a
+decision for Omar, not a technical question.</p>
+<h3>Gate 1 — Toolchain on this host</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>REA MCP</strong> (<code>Reverse Engineer Anything</code>)</td>
+<td><strong>LIVE</strong></td>
+<td><code>mcp__rea__*</code> tools respond. Verified: <code>mcp__rea__list_documents</code> returns <code>target_unavailable</code> ("No app is open"), proving the server is connected. npm latest: <strong>6.8.0</strong></td>
+</tr>
+<tr>
+<td>REA skill</td>
+<td><strong>indexed but not loadable</strong></td>
+<td><code>skill_view('reverse-engineer-anything')</code> fails. Check <code>~/.hermes/skills-archive/&lt;cat&gt;/&lt;name&gt;/SKILL.md</code> directly instead</td>
+</tr>
+<tr>
+<td>Ghidra / Hopper / IDA</td>
+<td>not verified</td>
+<td>REA supports them; needs a native-analysis provider present</td>
+</tr>
+<tr>
+<td>DeepSeek API</td>
+<td><strong>LIVE</strong></td>
+<td><code>deepseek-flash</code>, <code>deepseek-v4-pro</code> reachable. Delegation pinned to <code>deepseek-v4-pro</code> for this session's generation work</td>
+</tr>
+<tr>
+<td>Wine</td>
+<td>not verified</td>
+<td>Would be needed to run the Windows client at all</td>
+</tr>
+</tbody>
+</table>
+<p><strong>REA's documented capability set</strong> (from the project README, v6.x): JavaScript/Electron
+apps, native binaries, .NET assemblies, websites, Android APKs — with Ghidra/IDA/Hopper,
+JADX/apktool/adb, Chrome DevTools/mitmproxy, Frida/Binwrap.</p>
+<p><strong>Critical caveat from the REA project's own documentation:</strong> recovered code is <em>not</em>
+original source. Native decompilation yields pseudocode and assembly — no comments, no
+original naming, no original build system. A reconstruction still needs review and tests.</p>
+<p><strong>The realistic REA use here is not "clone the game."</strong> It is:
+- inspect <code>gameClient.exe</code> to map the class/ability/weapon data structures
+- confirm what the client sends to the backend vs what the backend computes
+- validate our reimplementation against the real client's expectations</p>
+<h3>Gate 2 — The minimum running slice</h3>
+<p><strong>One map. One mode. One class. One weapon. One vehicle. Running end-to-end against our own
+backend.</strong></p>
+<p>That is: a Go process that speaks FESL + Theater + Magma, serving a single battle on
+<em>Alpine Assault</em> with the Soldier class, the StG 44, and a jeep, where two clients (ours or
+a patched original) log in, spawn, capture a flag, and the match resolves.</p>
+<p><strong>Why this and not something smaller:</strong> the entire risk of the project lives in the
+protocol seam. A lobby that works but a match that does not proves nothing. Conversely, one
+match that works proves the whole stack.</p>
+<p><strong>Why this and not something bigger:</strong> it is achievable on 3 vCPU / 3.7 GB RAM, it is
+verifiable against the original <code>Readme.txt</code> port list, and it is the smallest artifact that
+makes "the rest of the project is obviously possible" true.</p>
+<p><strong>What it does NOT prove:</strong> art pipeline, content volume, persistence at scale, netcode
+under 50 players, and anything about the MMO layer. Those come after.</p>
+<h3>Gate 3 — Real scope</h3>
+<p>The line, stated plainly:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Status</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend protocol (FESL/Theater/Magma/Match)</td>
+<td><strong>Open, reusable, legal</strong></td>
+<td>Weeks to get right</td>
+</tr>
+<tr>
+<td>Original client binary</td>
+<td>Closed, Windows-only, EULA-restricted</td>
+<td>Not distributable</td>
+</tr>
+<tr>
+<td>Original assets (models/textures/audio)</td>
+<td>Closed</td>
+<td>Not usable in a new game</td>
+</tr>
+<tr>
+<td>MMO layer (persistent chars, inventory, mail, guild, AH, matchmaking)</td>
+<td><strong>Must be written</strong></td>
+<td>Months</td>
+</tr>
+<tr>
+<td>Art direction</td>
+<td><strong>Must be produced</strong></td>
+<td>The real cost</td>
+</tr>
+<tr>
+<td>Content volume (maps, weapons, quests)</td>
+<td><strong>Must be produced</strong></td>
+<td>The other real cost</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The honest reframe:</strong> we are not extending Battlefield Heroes. We are building a new game
+that uses an open network protocol and borrows a design language. The BFH codebase is worth
+maybe 2–4 weeks of reading. The game is worth 1–3 years.</p>
+<p><strong>This does not kill the idea — it clarifies it.</strong> Two viable readings:</p>
+<p><strong>(A) Protocol-first.</strong> Build our own backend + client on top of the open FESL stack, ship
+a modern lightweight client, keep BFH's cartoon WWII look and class structure. Most
+interesting, most work.</p>
+<p><strong>(B) Design-first (recommended starting point).</strong> Forget the protocol. Build the <em>game
+design</em> — weapon trees, Doctrine system, quest structure, lore — as a documented,
+playable-in-browser prototype using modern tech. The design is the hard intellectual
+problem, and it is where Omar's actual creative energy is.</p>
+<hr>
+<h2>LINE</h2>
+<p><strong>Reusable as-is:</strong> the FESL/Theater/Magma protocol layer and its open implementations
+(Unlicense + GPL-3.0, both readable and one directly reusable).</p>
+<p><strong>Must be built:</strong> the MMO layer, the client, all art, all content, and — if we go
+protocol-first — the client-side rendering.</p>
+<p><strong>Cannot be used:</strong> EA's client binary and EA's assets, for legal reasons, not technical
+ones. This is a hard line, and it does not move with scale.</p>
+<hr>
+<h2>MINIMUM SLICE</h2>
+<blockquote>
+<p>A Go backend speaking FESL + Theater + Magma, running one Conquest match on <em>Alpine
+Assault</em> with Soldier / StG 44 / jeep, where two clients authenticate, spawn, fight over
+one flag, and the match resolves — with the port configuration matching the original
+<code>Readme.txt</code> and the packet encoding validated against the GameSpy XOR scheme.</p>
+</blockquote>
+<p><strong>Do not build this yet.</strong> It is the destination for the feasibility phase, not a task to
+start on.</p>
+<hr>
+<h2>LEGAL NOTE (not a footnote — a gate)</h2>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reimplementing the FESL/Theater protocol</td>
+<td><strong>Interoperability.</strong> Fine. The existing emulators do exactly this.</td>
+</tr>
+<tr>
+<td>Reading and citing the open emulators</td>
+<td><strong>Fine.</strong> Mind the licenses: Unlicense is clean, GPL-3.0 is copyleft, <code>bfheroes-offline</code> has no license grant — read-only reference only.</td>
+</tr>
+<tr>
+<td>Running the original client locally for research</td>
+<td>Legal grey. Personal research, no distribution.</td>
+</tr>
+<tr>
+<td>Shipping EA's client or assets in a new game</td>
+<td><strong>Not permissible.</strong> Copyright.</td>
+</tr>
+<tr>
+<td>Building on RisingHub</td>
+<td><strong>Not permissible.</strong> Private-server assets, no license.</td>
+</tr>
+<tr>
+<td>Using BFH's <em>lore</em> (factions, names, the war premise)</td>
+<td><strong>Grey.</strong> Character names and specific story elements can be protected. Faction structure and general WWII-parody premise are far safer. Our lore draft deliberately reframes rather than copies.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>OPEN QUESTIONS</h2>
+<ol>
+<li><strong>Approach — (A) protocol-first or (B) design-first?</strong> Recommendation: (B). The design is
+   the intellectual core; the protocol is a solvable engineering problem that a subagent can
+   grind on while Omar does the creative work.</li>
+<li><strong>The 1.126 project author.</strong> A working patched client is the single biggest
+   accelerant available. Does Omar want to be approached? (Also: he asked the Reddit
+   whether to publish. Someone might answer.)</li>
+<li><strong>Client distribution.</strong> If protocol-first, do we ship our own client (lightweight, modern)
+   or rely on a patched original? The former is legally clean and lets us hit the
+   "super lightweight" target.</li>
+<li><strong>Scope of the original lore.</strong> How far do we stay recognisably BFH? The Neutralia
+   reframe keeps the factions and the war but replaces the antagonist — this may be the
+   right line, or too far.</li>
+<li><strong>Engine.</strong> For (B), a browser-based prototype (no install, matches BFH's heritage and
+   the "super lightweight" goal) versus a native client. For (A), the client is a larger
+   question entirely.</li>
+</ol>
+<hr>
+<h2>WHAT WAS NOT DONE (and why)</h2>
+<ul>
+<li><strong>No game binaries downloaded or run.</strong> The client is Windows-only and closed; running it
+  here needs Wine plus the full stack, and produces no reusable artifact. Server
+  emulators were <em>read</em>, not stood up — they need a real client to talk to, and this host
+  has 3.7 GB RAM with no GPU.</li>
+<li><strong>No code written.</strong> This was a feasibility pass, per the explicit instruction.</li>
+<li><strong>The design documents are documentation</strong>, not a build: <code>GAME-DESIGN.md</code>,
+  <code>systems/weapon-specification.md</code>, <code>lore/third-faction.md</code>.</li>
+</ul>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>FEASIBILITY.md</code>.</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+[
+ {
+  "id": "2006",
+  "name": "Poisoned Blade",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2011",
+  "name": "Poisoned Blade",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2016",
+  "name": "Blasting Strike",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2021",
+  "name": "Blasting Strike",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2026",
+  "name": "Hero Shield",
+  "cat": "Ability",
+  "faction": "Both",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2031",
+  "name": "I Eats Grenades",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2036",
+  "name": "I Eats Grenades",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2041",
+  "name": "Elixir",
+  "cat": "Ability",
+  "faction": "Both",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2046",
+  "name": "Explosive Keg",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2050",
+  "name": "Explosive Keg",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2055",
+  "name": "Frenzy Fire",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2060",
+  "name": "Frenzy Fire",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2065",
+  "name": "Grenade Spam",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2070",
+  "name": "Grenade Spam",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2075",
+  "name": "Combat Medicine",
+  "cat": "Ability",
+  "faction": "Both",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2081",
+  "name": "Burning Bullets",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2086",
+  "name": "Burning Bullets",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2091",
+  "name": "Leg It",
+  "cat": "Ability",
+  "faction": "Both",
+  "cls": "Gunner",
+  "price": "1 HP"
+ },
+ {
+  "id": "2096",
+  "name": "Piercing Shot",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2101",
+  "name": "Piercing Shot",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2106",
+  "name": "Troop Trap",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2111",
+  "name": "Troop Trap",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2116",
+  "name": "Mark Target",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2121",
+  "name": "Mark Target",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2126",
+  "name": "6th Sense",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2131",
+  "name": "6th Sense",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 HP"
+ },
+ {
+  "id": "2136",
+  "name": "Stealth",
+  "cat": "Ability",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 HP"
+ },
+ {
+  "id": "2141",
+  "name": "Stealth",
+  "cat": "Ability",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 HP"
+ }
+]

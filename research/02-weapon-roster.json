@@ -1,0 +1,3116 @@
+[
+ {
+  "id": "3000",
+  "name": "Space-night Special",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3001",
+  "name": "Royal Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "580 VP"
+ },
+ {
+  "id": "3002",
+  "name": "Konrad's Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "450 VP"
+ },
+ {
+  "id": "3003",
+  "name": "Maxwell's Machinegun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3004",
+  "name": "Rudi's Ridiculous",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3005",
+  "name": "Carl's Cold Comfort",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3006",
+  "name": "Ludwig's Loaded",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3007",
+  "name": "Tank Buster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "869 F"
+ },
+ {
+  "id": "3008",
+  "name": "Faust's Panzerfist",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "869 F"
+ },
+ {
+  "id": "3009",
+  "name": "Hubble's Double Trouble",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3010",
+  "name": "Steiner's Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3011",
+  "name": "Charlie's Chopper",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3012",
+  "name": "The Kommandant",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3013",
+  "name": "Oscar's Farshot",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3014",
+  "name": "The Gourmet",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3015",
+  "name": "M16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3016",
+  "name": "Uwe's Uber Overpowered",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3017",
+  "name": "Rudi's Uber Ridiculous",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3019",
+  "name": "Ludwig's Uber Loaded",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3020",
+  "name": "The Super Cheeser",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3021",
+  "name": "Maxwell's Super Machinegun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3022",
+  "name": "The Uber Backscratcher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3023",
+  "name": "Roderick Super Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3024",
+  "name": "The Uber Gourmet",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3025",
+  "name": "M95",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "6 719 F"
+ },
+ {
+  "id": "3026",
+  "name": "Carl's Super Cold Comfort",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3027",
+  "name": "Harry's Super Hand Cannon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3028",
+  "name": "Super Slugger",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3029",
+  "name": "Hubble's Super Double Trouble",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3030",
+  "name": "Greg's Super Greasy Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3031",
+  "name": "Charlie's Super Chopper",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3032",
+  "name": "The Uber Kommandant",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3033",
+  "name": "The Uber Wacky Machinegun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 679 F"
+ },
+ {
+  "id": "3034",
+  "name": "Steiner's Uber Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3035",
+  "name": "The Backscratcher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "579 F"
+ },
+ {
+  "id": "3036",
+  "name": "The Cheeser",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "579 F"
+ },
+ {
+  "id": "3037",
+  "name": "Gerhart's Uber Greatest",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3038",
+  "name": "M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3039",
+  "name": "The Uber Groundbreaker",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3040",
+  "name": "Oscar's Super Farshot",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3041",
+  "name": "AK74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "6 719 F"
+ },
+ {
+  "id": "3042",
+  "name": "SVD",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "6 719 F"
+ },
+ {
+  "id": "3043",
+  "name": "PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3044",
+  "name": "Stolen Maxwell's Machinegun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3045",
+  "name": "Wolfgang's Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "579 F"
+ },
+ {
+  "id": "3046",
+  "name": "Bernie's Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "579 F"
+ },
+ {
+  "id": "3047",
+  "name": "Stolen Bernie's Super Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3048",
+  "name": "Stolen The Super Cheeser",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3049",
+  "name": "Stolen Bernie's Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3050",
+  "name": "Stolen The Cheeser",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3051",
+  "name": "Stolen M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "5 019 F"
+ },
+ {
+  "id": "3052",
+  "name": "Pilfered Wolfgang's Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3053",
+  "name": "Pilfered The Backscratcher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3054",
+  "name": "Pilfered Rudi's Uber Ridiculous",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3055",
+  "name": "Florenz' Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3056",
+  "name": "Garreth Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3057",
+  "name": "Pilfered Rudi's Ridiculous",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "759 F"
+ },
+ {
+  "id": "3058",
+  "name": "Stolen Bernie's Dapper Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "1 689 F"
+ },
+ {
+  "id": "3059",
+  "name": "Pilfered Wolfgang's Uber Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3060",
+  "name": "Pilfered The Uber Backscratcher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3061",
+  "name": "Gerhart's Greatest",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3062",
+  "name": "Harry's Hand Cannon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3063",
+  "name": "Pilfered Wolfgang's Stylish Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "1 689 F"
+ },
+ {
+  "id": "3064",
+  "name": "Pilfered PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "5 019 F"
+ },
+ {
+  "id": "3065",
+  "name": "Stolen Maxwell's Super Machinegun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3066",
+  "name": "Stolen Royal's Dapper Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3067",
+  "name": "Stolen Royal's Super Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3068",
+  "name": "Pilfered Konrad's Stylish Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3069",
+  "name": "Pilfered Konrad's Uber Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3070",
+  "name": "Stolen Pipsqueak's Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3071",
+  "name": "Stolen Roderick Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3072",
+  "name": "Stolen Oscar's Farshot",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3073",
+  "name": "Stolen Pipsqueak's Super Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3074",
+  "name": "Stolen Oscar's Super Farshot",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3075",
+  "name": "Stolen Pipsqueak's Dapper Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3076",
+  "name": "Stolen M95",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "7 499 F"
+ },
+ {
+  "id": "3077",
+  "name": "Pilfered The Gourmet",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3078",
+  "name": "Pilfered Stefan's Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3079",
+  "name": "Pilfered The Groundbreaker",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3080",
+  "name": "Pilfered Stefan's Uber Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3081",
+  "name": "Friedrich's Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3082",
+  "name": "Stewart's Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3083",
+  "name": "Pilfered Stefan's Stylish Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3084",
+  "name": "Pilfered The Uber Groundbreaker",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3085",
+  "name": "Pilfered The Uber Gourmet",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3086",
+  "name": "Pilfered SVD",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "7 499 F"
+ },
+ {
+  "id": "3087",
+  "name": "Uwe's Overpowered",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3088",
+  "name": "Slugger",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3089",
+  "name": "Stolen Roderick Super Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3090",
+  "name": "Golden M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3091",
+  "name": "Golden PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3092",
+  "name": "Golden M95",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3093",
+  "name": "Golden SVD",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3094",
+  "name": "Golden M16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3095",
+  "name": "The Wacky Machine Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3096",
+  "name": "Greg's Greasy Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3097",
+  "name": "Golden AK74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3098",
+  "name": "Stolen Charlie's Chopper",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3099",
+  "name": "Stolen Tommy's Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3100",
+  "name": "Stolen Charlie's Super Chopper",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3101",
+  "name": "Stolen Greg's Super Greasy Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3102",
+  "name": "Stolen Tommy's Dapper Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3103",
+  "name": "Stolen Tommy's Super Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3104",
+  "name": "Stolen M-16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "7 499 F"
+ },
+ {
+  "id": "3105",
+  "name": "Pilfered The Kommandant",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3106",
+  "name": "Pilfered The Wacky Machine Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3107",
+  "name": "Pilfered Rudolf's Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3108",
+  "name": "Pilfered The Uber Kommandant",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3109",
+  "name": "Pilfered The Uber Wacky Machine Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3110",
+  "name": "Pilfered Rudolf's Uber Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3111",
+  "name": "Pilfered Rudolf's Stylish Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "2 519 F"
+ },
+ {
+  "id": "3112",
+  "name": "Pilfered AK-74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "7 499 F"
+ },
+ {
+  "id": "3113",
+  "name": "Stolen Greg's Greasy Gun",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 139 F"
+ },
+ {
+  "id": "3114",
+  "name": "Stolen Hubble's Double Trouble",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3115",
+  "name": "Stolen Slugger",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3116",
+  "name": "Stolen Stewart's Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3117",
+  "name": "Stolen Stewart's Super Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3118",
+  "name": "Stolen Hubble's Super Double Trouble",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3119",
+  "name": "Stolen Super Slugger",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3120",
+  "name": "Pilfered Steiner's Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3121",
+  "name": "Pilfered Uwe's Overpowered",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3122",
+  "name": "Pilfered Friedrich's Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3123",
+  "name": "Rudolf's Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3124",
+  "name": "Tommy's Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3125",
+  "name": "Pilfered Friedrich's Uber Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3126",
+  "name": "Pilfered Steiner's Uber Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3127",
+  "name": "Pilfered Uwe's Uber Overpowered",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3128",
+  "name": "Pilfered Friedrich's Stylish Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3129",
+  "name": "Stolen Carl's Cold Comfort",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3130",
+  "name": "Stolen Garreth Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3131",
+  "name": "Stolen Garreth Dapper Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3132",
+  "name": "Stolen Garreth Super Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3133",
+  "name": "Stolen Harry's Hand Cannon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3134",
+  "name": "Stolen Carl's Super Cold Comfort",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3135",
+  "name": "The Groundbreaker",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "869 F"
+ },
+ {
+  "id": "3136",
+  "name": "Roderick Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "869 F"
+ },
+ {
+  "id": "3137",
+  "name": "Stolen Harry's Super Hand Cannon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3138",
+  "name": "Pilfered Ludwig's Loaded",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3139",
+  "name": "Pilfered Ludwig's Uber Loaded",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3140",
+  "name": "Pilfered Florenz' Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3141",
+  "name": "Pilfered Gerhart's Greatest",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3142",
+  "name": "Pilfered Florenz' Stylish Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3143",
+  "name": "Pilfered Florenz' Uber Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3144",
+  "name": "Pilfered Gerhart's Uber Greatest",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3145",
+  "name": "Stefan's Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "869 F"
+ },
+ {
+  "id": "3146",
+  "name": "Pipsqueak's Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "869 F"
+ },
+ {
+  "id": "3147",
+  "name": "Stolen Stewart's Dapper Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3148",
+  "name": "Tier 1 Elite M16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3149",
+  "name": "Specialist's Tier 1 AK-74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3150",
+  "name": "Tier 1 Elite M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3151",
+  "name": "Specialist's Tier 1 PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3152",
+  "name": "Tier 1 Elite M-21",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3153",
+  "name": "Specialist's Tier 1 SV-98",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "7 199 F"
+ },
+ {
+  "id": "3154",
+  "name": "Winter Camo SV-98",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3155",
+  "name": "Sticky TNT",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3156",
+  "name": "Sticky TNT",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3157",
+  "name": "Bill's Bomb",
+  "type": "Weapon",
+  "cat": "Grenade",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3158",
+  "name": "Steel Hand Grenade",
+  "type": "Weapon",
+  "cat": "Grenade",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "869 F"
+ },
+ {
+  "id": "3160",
+  "name": "Dapper Tank Buster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3161",
+  "name": "Bernie's Dapper Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "1 529 F"
+ },
+ {
+  "id": "3162",
+  "name": "Garreth Dapper Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3163",
+  "name": "Stewart's Dapper Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3164",
+  "name": "Tommy's Dapper Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3165",
+  "name": "Pipsqueak's Dapper Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3166",
+  "name": "Wolfgangs Stylish Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "1 529 F"
+ },
+ {
+  "id": "3167",
+  "name": "Florenz' Stylish Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3168",
+  "name": "Friedrich's Stylish Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3169",
+  "name": "Rudolf's Stylish Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3170",
+  "name": "Stefan's Stylish Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3171",
+  "name": "Faust's Stylish Panzerfist",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3172",
+  "name": "Royal's Dapper Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3173",
+  "name": "Konrad's Stylish Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "2 279 F"
+ },
+ {
+  "id": "3174",
+  "name": "Faust's Uber Panzerfist",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3175",
+  "name": "Super Tank Buster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3176",
+  "name": "Wolfgangs Uber Wonderful",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3177",
+  "name": "Bernie's Super Bone Chewer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "2 249 F"
+ },
+ {
+  "id": "3178",
+  "name": "Rudolf's Uber Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3179",
+  "name": "Tommy's Super Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3180",
+  "name": "Florenz' Uber Flurry",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3181",
+  "name": "Garreth Super Custom",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3182",
+  "name": "Friedrich's Uber Fly Swatter",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3183",
+  "name": "Stewart's Super Shotty",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3184",
+  "name": "Stefan's Uber Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 539 F"
+ },
+ {
+  "id": "3185",
+  "name": "Pipsqueak's Super Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3186",
+  "name": "Royal Super Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3187",
+  "name": "Konrad's Uber Knife",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 359 F"
+ },
+ {
+  "id": "3190",
+  "name": "Scoped SOF AK74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3191",
+  "name": "Scoped Arctic PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3192",
+  "name": "Winter Camo M-21",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3193",
+  "name": "Scoped SOF M16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3194",
+  "name": "Scoped Arctic M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "4 899 F"
+ },
+ {
+  "id": "3195",
+  "name": "M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3196",
+  "name": "Micro SMG",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3197",
+  "name": "590 Assault Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3198",
+  "name": "MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3199",
+  "name": "TEC-9",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3200",
+  "name": "870 MCS Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3201",
+  "name": "Hector's Hatred",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3202",
+  "name": "Jack's Cloudmaker",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3203",
+  "name": "Maimer's Machete",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3204",
+  "name": "Madman's Machete",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3205",
+  "name": "Maimer's Golden Machete",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3206",
+  "name": "Madman's Golden Machete",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3207",
+  "name": "Orbital Punch",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3208",
+  "name": "Dragon's Fire",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3209",
+  "name": "Dragon's Azure Fire",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3210",
+  "name": "Drake's Fire",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3211",
+  "name": "Drake's Crimson Fire",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3212",
+  "name": "M16-203 Battle Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "5 399 F"
+ },
+ {
+  "id": "3213",
+  "name": "AK74-30 Battle Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "5 399 F"
+ },
+ {
+  "id": "3214",
+  "name": "Sensei's Striking Edge",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3215",
+  "name": "Satoru's Cold Steel",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 899 F"
+ },
+ {
+  "id": "3217",
+  "name": "Omega Beamer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3218",
+  "name": "Coen's Combined Crusher",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "7 189 F"
+ },
+ {
+  "id": "3219",
+  "name": "Barrie's Barrel-o-Mania",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "7 189 F"
+ },
+ {
+  "id": "3220",
+  "name": "Dylan's Destructive Duplex",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "4 819 F"
+ },
+ {
+  "id": "3221",
+  "name": "Max's Magnified MG",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "4 819 F"
+ },
+ {
+  "id": "3224",
+  "name": "Albert's Anti-Air Arrow",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3225",
+  "name": "Sam's SAM",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3226",
+  "name": "Panzerhunter 39",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3227",
+  "name": "Mk1 Bad Boy",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3228",
+  "name": "Faust's Panzercutter",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3229",
+  "name": "Bernhardt's Blowlamp",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3230",
+  "name": "Amazon MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3231",
+  "name": "GameFly MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3232",
+  "name": "GamersGate MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3233",
+  "name": "Gamestop MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3234",
+  "name": "Amazon M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3235",
+  "name": "GameFly M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3236",
+  "name": "GamersGate M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3237",
+  "name": "Gamestop M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3238",
+  "name": "Moritz's Magnetic Hurler",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3239",
+  "name": "Albert's Accelerator",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3240",
+  "name": "Eraser Ray",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3241",
+  "name": "Plasma Forty-Five",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3242",
+  "name": "Stellar Strike",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3245",
+  "name": "Hermoso's Hexshot",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3246",
+  "name": "Navaja's Number 6",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3247",
+  "name": "Bill's Buckshot",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3248",
+  "name": "McGee's Matador",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3249",
+  "name": "Alberto's Asesino",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3250",
+  "name": "Blanco's Bullseye",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3251",
+  "name": "Golden Super Cheeser",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3252",
+  "name": "Golden Uber Backscratcher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3253",
+  "name": "Golden Uber Rescue",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3254",
+  "name": "Golden Super Typewriter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3255",
+  "name": "Golden Uber Sharpshooter",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3256",
+  "name": "Golden Super Popper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3257",
+  "name": "Golden M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3258",
+  "name": "Golden MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3259",
+  "name": "Ice",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 799 F"
+ },
+ {
+  "id": "3260",
+  "name": "Lion's Tooth",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 799 F"
+ },
+ {
+  "id": "3261",
+  "name": "National No-End Crossbow",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "799 F"
+ },
+ {
+  "id": "3262",
+  "name": "Royal Repeater",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "799 F"
+ },
+ {
+  "id": "3263",
+  "name": "Carlson's Crossbow",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "799 F"
+ },
+ {
+  "id": "3264",
+  "name": "Albert's Arbalest",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "799 F"
+ },
+ {
+  "id": "3265",
+  "name": "Carlson's Competitive Capper",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3266",
+  "name": "Werner's Winning Weapon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3267",
+  "name": "Steven's Sporting Shotgun",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3268",
+  "name": "Franz's Fielding Firearm",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3269",
+  "name": "Steven's Sporty Sniper",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "2 969 F"
+ },
+ {
+  "id": "3270",
+  "name": "Victor's Victorious Viewpoint",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "2 969 F"
+ },
+ {
+  "id": "3271",
+  "name": "Jimmy's Suppressed G73",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3272",
+  "name": "Sam's Silenced Sidearm",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3273",
+  "name": "Whisperer VK-22",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3274",
+  "name": "Agent's Infiltrator",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3275",
+  "name": "Gordon's GI M32 MGL",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3277",
+  "name": "Micro Blaster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3278",
+  "name": "Lil' Boomer",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3283",
+  "name": "Ralf's Recruit MGL 140",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3289",
+  "name": "The Anchor Drop",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3290",
+  "name": "The Landmaker",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3291",
+  "name": "Knuckleduster Dagger",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3292",
+  "name": "Dirk's Digger",
+  "type": "Weapon",
+  "cat": "Knife",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3293",
+  "name": "Side Feeder",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "999 F"
+ },
+ {
+  "id": "3294",
+  "name": "Lucky Sprayer",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "4 999 F"
+ },
+ {
+  "id": "3295",
+  "name": "Royal Warfighter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3296",
+  "name": "National Warfighter",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3297",
+  "name": "Arcus Root",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3298",
+  "name": "Impure Energy",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3299",
+  "name": "Demonic Charge",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3300",
+  "name": "Bending Bone",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3301",
+  "name": "Underworld Relic",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3302",
+  "name": "Jack-o'-buster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3303",
+  "name": "Cryptic Hex",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 499 F"
+ },
+ {
+  "id": "3304",
+  "name": "Doom Skull",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3305",
+  "name": "Nailer",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3306",
+  "name": "Leadstorm",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 199 F"
+ },
+ {
+  "id": "3307",
+  "name": "The Frostbite",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "4 199 F"
+ },
+ {
+  "id": "3308",
+  "name": "Brute Puncher",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3309",
+  "name": "Titan's Thunder",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3311",
+  "name": "Rufin's Ruffian",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3312",
+  "name": "Goddard's Goon",
+  "type": "Weapon",
+  "cat": "Pistol",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Commando"
+ },
+ {
+  "id": "3313",
+  "name": "Subcanon Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3314",
+  "name": "Dark Manta",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3315",
+  "name": "Ben's Bunker Blaster",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3316",
+  "name": "Trench Wrecker",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3317",
+  "name": "The Swarmer",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3318",
+  "name": "The Rapid",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3321",
+  "name": "The Shivering",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "4 199 F"
+ },
+ {
+  "id": "3322",
+  "name": "Bruno's Blizzard",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3323",
+  "name": "Tobias' Toaster",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3324",
+  "name": "Surreal Super Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3326",
+  "name": "Hyper Drive Rifle",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "999 F"
+ },
+ {
+  "id": "3327",
+  "name": "Elektro Slinger",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3329",
+  "name": "Unrealistic Uber Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3332",
+  "name": "Colin's Cooler",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3333",
+  "name": "Flannagan's Flame",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "5 999 F"
+ },
+ {
+  "id": "3338",
+  "name": "Void Shortcut",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3339",
+  "name": "The Wormhole",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3340",
+  "name": "Destroyer Drone's Demolisher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "4 689 F"
+ },
+ {
+  "id": "3341",
+  "name": "Brass-Bender's Battle Arm",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "4 689 F"
+ },
+ {
+  "id": "3342",
+  "name": "Destroyer Drone's Kommandant",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3343",
+  "name": "Brass-Bender's Chopper",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "6 999 F"
+ },
+ {
+  "id": "3346",
+  "name": "Homer's Homing Gun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3347",
+  "name": "Beck's Bloodhound Gun",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3348",
+  "name": "Steve's Sonic Boom",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3349",
+  "name": "Sergei's Subwoofer",
+  "type": "Weapon",
+  "cat": "Shotgun",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3350",
+  "name": "Ray's Rainmaker",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3351",
+  "name": "Tom's Tear Trigger",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3352",
+  "name": "Dr. Ned's Needle",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "999 F"
+ },
+ {
+  "id": "3353",
+  "name": "Dr. Siegfried's Syringe",
+  "type": "Weapon",
+  "cat": "TNT",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "999 F"
+ },
+ {
+  "id": "3354",
+  "name": "Benny's Beehive",
+  "type": "Weapon",
+  "cat": "Grenade",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "1 999 F"
+ },
+ {
+  "id": "3355",
+  "name": "Schroedinger's Nightmare",
+  "type": "Weapon",
+  "cat": "Grenade",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "1 999 F"
+ },
+ {
+  "id": "3356",
+  "name": "The Cloak Thrower",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3357",
+  "name": "The Shrouding",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3358",
+  "name": "North Marksman's Repeater",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3359",
+  "name": "South Sharpshooter's Repeater",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3360",
+  "name": "Darcy's Demotivator",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3361",
+  "name": "Dalton's Dangerzone",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "Gunner"
+ },
+ {
+  "id": "3362",
+  "name": "Golden Mk1 Bad Boy",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3363",
+  "name": "Golden Panzerhunter 39",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3364",
+  "name": "Brass Bender's Golden Battle Arm",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3365",
+  "name": "Destroyer Drone's Golden Demolisher",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3366",
+  "name": "Golden M16-203 Battle Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3367",
+  "name": "Golden AK74-30 Battle Rifle",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3372",
+  "name": "North Infantry's Repeater",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3373",
+  "name": "South Trooper's Repeater",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": "3 999 F"
+ },
+ {
+  "id": "3374",
+  "name": "Stolen Golden M16",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Nationals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3375",
+  "name": "Frosty the Snowgun",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": "500 VP"
+ },
+ {
+  "id": "3376",
+  "name": "Pilfered Golden AK-74",
+  "type": "Weapon",
+  "cat": "SMG",
+  "faction": "Royals",
+  "cls": "Soldier",
+  "price": ""
+ },
+ {
+  "id": "3377",
+  "name": "Stolen Golden M249",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3378",
+  "name": "Pilfered Golden PKM",
+  "type": "Weapon",
+  "cat": "MG",
+  "faction": "Royals",
+  "cls": "Gunner",
+  "price": ""
+ },
+ {
+  "id": "3379",
+  "name": "Stolen Golden M95",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Nationals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3380",
+  "name": "Pilfered Golden SVD",
+  "type": "Weapon",
+  "cat": "Rifle",
+  "faction": "Royals",
+  "cls": "Commando",
+  "price": ""
+ },
+ {
+  "id": "3381",
+  "name": "The Claus Launcher",
+  "type": "Weapon",
+  "cat": "GL",
+  "faction": "Nationals",
+  "cls": "Gunner",
+  "price": "500 VP"
+ }
+]
