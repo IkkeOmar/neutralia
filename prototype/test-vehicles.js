@@ -94,7 +94,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   check('every matrix cell shows its mount', await evalJs(`
     [...document.querySelectorAll('#matrix td[data-v]')].every(c=>{
       const m=c.querySelector('.vmount').textContent.trim(); return m.length>0;})`), true);
-  check('7 rules rendered', await evalJs("document.querySelectorAll('#rules .rule').length"), 7);
+  check('9 rules rendered', await evalJs("document.querySelectorAll('#rules .rule').length"), 9);
   check('12 invariant rows rendered', await evalJs("document.querySelectorAll('#inv .invrow').length"), 12);
   check('8 source tiles rendered', await evalJs("document.querySelectorAll('#srcs .src').length"), 8);
 
@@ -148,6 +148,23 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     (()=>{const all=CHASSIS.flatMap(c=>c.variants);
       const t=all.filter(v=>v.line==='Transport').length;
       return t===4 && all.length===20;})()`));
+  ok('R9: every pair of variants differs in mount or gadget', await evalJs(`
+    (()=>{for(const c of CHASSIS){for(let i=0;i<c.variants.length;i++)
+      for(let j=i+1;j<c.variants.length;j++){
+        const a=c.variants[i],b=c.variants[j];
+        if(a.mount===b.mount && a.gadget===b.gadget) return false;}}
+      return true;})()`));
+  ok('R8: the weakness table covers at least one variant per chassis', await evalJs(`
+    (()=>{const rows=document.getElementById('weak').textContent;
+      return CHASSIS.every(c=>rows.includes(c.id));})()`));
+  ok('R8: every variant in the weakness table has a stated downside', await evalJs(`
+    (()=>{const tds=[...document.querySelectorAll('#weak td')];
+      const downsides=tds.filter((td,i)=>i%3===2).map(td=>td.textContent.trim());
+      return downsides.length>0 && downsides.every(d=>d.length>3);})()`));
+  ok('R9 is stated in the rules', await evalJs(
+    "document.getElementById('rules').textContent.includes('practically the same class')"));
+  ok('R8 is stated in the rules', await evalJs(
+    "document.getElementById('rules').textContent.includes('not as an upgrade')"));
 
   console.log('\n=== INTERACTION ===');
   // clicking a locked cell unlocks it

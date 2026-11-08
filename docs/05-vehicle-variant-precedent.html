@@ -375,6 +375,68 @@ Differentiation (the pattern already used in <code>systems/class-and-weapon-fami
 requires the difference to be <strong>in type rather than in degree</strong>. A variant must change
 what the vehicle can <em>do</em>.</p>
 <hr>
+<h2>G2. Five more Battlefield chassis→variant structures (added 2026-11-08)</h2>
+<p>A parallel research pass covered BF1942, BF2142, BF3, BF4 and BFV. These are the
+alternative readings of the same problem, and they are the reason our model is BF1's
+rather than someone else's.</p>
+<table>
+<thead>
+<tr>
+<th>Game</th>
+<th>Chassis → variant structure</th>
+<th>What it teaches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BF1942</strong></td>
+<td>Chassis <em>is</em> the tier: Medium tank (M4 Sherman / Panzer IV / T-34-85), Heavy tank (M10 Wolverine / Tiger I), SPG (M7 Priest / Wespe), APC (M3 Half-track / SdKfz 251), Jeep (Willys MB / Kübelwagen). Aircraft subdivided by role: Fighter vs Fighter-Bomber vs Medium-Bomber vs Heavy-Bomber.</td>
+<td>The earliest example of role carried by <em>aircraft subtype</em>, not by cosmetics.</td>
+</tr>
+<tr>
+<td><strong>BF2</strong></td>
+<td>Six mirrored land classes: MBT, IFV/APC, AA, Transport (jeep), FAV, Attack Heli. Faction counterparts are "almost purely aesthetic" for MBTs — but the three IFVs differ functionally (BTR-90 2A42 = higher ROF; LAV-25 = harder to hit + 2 rear gun ports).</td>
+<td>Role-per-chassis. Also: a "cosmetic" faction pair can still differ functionally if you look at the secondary systems.</td>
+</tr>
+<tr>
+<td><strong>BF2142</strong></td>
+<td>Six chassis × two factions: Battlewalker, Tank (A8 Tiger vs <strong>hover</strong> Type 21 Nekomata), APC, Gunship, Air Transport, FAV.</td>
+<td>The cautionary read. Tiger vs Nekomata are the same slot but asymmetric by mobility — a deliberate split that players found confusing. <em>We avoid asymmetry within a chassis: every NEUTRALIA variant differs by role, not by one handling quirk.</em></td>
+</tr>
+<tr>
+<td><strong>BF3</strong></td>
+<td>24 vehicles per faction. First to layer <strong>specializations</strong> on chassis (Reactive Armor, Thermal Optics, IR Smoke). Real chassis-reuse naming: <strong>LAV-AD</strong> = LAV-25 hull + Avenger AA system.</td>
+<td>Chassis reuse already existed; what BF3 lacked was a <em>readable</em> split. Its jets were "practically the same class, with few differences" — DICE's own words.</td>
+</tr>
+<tr>
+<td><strong>BF4</strong></td>
+<td>Fixed BF3's jet sameness: <strong>Stealth Jet</strong> (F-35 / Su-50 / J-20) vs <strong>Attack Jet</strong> (A-10 / Su-25TM / Q-5 Fantan), separate unlock trees.</td>
+<td>The direct precedent for rule <strong>R9</strong>. DICE: in BF3 the two jet classes "were both practically the same class, with few differences".</td>
+</tr>
+<tr>
+<td><strong>BFV</strong></td>
+<td>One chassis + a <strong>6-tier specialization tree</strong> (Panzer IV, Tiger I, Staghound). Chassis-reuse suffixes: Flakpanzer IV, Valentine AA Mk I, Churchill Gun Carrier, StuG III.</td>
+<td>The alternative model: <em>vertical</em> specialisation of one hull rather than <em>horizontal</em> variants of several. We chose horizontal — see §F.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule R9 is BF3 → BF4.</strong> DICE, in the BF4 vehicles Battlelog: <em>"in Battlefield 3, Fighter
+Jets and Attack Jets were fairly homogenous and shared the same unlocks. They were both
+practically the same class, with few differences. In Battlefield 4, we've updated the
+Fighter Jet class to Stealth Jets … and their customization options now focus on air-to-air
+fighting. Attack Jets now have their own set of unlocks which focus on air-to-ground
+capabilities."</em> <code><span class="verified">[verified]</span></code> — <code>battlelog.battlefield.com/bf3/news/view/the-road-to-battlefield-4-vehicles/</code></p>
+<p><strong>Rule R8 is BF2042's Hovercraft.</strong> From the EA launch briefing: <em>"We designed this
+vehicle to behave as an alternative to the LATV4, but not as an upgrade. In Thursday's
+Update #2, we have balanced the health of this vehicle to bring it more in line with its
+design."</em> <code><span class="verified">[verified]</span></code> —
+<code>ea.com/games/battlefield/battlefield-2042/news/battlefield-briefing-launch-update-and-the-road-ahead</code></p>
+<p><strong>Readability ceiling.</strong> ~6 chassis (BF2142) and ~12 classes (BF4) is roughly what a HUD
+and a roster can absorb; BFH's 4 is the comfortable floor. WoT shows the opposite extreme —
+hundreds of vehicles — which works only because <em>class</em> (5 types) is the HUD unit and the
+individual tank is just stats. Our 7 chassis × 20 variants sits deliberately in the
+BF1-to-BF4 band, not in WoT's.</p>
+<hr>
 <h2>H. Sources actually fetched</h2>
 <p><strong>BFH primary / community:</strong>
 - <code>https://bfh-info.cs-heroes.cz/en/game/technology/</code>
@@ -407,11 +469,25 @@ what the vehicle can <em>do</em>.</p>
 - <code>https://www.ubisoft.com/en-us/help/rainbow-six-siege/gameplay/article/matchmaking-rating-and-ranks/000063203</code>
 - <code>https://www.ubisoft.com/en-us/game/rainbow-six/siege/news-updates/5fzYRZKVVHqqRkkv3m4MyF/ranked-30-update</code>
 - <code>https://esportsinsider.com/rainbow-six-siege-ranks</code></p>
+<p><strong>BF3 → BF4 vehicle design (primary developer source):</strong>
+- <code>https://battlelog.battlefield.com/bf3/news/view/the-road-to-battlefield-4-vehicles/</code></p>
+<p><strong>BF2042 launch briefing (primary developer source):</strong>
+- <code>https://www.ea.com/games/battlefield/battlefield-2042/news/battlefield-briefing-launch-update-and-the-road-ahead</code></p>
+<p><strong>Chassis-reuse naming, BF3/2042:</strong>
+- <code>https://battlefield.fandom.com/wiki/Specializations_(Battlefield_V)/Vehicles</code>
+- <code>https://planetbattlefield.gamespy.com/Viewac58.html</code> (LAV-AD and the BF3 roster)</p>
+<p><strong>BFV specialisation philosophy (EA):</strong>
+- <code>https://www.ea.com/news/vehicle-specializations-panzer-iv-battlefield-5</code></p>
+<p><strong>BF2142 six-chassis layout:</strong>
+- <code>https://strategywiki.org/wiki/Battlefield_2142/Vehicles</code></p>
 <p><strong>Not successfully fetched:</strong> <code>strategywiki.org/wiki/Battlefield_1942/Vehicles</code> (empty
 response on two attempts) and <code>battlefield.fandom.com/wiki/Battlefield_Heroes</code> (direct
 extract returned empty; content was obtained via search snippet and the Giant Bomb page
 instead). BF1942's vehicle names therefore come from the subagent's verified search
 results and the BF1/BF2 sources above, not from a direct StrategyWiki read.</p>
+<p><strong>One unresolved item, left unresolved on purpose:</strong> the BF2142 hover tank is called
+"Type 21" in some sources and "Type 32" in others. Not used in any design decision, so
+it was not guessed.</p>
 <footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>05-vehicle-variant-precedent.md</code>.</footer>
 </div>
 </body>

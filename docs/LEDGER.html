@@ -206,9 +206,23 @@ R7 ubiquitous chassis has the lowest ceiling.</p>
 per-weapon skill tree.</p>
 <p><strong>Armoured car is what makes the Engineer real</strong> — the original had no Engineer class
 and vehicle repair was a Gunner ability.</p>
+<p><strong>Rules R8 and R9 (added 2026-11-08 after a second research pass):</strong>
+- <strong>R8</strong> — a variant must be <em>worse</em> than its chassis at something. From BF2042's
+  Hovercraft postmortem (EA launch briefing): <em>"We designed this vehicle to behave as an
+  alternative to the LATV4, but not as an upgrade"</em> — the community read it as a straight
+  upgrade and EA cut its health in Update #2.
+- <strong>R9</strong> — two variants you cannot tell apart in one sentence are the same variant. DICE
+  on BF3: Fighter Jets and Attack Jets <em>"were both practically the same class, with few
+  differences"</em> — fixed in BF4 by splitting Stealth Jets from Attack Jets with separate
+  unlock trees.</p>
 <p><strong>Simulator:</strong> <code>sim_vehicle_matrix()</code> in <code>tools/simulate-design.py</code> asserts V1–V6 plus
-seat-economy and transport-share. It caught two real flaws on first run (contested role
-lines; Scout car with no predator) — both fixed in the design, not in the assertion.</p>
+R8 (every variant has a stated weakness; every chassis has a deliberately-crippled
+variant), seat-economy and transport-share. It caught two real flaws on first run
+(contested role lines; Scout car with no predator) — both fixed in the design, not in
+the assertion.</p>
+<p><strong>Prototype:</strong> <code>prototype/vehicles.html</code> — 49 DOM checks, live-verified. The matrix is
+chassis (rows) × battlefield-line (columns), so R2 is visible in the DOM: every cell
+holds exactly one variant.</p>
 <p>Docs: <code>systems/vehicle-system.md</code>, <code>research/05-vehicle-variant-precedent.md</code>,
 <code>research/bfh_map_vehicles.json</code>.</p>
 <hr>
@@ -351,7 +365,7 @@ to <em>perform</em> it. Cron prompts must state the correct location and prohibi
 <tr>
 <td>2026-11-08</td>
 <td><code>vehicles.html</code> DOM suite, live URL</td>
-<td>44/44</td>
+<td>44/44 → 49/49 after R8/R9</td>
 </tr>
 <tr>
 <td>2026-11-08</td>
@@ -408,6 +422,9 @@ prototype/
   removed, and both BFH cron prompts rewritten + paused.</li>
 <li><strong>2026-11-08</strong> — Vehicle system designed: 7 chassis x 20 variants, simulator-verified, prototype
   built and deployed (44/44 live checks). Armoured car + Heavy tank are new chassis.</li>
+<li><strong>2026-11-08</strong> — Rules R8 + R9 added from a second research pass (BF2042 Hovercraft, BF3→BF4
+  jet split). Both verified verbatim against primary EA/DICE sources, then encoded as
+  simulator assertions and prototype DOM checks.</li>
 <li><strong>2026-11-08</strong> — Pages build STATUS can be stale: the API reports <code>built</code> for the previous
   build while the new one queues. Poll on live CONTENT, never on status alone. Recorded in
   skill devops/deliverable-hosting.</li>

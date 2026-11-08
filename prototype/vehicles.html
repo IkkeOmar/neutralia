@@ -172,6 +172,11 @@
         <h2>Anti-vehicle rock-paper-scissors</h2>
         <div class="arteq" id="rps"></div>
       </div>
+
+      <div class="card">
+        <h2>Rule R8 — every variant has a downside</h2>
+        <div class="arteq" id="weak"></div>
+      </div>
     </div>
 
     <div>
@@ -227,88 +232,88 @@ const CHASSIS = [
   {id:"Scout car", domain:"Ground", origin:"original", abbr:"SC",
    note:"Jeep lineage. On 6 of BFH's 14 maps — the most ubiquitous chassis, so the lowest ceiling.",
    variants:[
-     {n:"Scout", line:"Recon", mount:"—", gadget:"Smoke screen", seats:3, expl:false,
+     {n:"Scout", line:"Recon", mount:"—", gadget:"Smoke screen", seats:3, expl:false, weak: "no weapon at all",
       role:"Fast, quiet, reveals. The BFH jeep exactly — no mount at all.",
       why:"You cannot outrun a tank. A scout that cannot fight is a scout that survives, and a scout that survives finds the enemy."},
-     {n:"Technical", line:"Anti-infantry", mount:"Light machine gun", gadget:"Repair kit", seats:2, expl:false,
+     {n:"Technical", line:"Anti-infantry", mount:"Light machine gun", gadget:"Repair kit", seats:2, expl:false, weak: "no armour, light machine gun only",
       role:"Improvised fighting car. Cheap, expendable, good at infantry.",
       why:"The technical is a real historical category — a light improvised fighting vehicle. It is the cheapest thing on four wheels and it knows it."},
-     {n:"Courier", line:"Transport", mount:"—", gadget:"Radio relay", seats:5, expl:false,
+     {n:"Courier", line:"Transport", mount:"—", gadget:"Radio relay", seats:5, expl:false, weak: "unarmed, cannot fight",
       role:"Moves the squad. The forward-respawn vehicle.",
       why:"Five seats and a radio turns a jeep into a logistics decision. It never fights — that is the point."}]},
 
   {id:"Armoured car", domain:"Ground", origin:"new", abbr:"AC",
    note:"Half-track lineage. New chassis — and the one that makes the Engineer class real.",
    variants:[
-     {n:"APC", line:"Transport", mount:"—", gadget:"Smoke", seats:6, expl:false,
+     {n:"APC", line:"Transport", mount:"—", gadget:"Smoke", seats:6, expl:false, weak: "unarmed, slow",
       role:"The squad taxi.",
       why:"Battlefield 1's Squad Support Landship proved the shape: a vehicle that carries five and has a repair crate is a force multiplier, not a stat block."},
-     {n:"Carrier", line:"Anti-infantry", mount:"Light machine gun", gadget:"Ammo crate", seats:3, expl:false,
+     {n:"Carrier", line:"Anti-infantry", mount:"Light machine gun", gadget:"Ammo crate", seats:3, expl:false, weak: "cannot fight vehicles",
       role:"Sustained fire support on foot.",
       why:"It cannot shoot vehicles, so it must never have to. It carries the ammunition that lets a squad keep fighting."},
-     {n:"Recovery", line:"Support", mount:"—", gadget:"Hull repair", seats:4, expl:false,
+     {n:"Recovery", line:"Support", mount:"—", gadget:"Hull repair", seats:4, expl:false, weak: "unarmed, slow",
       role:"Repairs and revives friendly vehicles. The Engineer vehicle.",
       why:"The original had no Engineer class and gave vehicle repair to the Gunner. This gives repair a permanent home where it can be a whole identity."}]},
 
   {id:"Light tank", domain:"Ground", origin:"original", abbr:"LT",
    note:"M4 Sherman / Panzer IV lineage.",
    variants:[
-     {n:"Javelin", line:"Anti-infantry", mount:"20mm autocannon", gadget:"Smoke", seats:2, expl:true,
+     {n:"Javelin", line:"Anti-infantry", mount:"20mm autocannon", gadget:"Smoke", seats:2, expl:true, weak: "light hull, thin armour",
       role:"Fast flanker.",
       why:"Its gun kills men and barely scratches armour. If it meets a tank it should leave — and that decision belongs to the driver."},
-     {n:"Bulwark", line:"Heavy", mount:"37mm main gun", gadget:"Emergency repair", seats:2, expl:true,
+     {n:"Bulwark", line:"Heavy", mount:"37mm main gun", gadget:"Emergency repair", seats:2, expl:true, weak: "slow traverse, small gun",
       role:"The line holder.",
       why:"One job: hold the point you are standing on. Not the fastest, not the best against infantry — the one that is still there."},
-     {n:"Hunter", line:"Anti-vehicle", mount:"AT gun", gadget:"Mine dispenser", seats:2, expl:true,
+     {n:"Hunter", line:"Anti-vehicle", mount:"AT gun", gadget:"Mine dispenser", seats:2, expl:true, weak: "useless against infantry",
       role:"Anti-vehicle specialist.",
       why:"Battlefield 1's Tank Hunter. Superb against tanks and nearly useless against a man with a rifle — which is the definition of a specialisation."}]},
 
   {id:"Heavy tank", domain:"Ground", origin:"new", abbr:"HT",
    note:"A7V lineage. New chassis.",
    variants:[
-     {n:"Assault", line:"Heavy", mount:"57mm + coaxial MG", gadget:"Smoke", seats:3, expl:true,
+     {n:"Assault", line:"Heavy", mount:"57mm + coaxial MG", gadget:"Smoke", seats:3, expl:true, weak: "slow, no indirect fire",
       role:"Pushes the line.",
       why:"It advances. That is the entire identity, and the armour exists to survive the trip."},
-     {n:"Dug-in", line:"Hold", mount:"57mm, slow traverse", gadget:"Repair + ammo", seats:3, expl:true,
+     {n:"Dug-in", line:"Hold", mount:"57mm, slow traverse", gadget:"Repair + ammo", seats:3, expl:true, weak: "cannot move fast, fixed position",
       role:"Static, durable, holds an objective.",
       why:"It gives the map a second contested point — a version of the tank that wins by not moving."},
-     {n:"Siege", line:"Indirect", mount:"Howitzer (arc)", gadget:"Repair", seats:2, expl:true,
+     {n:"Siege", line:"Indirect", mount:"Howitzer (arc)", gadget:"Repair", seats:2, expl:true, weak: "no direct fire",
       role:"Indirect fire. Cannot hit what it can see.",
       why:"A howitzer that cannot hit the target in front of it is a weapon that demands a whole team to aim for it."}]},
 
   {id:"Fighter", domain:"Air", origin:"original", abbr:"FIG",
    note:"Spitfire / Bf 109 lineage.",
    variants:[
-     {n:"Interceptor", line:"Air superiority", mount:"2× machine gun", gadget:"—", seats:1, expl:false,
+     {n:"Interceptor", line:"Air superiority", mount:"2× machine gun", gadget:"—", seats:1, expl:false, weak: "cannot attack ground",
       role:"Air superiority. No bombs, no rockets.",
       why:"Battlefield 2042 made the jet's role air-primary for a reason — a fighter that can also clear infantry stops being a fighter."},
-     {n:"Bomber", line:"Bombing", mount:"2× bomb", gadget:"—", seats:1, expl:true,
+     {n:"Bomber", line:"Bombing", mount:"2× bomb", gadget:"—", seats:1, expl:true, weak: "cannot dogfight",
       role:"Softens ground, then leaves. Cannot dogfight.",
       why:"It is the answer to the Scout car — unarmoured transports are exactly what bombs are for. It cannot win a dogfight, and it must not try."},
-     {n:"Liaison", line:"Recon", mount:"Machine gun", gadget:"Radio relay", seats:3, expl:false,
+     {n:"Liaison", line:"Recon", mount:"Machine gun", gadget:"Radio relay", seats:3, expl:false, weak: "no air-to-air, slow, fragile",
       role:"Carries two passengers, relays spots. Weak in a dogfight.",
       why:"The original's Spitfire carried two wing passengers who fired their own weapons. That was the best idea in the vehicle game."}]},
 
   {id:"Helicopter", domain:"Air", origin:"original", abbr:"HEL",
    note:"Original helicopter lineage.",
    variants:[
-     {n:"Transport", line:"Transport", mount:"—", gadget:"Smoke", seats:4, expl:false,
+     {n:"Transport", line:"Transport", mount:"—", gadget:"Smoke", seats:4, expl:false, weak: "unarmed, slow, vulnerable",
       role:"The fast drop. No weapons at all.",
       why:"The purest transport in the roster. It has no opinion about the fight — it moves people to it."},
-     {n:"Gunship", line:"Anti-infantry", mount:"2× machine gun", gadget:"Rocket pod", seats:2, expl:true,
+     {n:"Gunship", line:"Anti-infantry", mount:"2× machine gun", gadget:"Rocket pod", seats:2, expl:true, weak: "cannot scout, exposed to AA",
       role:"Anti-infantry. Vulnerable to anti-air.",
       why:"It hovers, which means it is a target. The AA emplacement exists precisely to teach that lesson."},
-     {n:"Spotter", line:"Recon", mount:"—", gadget:"Laser designator", seats:2, expl:false,
+     {n:"Spotter", line:"Recon", mount:"—", gadget:"Laser designator", seats:2, expl:false, weak: "carries no weapon",
       role:"Marks targets for everyone. Cannot fight.",
       why:"Worthless in a fight and indispensable to a team that knows how to use it — which is exactly the skill a PvP ladder should measure."}]},
 
   {id:"Boat", domain:"Marine", origin:"original", abbr:"BOAT",
    note:"Original naval craft. Marine maps only.",
    variants:[
-     {n:"Landing craft", line:"Transport", mount:"—", gadget:"Ramp", seats:6, expl:false,
+     {n:"Landing craft", line:"Transport", mount:"—", gadget:"Ramp", seats:6, expl:false, weak: "unarmed, water-bound",
       role:"Amphibious drop onto a beach.",
       why:"It converts a naval map into an infantry map, which is why it carries six and no gun."},
-     {n:"Gunboat", line:"Naval", mount:"20mm autocannon", gadget:"Smoke", seats:3, expl:true,
+     {n:"Gunboat", line:"Naval", mount:"20mm autocannon", gadget:"Smoke", seats:3, expl:true, weak: "cannot go ashore",
       role:"Naval support. Bounded to water.",
       why:"It cannot chase you onto the beach. A hard boundary is a feature, not a limitation."}]}
 ];
@@ -325,7 +330,9 @@ const RULES = [
   ["R4","A variant may <em>reduce</em> seats, never add them. Battlefield 1's Landship carried five in Squad Support and three in Tank Hunter."],
   ["R5","A variant is chosen <em>at the spawn screen</em>, never picked up in the field. This turns a vehicle from a lottery into a decision."],
   ["R6","Anti-vehicle capability belongs to <em>exactly one chassis per domain</em>."],
-  ["R7","A chassis that appears on many maps has the <em>lowest power ceiling</em>. The Jeep was on 6 of BFH's 14 maps."]
+  ["R7","A chassis that appears on many maps has the <em>lowest power ceiling</em>. The Jeep was on 6 of BFH's 14 maps."],
+  ["R8","A variant must be <em>worse</em> than its chassis at something. BF2042's Hovercraft was designed \"as an alternative to the LATV4, but not as an upgrade\" — players read it as a straight upgrade, so EA cut its health."],
+  ["R9","Two variants you cannot tell apart in one sentence are <em>the same variant</em>. In BF3, DICE's own words: Fighter Jets and Attack Jets \"were both practically the same class, with few differences\"."]
 ];
 
 const INVARIANTS = [
@@ -435,6 +442,7 @@ function renderVariants(){
       <div class="vh"><span class="vn">${esc(v.n)}</span><span class="vline">${esc(v.line)}</span></div>
       <div class="vmeta">Mount <em>${esc(v.mount)}</em> · Gadget <em>${esc(v.gadget)}</em> · <em>${v.seats}</em> seat${v.seats===1?"":"s"} · ${v.expl?"<em>Explosive</em>":"<em>No explosives</em>"}</div>
       <div class="vgad">${esc(v.role)}</div>
+      <div class="vgad">Worse at: <em>${esc(v.weak||"—")}</em></div>
     </div>`;
   }).join("");
   l.querySelectorAll(".vcard").forEach(d=>{
@@ -471,6 +479,18 @@ function renderInv(){
   }).join("");
 }
 
+function renderWeakness(){
+  const W = [];
+  for(const c of CHASSIS) for(const v of c.variants) W.push([c.id, v.n, v.weak]);
+  document.getElementById("weak").innerHTML =
+    "<b>Every variant is worse than its chassis at something</b> — rule R8. " +
+    "A variant with no downside is an upgrade, and an upgrade becomes mandatory.<br><br>" +
+    "<table style='width:100%;font-size:12px;border-collapse:collapse'>"+
+    "<tr><th style='text-align:left;color:#8b90a8'>Chassis</th><th style='text-align:left;color:#8b90a8'>Variant</th><th style='text-align:left;color:#8b90a8'>Worse at</th></tr>"+
+    W.map(r=>`<tr><td style='text-align:left;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)'>${esc(r[0])}</td><td style='text-align:left;color:#b7a4ff;font-weight:600'>${esc(r[1])}</td><td style='text-align:left'>${esc(r[2]||'MISSING')}</td></tr>`).join("")+
+    "</table>";
+}
+
 function renderRps(){
   document.getElementById("rps").innerHTML =
     "<b>Threat → countered by</b><br><br>" +
@@ -493,7 +513,7 @@ function renderSrcs(){
 
 function renderAll(){
   renderMatrix(); renderTabs(); renderVariants(); renderRules();
-  renderInv(); renderRps(); renderBfh(); renderSrcs();
+  renderInv(); renderRps(); renderWeakness(); renderBfh(); renderSrcs();
 }
 renderAll();
 </script>
