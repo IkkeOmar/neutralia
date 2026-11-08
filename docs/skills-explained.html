@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEUTRALIA — what the agent learned, explained to a human</title>
+<style>
+  :root{
+    --bg:#0b0d17; --panel:rgba(255,255,255,.035); --panel2:rgba(255,255,255,.06);
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --txt:#e6e9f2; --muted:#a9b0c8; --faint:#767d99;
+    --purple:#7c5cfc; --cyan:#38bdf8; --green:#34d399; --red:#f2545b; --gold:#f0b429;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--txt);
+    font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 520px at 12% -5%,rgba(124,92,252,.20),transparent 62%),
+      radial-gradient(760px 480px at 88% 8%,rgba(56,189,248,.13),transparent 60%),
+      radial-gradient(900px 700px at 50% 108%,rgba(124,92,252,.10),transparent 65%);
+  }
+  .wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 22px 100px}
+
+  header{padding:74px 0 34px;border-bottom:1px solid var(--line)}
+  .eyebrow{font:600 11px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+  h1{margin:18px 0 12px;font-size:clamp(30px,5.4vw,46px);line-height:1.12;letter-spacing:-.02em;font-weight:650}
+  h1 em{font-style:normal;color:var(--purple)}
+  .lede{font-size:17px;color:var(--muted);max-width:62ch;margin:0}
+  .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font:12px/1 var(--mono);padding:7px 11px;border-radius:999px;
+    background:var(--panel);border:1px solid var(--line);color:var(--muted);
+  }
+  .chip b{color:var(--txt);font-weight:600}
+
+  h2{
+    margin:66px 0 6px;font-size:13px;font:700 12px/1 var(--mono);
+    letter-spacing:.19em;text-transform:uppercase;color:var(--purple);
+  }
+  h2 + .sub{color:var(--muted);margin:0 0 26px;max-width:66ch;font-size:15px}
+  h3{margin:32px 0 8px;font-size:19px;font-weight:620;letter-spacing:-.01em}
+  h4{margin:0 0 6px;font-size:12px;font:700 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  p{margin:0 0 14px}
+  a{color:var(--cyan)}
+  code{font:13px/1.5 var(--mono);background:rgba(255,255,255,.07);padding:2px 6px;border-radius:5px;color:#c9d3f5}
+  pre{
+    background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;
+    padding:15px 17px;overflow-x:auto;margin:0 0 18px;
+  }
+  pre code{background:none;padding:0;font-size:12.5px;line-height:1.62;color:#cfd6ee}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:15px;
+    padding:22px 24px;margin:0 0 18px;
+  }
+  .bug{
+    background:var(--panel);border:1px solid var(--line);border-radius:15px;
+    padding:0;margin:0 0 20px;overflow:hidden;
+  }
+  .bug > .head{
+    display:flex;gap:14px;align-items:baseline;
+    padding:17px 22px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02);
+  }
+  .bug .n{
+    font:700 12px/1 var(--mono);color:var(--purple);
+    border:1px solid rgba(124,92,252,.4);border-radius:6px;padding:6px 8px;flex:none;
+  }
+  .bug .t{font-size:17px;font-weight:620;letter-spacing:-.01em}
+  .bug .body{padding:19px 22px}
+  .bug .body > p:last-child{margin-bottom:0}
+
+  .rule{
+    border-left:2px solid var(--green);background:rgba(52,211,153,.07);
+    padding:13px 16px;border-radius:0 9px 9px 0;margin:16px 0 0;
+  }
+  .rule b{color:var(--green);font:700 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:6px}
+
+  .sym{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:0;list-style:none}
+  .sym li{
+    font:12.5px/1.45 var(--mono);padding:7px 11px;border-radius:8px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);
+  }
+  .sym li b{color:var(--txt);font-weight:600}
+
+  table{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:14px}
+  th{
+    text-align:left;padding:11px 13px;font:700 11px/1.3 var(--mono);
+    letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    border-bottom:1px solid var(--line2);
+  }
+  td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td code{font-size:12px}
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:0 0 20px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 19px}
+  .stat .v{font:700 25px/1.1 var(--mono);letter-spacing:-.02em}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .stat.p .v{color:var(--purple)}.stat.c .v{color:var(--cyan)}
+  .stat.g .v{color:var(--green)}.stat.gold .v{color:var(--gold)}
+
+  .note{
+    border:1px solid var(--line2);border-radius:13px;padding:17px 19px;margin:0 0 20px;
+    background:rgba(56,189,248,.055);
+  }
+  .note.warn{background:rgba(240,180,41,.06);border-color:rgba(240,180,41,.28)}
+  .note h4{color:var(--cyan);margin-bottom:8px}
+  .note.warn h4{color:var(--gold)}
+  .note p:last-child{margin-bottom:0}
+
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0 0 20px}
+  .steps li{counter-increment:s;position:relative;padding:0 0 20px 42px;border-left:1px solid var(--line);margin-left:13px}
+  .steps li:last-child{border-left-color:transparent;padding-bottom:0}
+  .steps li::before{
+    content:counter(s);position:absolute;left:-13px;top:0;
+    width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+    font:700 12px/1 var(--mono);background:var(--bg);border:1px solid var(--line2);color:var(--cyan);
+  }
+  .steps li b{display:block;margin-bottom:3px}
+
+  .tag{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 7px;border-radius:5px;vertical-align:middle;margin-right:7px}
+  .tag.done{background:rgba(52,211,153,.14);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+  .tag.todo{background:rgba(240,180,41,.14);color:var(--gold);border:1px solid rgba(240,180,41,.3)}
+  .tag.done2{background:rgba(56,189,248,.14);color:var(--cyan);border:1px solid rgba(56,189,248,.3)}
+
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px 24px;margin:36px 0 0}
+  .toc ol{margin:0;padding-left:20px;color:var(--muted)}
+  .toc li{margin:5px 0}
+  .toc a{color:var(--muted);text-decoration:none}
+  .toc a:hover{color:var(--cyan)}
+
+  .diagram{background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:13px;padding:20px;margin:0 0 20px}
+  .diagram svg{display:block;width:100%;height:auto;max-width:640px;margin:0 auto}
+  .cap{text-align:center;color:var(--faint);font-size:12.5px;margin-top:10px}
+
+  .codeblock{position:relative;margin:14px 0;background:rgba(0,0,0,.34);border:1px solid var(--line);
+    border-left:3px solid rgba(124,92,252,.28);border-radius:10px;overflow:hidden}
+  .codeblock pre{margin:0;padding:14px 16px;overflow-x:auto}
+  .copy-btn{position:absolute;top:8px;right:8px;font:inherit;font-size:0.72rem;font-weight:600;
+    color:var(--cyan);background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.35);
+    border-radius:6px;padding:3px 9px;cursor:pointer}
+  .copy-btn:hover{background:rgba(56,189,248,.16)}
+
+  footer{margin-top:76px;padding-top:26px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
+  footer p{margin:0 0 7px}
+
+  @media (max-width:600px){
+    .wrap{padding:0 16px 70px}
+    header{padding:48px 0 26px}
+    .bug .head{flex-direction:column;gap:9px}
+    .bug .body{padding:16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Hermes skill documentation — human edition</div>
+  <h1>What the agent learned building a <em>browser multiplayer shooter</em></h1>
+  <p class="lede">
+    This document explains the skills that now exist on disk, in plain terms: what each one
+    is for, what it currently knows, and — most usefully — the specific failures it was
+    written to prevent. Every rule below came from a bug that actually broke the game.
+  </p>
+  <div class="meta">
+    <span class="chip"><b>Project</b> NEUTRALIA</span>
+    <span class="chip"><b>Engine</b> Three.js 0.187 + Rapier 0.21</span>
+    <span class="chip"><b>Skills</b> 2,515 indexed</span>
+    <span class="chip"><b>Written</b> 8 Nov 2026</span>
+    <span class="chip"><b>Checks</b> 98 passing</span>
+  </div>
+</header>
+
+<div class="toc">
+  <ol>
+    <li><a href="#what">What a skill actually is</a></li>
+    <li><a href="#stack">The stack, and what it costs</a></li>
+    <li><a href="#bugs">Ten bugs, written down so they cannot recur</a></li>
+    <li><a href="#jump">The rocket jump, explained physically</a></li>
+    <li><a href="#tests">The test suite and what it proves</a></li>
+    <li><a href="#where">Where everything lives</a></li>
+    <li><a href="#gaps">What is not finished</a></li>
+  </ol>
+</div>
+
+<h2 id="what">1 — What a skill actually is</h2>
+<p class="sub">
+  A skill is a Markdown file with instructions that get loaded into the agent's context when
+  relevant. It is not a program, not a library, and it does not run by itself. It is a
+  written-down set of decisions so that the same mistake is never made twice, and so that
+  the reasoning survives even if the conversation does not.
+</p>
+
+<div class="card">
+  <h4>The two skills this work touched</h4>
+  <table>
+    <thead><tr><th style="width:29%">Skill</th><th style="width:12%">State</th><th>What it covers</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>devops/deliverable-hosting</code></td>
+        <td><span class="tag done">patched</span></td>
+        <td>How to ship a deliverable so it is actually reachable and verifiable — including the
+            Cloudflare quick-tunnel trap described below.</td>
+      </tr>
+      <tr>
+        <td><code>development/neutralia-multiplayer-engine</code></td>
+        <td><span class="tag done">created</span></td>
+        <td>The NEUTRALIA engine specifically: the physics layer contract, the authoritative
+            server model, the explosion rules, the asset pipeline, and all ten bugs below.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="note warn">
+  <h4>The quick-tunnel trap, because it cost real time</h4>
+  <p>
+    <code>cloudflared tunnel --url</code> silently loads <code>~/.cloudflared/config.yml</code>.
+    That file contained a catch-all ingress rule ending in <code>http_status:404</code> — so
+    every single request through the tunnel returned a 404, including the WebSocket upgrade.
+    The tunnel was not broken; it was faithfully obeying a stale config.
+  </p>
+  <p>
+    The fix is a one-line explicit config with nothing in it:
+    <code>cloudflared tunnel --config /tmp/quick-empty.yml --url http://127.0.0.1:8800</code>,
+    where the file contains just <code>tunnel: quick</code>. That lesson is now written into
+    the hosting skill so it cannot bite again.
+  </p>
+</div>
+
+<h2 id="stack">2 — The stack, and what it costs</h2>
+<p class="sub">
+  Every version number and size below was checked against the live npm registry, bundlephobia
+  and the projects' own documentation rather than recalled. The honest total is a 13x
+  increase over the original prototype, and the reason is a single dependency.
+</p>
+
+<div class="grid2">
+  <div class="stat c"><div class="v">166 KB</div><div class="l">Three.js 0.187, gzip</div></div>
+  <div class="stat p"><div class="v">1.64 MB</div><div class="l">Rapier 0.21 compat, gzip (1.20 MB brotli)</div></div>
+  <div class="stat g"><div class="v">33 KB</div><div class="l">Map + skinned soldier, Meshopt-compressed</div></div>
+  <div class="stat gold"><div class="v">1.85 MB</div><div class="l">Total client payload, gzip</div></div>
+</div>
+
+<table>
+  <thead><tr><th style="width:17%">Layer</th><th style="width:31%">Choice</th><th>Reasoning</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Renderer</td>
+      <td><code>three@0.187.0</code>, <code>WebGLRenderer</code></td>
+      <td>Three.js is 166 KB gzip against Babylon's 1.8 MB and PlayCanvas's 622 KB. The decisive
+          reason, though, is that Three.js ships a WebGPU renderer that falls back to WebGL2
+          automatically, so one codebase covers both paths.</td>
+    </tr>
+    <tr>
+      <td>Physics</td>
+      <td><code>@dimforge/rapier3d-compat</code> on the client,<br>
+          <code>-deterministic-compat</code> on the server</td>
+      <td>Of the four engines compared (Rapier, ammo.js, cannon-es, Havok) only Rapier ships a
+          build with a cross-platform determinism guarantee. That guarantee is what makes client
+          prediction and server authority agree. ammo.js is effectively abandoned; cannon-es and
+          Havok offer no determinism promise.</td>
+    </tr>
+    <tr>
+      <td>Netcode</td>
+      <td>Raw WebSocket (<code>ws</code>)<br>Colyseus 0.18 installed, not yet wired</td>
+      <td>Colyseus does ship prediction, reconciliation and server-side rewind
+          (<code>allowRewindState</code>) — exactly what a hitscan shooter needs — but it is not
+          running yet. The hand-rolled transport works and is smaller. This is the biggest known gap.</td>
+    </tr>
+    <tr>
+      <td>Assets</td>
+      <td>glTF 2.0, <code>EXT_meshopt_compression</code>,<br><code>KHR_mesh_quantization</code></td>
+      <td>Meshopt over Draco for one decisive reason: Draco compresses triangle meshes only, and
+          leaves animation tracks untouched. In a game whose characters animate, the animation is
+          often the larger payload — so Draco would forfeit most of the win.</td>
+    </tr>
+    <tr>
+      <td>Hosting</td>
+      <td>GitHub Pages for the client,<br>a Node server on the VPS</td>
+      <td>The stack runs single-threaded, so it needs no <code>SharedArrayBuffer</code>, therefore
+          no COOP/COEP headers, therefore GitHub Pages serves it unmodified with no header hacks.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="bugs">3 — Ten bugs, written down so they cannot recur</h2>
+<p class="sub">
+  None of these were found by reading the code. Every one was caught by a test that asserted a
+  specific physical or network property and failed. This is the actual value of the skill:
+  it is a list of traps that have already been sprung.
+</p>
+
+<div class="bug">
+  <div class="head"><span class="n">01</span><span class="t">A kinematic body only moves when the world steps</span></div>
+  <div class="body">
+    <p>
+      The character-movement function returned <code>body.translation() + computedMovement</code> —
+      the <em>target</em> position — while the caller also stepped the physics world. The logical
+      state and the physics body therefore disagreed by the collision margin, every single step.
+    </p>
+    <p>
+      The symptom was subtle and maddening: the player would walk normally for a couple of
+      seconds and then stop dead against a wall, with the code insisting they were still moving.
+      The two representations were fighting, and the reconciliation logic snapped the player back
+      to the wall on every snapshot.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      The movement function steps the physics world itself and returns the body's real
+      post-step translation. The caller must never step again. One call equals one
+      authoritative step.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">02</span><span class="t">The static raycast was hitting players too</span></div>
+  <div class="body">
+    <p>
+      Hitscan resolves in two parts: cast against the static world, cast against character
+      capsules, then take whichever hit is closer. The static cast was not excluding character
+      capsules, so it stopped at the player too — and since the two distances were computed
+      identically, the character hit was never <em>strictly</em> closer.
+    </p>
+    <p>
+      Net effect: <strong>nobody could ever be shot</strong>. The game looked alive and
+      functioned perfectly. It simply could not register a hit.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      The static raycast excludes every character collider via the filter predicate — which is
+      the eighth argument of Rapier's <code>castRayAndGetNormal</code>, not the one people
+      usually reach for. The character cast does the exact opposite and matches only its target.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">03</span><span class="t">Shots passed 0.9 m over everyone's head</span></div>
+  <div class="body">
+    <p>
+      The game works in "feet space" — a player's position is where their boots touch the
+      floor. Rapier's capsule, however, is centred on the body. A ray origin was being converted
+      from feet space into centre space, which lifted the muzzle by exactly half the player's
+      height.
+    </p>
+    <p>
+      Every shot sailed 90 cm over the target's head. Aiming down at a target's chest missed
+      them entirely.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Hitscan muzzle positions are absolute world positions. The feet-space to centre-space
+      conversion applies only to character body positions, never to ray origins.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">04</span><span class="t">The client predicted at half the server's rate</span></div>
+  <div class="body">
+    <p>
+      The server ran two physics sub-steps per 30 Hz network tick — 60 Hz simulation. The client
+      predicted at 30 Hz. So the client's position ran ahead of the authority, and every
+      authoritative snapshot yanked the player backwards by the difference.
+    </p>
+    <p>
+      The fix was to move the sub-step constants into the shared protocol module so both sides
+      import the same numbers, and to have the client predict at the physics rate rather than
+      the network rate.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      The simulation rate lives in <code>shared/protocol.js</code> and both sides import it. The
+      client predicts at <code>SUB_DT</code> and emits one input per sub-step.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">05</span><span class="t">The input buffer starved and the player stopped walking</span></div>
+  <div class="body">
+    <p>
+      The server originally took the newest input and applied it to both of its sub-steps, so
+      the authority advanced twice for every single input the client sent. On top of that, the
+      client batched its inputs on a <code>requestAnimationFrame</code> timer, so the batch size
+      oscillated between one and three depending on frame timing.
+    </p>
+    <p>
+      When a batch happened to contain only one input, the server ran out and fell back to
+      repeating a stale one. The player's effective input rate fell below the simulation rate.
+      The visible symptom: <strong>the player moved 2.6 metres and then stopped dead</strong>,
+      still holding the key.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      The server keeps an ordered input buffer and consumes exactly one input per sub-step,
+      oldest first. The snapshot reports the last input actually <em>simulated</em>
+      (<code>consumedSeq</code>), not the last one received — reporting the received number tells
+      the client to discard inputs the server has not run yet.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">06</span><span class="t">Reconciliation forgot the velocity and the body</span></div>
+  <div class="body">
+    <p>
+      When an authoritative snapshot arrived, the client snapped its position to the server's and
+      replayed the unacknowledged inputs on top. But it never restored the authoritative
+      velocity, and never told the physics engine where the body had been moved to. The next
+      movement query therefore resolved against a stale transform.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Reconciliation resets three things together: the position, the velocity, and the physics
+      body's transform. Then, and only then, replay the unacknowledged inputs.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">07</span><span class="t">An explosion was pushing the feet, not the body</span></div>
+  <div class="body">
+    <p>
+      The blast direction was computed from the target's feet position to the explosion. A
+      rocket detonating at ground level under a standing player is 90 cm below that player's
+      centre of mass — so the push was almost horizontal, and the rocket jump simply did not
+      happen. The player got shoved sideways.
+    </p>
+    <p>
+      This is the single most important line in the whole explosion model, and it is the reason
+      the jump is physical rather than scripted. More detail in section 4.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      The blast pushes the body's centre of mass. When the body is standing on a surface, any
+      downward component is converted into an upward bounce, because a surface cannot be pushed
+      through — the energy goes up instead.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">08</span><span class="t">Every cloned soldier shared one skeleton</span></div>
+  <div class="body">
+    <p>
+      Three.js' ordinary <code>Object3D.clone()</code> copies a <code>Skeleton</code> by
+      <em>reference</em>. Every spawned soldier was therefore bound to the original model's
+      bones — they would all animate as one figure, and the clones would render against the
+      wrong rig.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Any glTF scene containing a skinned mesh must be duplicated with
+      <code>SkeletonUtils.clone()</code> from <code>three/addons/utils/SkeletonUtils.js</code>.
+      Never <code>Object3D.clone()</code>.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">09</span><span class="t">The assets were in a folder the bundler never looked at</span></div>
+  <div class="body">
+    <p>
+      The glTF files were written to <code>engine/assets/</code>. The bundler's root is
+      <code>engine/client/</code>, so those files were never copied into the build output. The
+      fetches 404'd and the client silently fell back to primitive boxes and capsules — with no
+      error in the console beyond a warning nobody read.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Assets live in <code>client/public/assets/</code>, which the bundler copies verbatim. The
+      asset build script writes there directly, so there is no copy step to forget and no way for
+      the two locations to drift apart.
+    </div>
+  </div>
+</div>
+
+<div class="bug">
+  <div class="head"><span class="n">10</span><span class="t">The camera was the aim source, and it points at the player</span></div>
+  <div class="body">
+    <p>
+      Firing took its direction from the camera's forward vector. But a third-person camera
+      always looks <em>at</em> the character, so its forward vector always pointed at their
+      chest. A rocket aimed at the ground hit the shooter's own torso.
+    </p>
+    <p>
+      The crosshair had the same problem for the same reason: it marked a direction the shot did
+      not follow.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Derive the aim vector from the player's yaw and pitch, and point the camera <em>along</em>
+      that vector so the crosshair and the shot agree. The pitch convention in this engine is
+      positive = looking up.
+    </div>
+  </div>
+</div>
+
+<h2 id="jump">4 — The rocket jump, explained physically</h2>
+<p class="sub">
+  The brief was specific: reproduce the Battlefield Heroes behaviour where detonating a rocket
+  at your own feet launches you absurdly high. This is how it was modelled — and why the
+  centre-of-mass detail above is the whole trick.
+</p>
+
+<div class="diagram">
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Diagram showing an explosion below a player pushing the player's centre of mass upward">
+  <line x1="40" y1="240" x2="600" y2="240" stroke="#3a4266" stroke-width="2"/>
+  <text x="44" y="258" fill="#767d99" font-family="ui-monospace,monospace" font-size="11">ground</text>
+
+  <rect x="240" y="128" width="26" height="112" rx="13" fill="rgba(124,92,252,.22)"
+        stroke="#7c5cfc" stroke-width="1.5"/>
+  <circle cx="253" cy="184" r="5.5" fill="#f0b429"/>
+  <circle cx="253" cy="184" r="11" fill="none" stroke="#f0b429" stroke-width="1" opacity=".45"/>
+  <text x="272" y="180" fill="#f0b429" font-family="ui-monospace,monospace" font-size="11">centre of mass</text>
+  <text x="272" y="194" fill="#767d99" font-family="ui-monospace,monospace" font-size="10">0.9 m above feet</text>
+
+  <circle cx="253" cy="236" r="17" fill="rgba(242,84,91,.28)" stroke="#f2545b" stroke-width="1.5"/>
+  <circle cx="253" cy="236" r="8" fill="rgba(242,84,91,.5)"/>
+  <text x="278" y="240" fill="#f2545b" font-family="ui-monospace,monospace" font-size="11">explosion</text>
+
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+  <line x1="253" y1="222" x2="253" y2="193" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <line x1="210" y1="76" x2="296" y2="76" stroke="rgba(52,211,153,.45)" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="302" y="80" fill="#34d399" font-family="ui-monospace,monospace" font-size="11">apex ~9.7 m</text>
+  <path d="M253 128 L253 78" stroke="rgba(52,211,153,.4)" stroke-width="1.5" stroke-dasharray="3 4"/>
+
+  <g opacity=".85">
+    <line x1="253" y1="184" x2="330" y2="214" stroke="#f2545b" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="336" y="218" fill="#f2545b" font-family="ui-monospace,monospace" font-size="11">measuring from</text>
+    <text x="336" y="232" fill="#f2545b" font-family="ui-monospace,monospace" font-size="11">the feet → sideways</text>
+  </g>
+</svg>
+<div class="cap">
+  The explosion sits below the centre of mass, so the push points up. Measured from the feet,
+  the same blast points sideways and the jump never happens.
+</div>
+</div>
+
+<p>
+  Three rules make it work, and all three are sourced rather than invented:
+</p>
+
+<ul class="sym">
+  <li><b>Self-splash</b> Quake II's rule: your own blast deals half damage but pushes at 1600/mass instead of 500/mass — a factor of 3.2.</li>
+  <li><b>Explosive strength</b> DICE's Refractor 2 engine exposes a <code>ForceOnExplosion</code> property on a 0–50 scale: explosive packs 50, landmines 30, Katyushas 15, grenades 10, bazookas 2.</li>
+  <li><b>The ground bounces you</b> a surface cannot be pushed through, so any downward component of the blast is redirected upward.</li>
+</ul>
+
+<p>
+  The falloff curve also needed correcting. Quadratic falloff crushed the near field: a rocket
+  60 cm under your feet got 25% of the push while one at zero got 100%, so the same weapon felt
+  like it either did nothing or launched you into orbit. A <code>t^1.5</code> curve keeps the
+  falloff physical while leaving the near field usable, which is the entire point of a rocket jump.
+</p>
+
+<table>
+  <thead><tr><th style="width:22%">Weapon</th><th style="width:18%">Apex</th><th>Behaviour against infantry, and why</th></tr></thead>
+  <tbody>
+    <tr><td>Panzerfaust (rocket)</td><td>~9.7 m</td><td>Strong. The community-documented "Roquet-Jump" weapon.</td></tr>
+    <tr><td>Sticky TNT</td><td>~14 m</td><td>Weak against players, devastating against vehicles. The BFH community guide calls it "très faible contre les joueurs" — it behaves like a vehicle against a vehicle.</td></tr>
+    <tr><td>M32 MGL</td><td>~4 m</td><td>Lethal to infantry at point blank, very weak against vehicles.</td></tr>
+  </tbody>
+</table>
+
+<p>
+  The map's walls are 8 m and its towers 3.6 m, so a rocket jump at 9.7 m clears the walls
+  comfortably and lands you on top of most structures — the intended tactical use.
+</p>
+
+<h2 id="tests">5 — The test suite and what it proves</h2>
+<p class="sub">
+  98 checks across five suites. The browser tests assert the player's actual physical state,
+  not that a page loaded — a screenshot on its own is not a test.
+</p>
+
+<div class="steps">
+  <li><b>Explosion physics — 20 checks</b> <code>node test/explosions.js</code><br>
+      Blast geometry, self-push ratio, self-damage halving, mass behaviour, falloff, and the
+      requirement that the standard and deterministic physics builds produce a bit-identical
+      apex. This is the suite that proves the rocket jump is real.</li>
+  <li><b>Integration — 29 checks</b> <code>node test/slice.js</code><br>
+      The authoritative server end to end: joining, movement, hitscan damage, and disconnect
+      handling.</li>
+  <li><b>Assets — 16 checks</b> <code>node tools/verify-assets.mjs</code><br>
+      Both GLBs decode with the standard loader, the map's 16 nodes match the shared map
+      definition exactly, the soldier has a bound skeleton with 19 bones, correct joint and
+      weight attributes, and two animation clips that actually deform the rig.</li>
+  <li><b>Browser — 16 checks</b> <code>node test/browser.cjs $URL</code><br>
+      WebGL context alive, the canvas contains rendered geometry rather than a background, the
+      HUD is wired, and the player actually moves when a key is held.</li>
+  <li><b>Rocket jump — 17 checks</b> <code>node test/browser-rocket.cjs $URL</code><br>
+      The whole chain in a real browser: the model is skinned with 19 bones, the rocket is
+      fired at the player's own feet, the player leaves the ground, reaches a useful height,
+      comes back down, and lands on the floor rather than through it.</li>
+</div>
+
+<div class="note">
+  <h4>Two lessons from the test harness itself</h4>
+  <p>
+    <strong>Poll for assets, do not sample once.</strong> The 4.3 MB physics WASM has to
+    download and parse before the client can even boot, and the models load after that. A test
+    that checked once reported a false failure — the asset was two seconds away.
+  </p>
+  <p>
+    <strong>Expose a read-only debug surface.</strong> Module-scoped variables are unreachable
+    from a browser test, so the client publishes a small <code>window.__NEUTRALIA</code> object
+    with getters. Adding a getter there is much cleaner than reaching into module scope from
+    outside.
+  </p>
+</div>
+
+<div class="codeblock">
+  <pre><code># Run everything, from engine/
+node test/explosions.js          # 20  blast geometry, self-push, determinism
+node test/slice.js               # 29  authoritative server end to end
+node tools/verify-assets.mjs     # 16  glTF decodes, skin, clips, sizes
+node test/browser.cjs $URL       # 16  WebGL, HUD, movement, net
+node test/browser-rocket.cjs $URL # 17  the rocket jump, end to end</code></pre>
+</div>
+
+<h2 id="where">6 — Where everything lives</h2>
+
+<table>
+  <thead><tr><th style="width:38%">Path</th><th>What it is</th></tr></thead>
+  <tbody>
+    <tr><td><code>engine/shared/protocol.js</code></td><td>Tick rates, movement constants, and the simulation-rate constants both sides import.</td></tr>
+    <tr><td><code>engine/shared/movement.js</code></td><td>The dynamics: acceleration, friction, gravity, jump. Pure maths, no engine dependency, imported verbatim by client and server.</td></tr>
+    <tr><td><code>engine/shared/physics.js</code></td><td>The collision layer. Rapier capsule queries, step height, slopes, raycasts.</td></tr>
+    <tr><td><code>engine/shared/combat.js</code></td><td>Weapons, projectiles, blast effects. Pure and shared.</td></tr>
+    <tr><td><code>engine/shared/vehicles.js</code></td><td>7 chassis and 20 variants, extracted from the design document. Data only — not yet wired to the engine.</td></tr>
+    <tr><td><code>engine/server/index.js</code></td><td>The authoritative server. Owns positions, health, hit detection, projectiles and explosions.</td></tr>
+    <tr><td><code>engine/client/main.js</code></td><td>The client: rendering, input, prediction, reconciliation, weapon selection.</td></tr>
+    <tr><td><code>engine/client/public/assets/</code></td><td>The compressed GLBs.</td></tr>
+    <tr><td><code>engine/tools/build-assets.mjs</code></td><td>Regenerates both GLBs deterministically.</td></tr>
+    <tr><td><code>engine/test/</code></td><td>All five test suites.</td></tr>
+    <tr><td><code>systems/engine-stack.md</code></td><td>The stack decision with its sources.</td></tr>
+    <tr><td><code>systems/vehicle-system.md</code></td><td>The vehicle design document the module was extracted from.</td></tr>
+    <tr><td><code>LEDGER.md</code></td><td>The durable project state. Read this before anything else.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="gaps">7 — What is not finished</h2>
+<p class="sub">
+  Stated plainly, because a skill that only records successes is worth less than one that
+  records what is still broken.
+</p>
+
+<table>
+  <thead><tr><th style="width:30%">Gap</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Colyseus transport and lag compensation</td>
+      <td><span class="tag todo">not wired</span> The SDK is installed and its APIs are verified,
+          but the raw WebSocket stack is what runs. Hitscan still resolves against the server's
+          present state, so a fast-moving target is hard to hit at high ping.</td>
+    </tr>
+    <tr>
+      <td>Vehicles</td>
+      <td><span class="tag done2">data ready</span> The 7 chassis and 20 variants are extracted
+          and pass 15 assertions against the design document, but the chassis are not connected
+          to the physics or the server.</td>
+    </tr>
+    <tr>
+      <td>Character art</td>
+      <td><span class="tag done2">procedural</span> The soldier is generated by script — 19
+          bones, working idle and run cycles, correct proportions — but it is not an
+          artist's model.</td>
+    </tr>
+    <tr>
+      <td>Permanent hostname</td>
+      <td><span class="tag todo">ephemeral</span> The quick tunnel dies with its process. A
+          permanent name needs a domain that is not the business one, which stays clean.</td>
+    </tr>
+  </tbody>
+</table>
+
+<footer>
+  <p>Generated 8 November 2026 from the working session that built the engine.</p>
+  <p>Every factual claim above is backed by a tool result in that session — live npm registry
+     lookups, bundle measurements, physics simulations, and browser assertions.</p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  document.querySelectorAll('.codeblock').forEach(function (block) {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function () {
+      var code = pre.querySelector('code');
+      var text = code ? code.textContent : pre.textContent;
+      function done() {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1200);
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+    block.appendChild(btn);
+  });
+})();
+</script>
+</body>
+</html>

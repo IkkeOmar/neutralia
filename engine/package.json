@@ -11,7 +11,9 @@
     "test": "node test/slice.js"
   },
   "dependencies": {
+    "@colyseus/sdk": "^0.18.9",
     "@dimforge/rapier3d-compat": "^0.21.0",
+    "@dimforge/rapier3d-deterministic-compat": "^0.21.0",
     "colyseus": "^0.18.12",
     "colyseus.js": "^0.16.22",
     "three": "^0.187.0",

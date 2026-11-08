@@ -1,14 +1,28 @@
-// NEUTRALIA engine slice — client.
+// NEUTRALIA engine client.
+//
 // Three.js renderer + pointer-lock third-person camera + client-side prediction
-// against the authoritative server, using the SAME shared movement code.
+// against the authoritative server, using the SAME shared movement code and
+// the SAME Rapier collision layer as the server.
+//
+// The client runs the STANDARD Rapier build; the server runs the DETERMINISTIC
+// one. tools/spike-determinism.mjs proves they agree bit-identically, so
+// prediction and authority cannot drift.
 
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
+
 import { MAP } from '../shared/map.js';
 import {
-  MSG, TICK_MS, TICK_DT, PLAYER_HEIGHT, EYE_HEIGHT,
-  MAX_SPEED, MAX_HEALTH, FIRE_COOLDOWN_MS
+  MSG, TICK_MS, TICK_DT, SUB_STEPS, SUB_DT, PLAYER_HEIGHT, EYE_HEIGHT,
+  MAX_SPEED, MAX_HEALTH
 } from '../shared/protocol.js';
-import { createPlayerState, stepMovement } from '../shared/movement.js';
+import { createPlayerState, stepMovement, applyImpulse } from '../shared/movement.js';
+import { initPhysics, PhysicsWorld, physicsBuild } from '../shared/physics.js';
+import {
+  WEAPONS, WEAPON_IDS, PLAYER_MASS, blastEffect
+} from '../shared/combat.js';
 
 // ---------------------------------------------------------------- renderer
 
@@ -54,24 +68,6 @@ const grid = new THREE.GridHelper(MAP.groundSize, MAP.groundSize / 2, 0x2a3150, 
 grid.position.y = 0.01;
 world.add(grid);
 
-const KIND_COLOR = {
-  wall: 0x39406b, cover: 0x4a4270, ramp: 0x3c5a63, tower: 0x5a4a78
-};
-const boxMeshes = [];
-for (const b of MAP.boxes) {
-  const geo = new THREE.BoxGeometry(b.w, b.h, b.d);
-  const mat = new THREE.MeshStandardMaterial({
-    color: KIND_COLOR[b.kind] ?? 0x44507a,
-    roughness: 0.85, metalness: 0.05
-  });
-  const m = new THREE.Mesh(geo, mat);
-  m.position.set(b.x, b.y + b.h / 2, b.z);
-  m.castShadow = true;
-  m.receiveShadow = true;
-  world.add(m);
-  boxMeshes.push(m);
-}
-
 // spawn markers
 for (const s of MAP.spawns) {
   const ring = new THREE.Mesh(
@@ -81,6 +77,76 @@ for (const s of MAP.spawns) {
   ring.rotation.x = -Math.PI / 2;
   ring.position.set(s.x, 0.03, s.z);
   world.add(ring);
+}
+
+// ---------------------------------------------------------------- assets
+//
+// The map and the soldier are real glTF 2.0 assets, Meshopt-compressed, built
+// by tools/build-assets.mjs and verified by tools/verify-assets.mjs.
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setMeshoptDecoder(MeshoptDecoder);
+
+const assets = { map: null, soldier: null, soldierClips: [] };
+
+async function loadAssets() {
+  // The map GLB carries the same boxes as shared/map.js (verified), so it
+  // replaces the primitive boxes. If it fails to load we fall back to
+  // primitives rather than showing an empty world.
+  try {
+    const mapGltf = await gltfLoader.loadAsync('assets/map.glb');
+    mapGltf.scene.traverse((o) => {
+      if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; }
+    });
+    assets.map = mapGltf.scene;
+    world.add(assets.map);
+  } catch (e) {
+    console.warn('[neutralia] map.glb failed to load, using primitives', e);
+  }
+
+  try {
+    const soldierGltf = await gltfLoader.loadAsync('assets/soldier.glb');
+    assets.soldier = soldierGltf.scene;
+    assets.soldierClips = soldierGltf.animations || [];
+    rebuildSoldiers();
+  } catch (e) {
+    console.warn('[neutralia] soldier.glb failed to load, using primitives', e);
+  }
+}
+
+/**
+ * Rebuild every soldier mesh once the skinned glTF model is available.
+ *
+ * The local player mesh is created on the first animation frame, which
+ * happens BEFORE the glTF has finished downloading. Without this rebuild the
+ * session is stuck with the blocky primitive fallback even though the real
+ * model arrives a moment later.
+ */
+function rebuildSoldiers() {
+  if (!assets.soldier) return;
+
+  const me = scene.getObjectByName('localPlayer');
+  if (me) {
+    const pos = me.position.clone();
+    const rot = me.rotation.y;
+    scene.remove(me);
+    const fresh = buildSoldier(0x7c5cfc);
+    fresh.name = 'localPlayer';
+    fresh.position.copy(pos);
+    fresh.rotation.y = rot;
+    scene.add(fresh);
+  }
+
+  for (const r of remotes.values()) {
+    const pos = r.mesh.position.clone();
+    const rot = r.mesh.rotation.y;
+    scene.remove(r.mesh);
+    const fresh = buildSoldier(0xfb923c);
+    fresh.position.copy(pos);
+    fresh.rotation.y = rot;
+    r.mesh = fresh;
+    scene.add(fresh);
+  }
 }
 
 // ---------------------------------------------------------------- player meshes
@@ -117,18 +183,64 @@ function makeSoldier(color) {
   return g;
 }
 
+/**
+ * Build a soldier for a player. Uses the skinned glTF model when it is
+ * available (with its idle/run animations), otherwise the primitive.
+ */
+function buildSoldier(color) {
+  if (assets.soldier) {
+    // SkeletonUtils.clone() is REQUIRED for a skinned model. A plain
+    // Object3D.clone() copies the Skeleton by reference, so every cloned
+    // soldier would be bound to the ORIGINAL's bones - they would all
+    // animate as one figure and the clone would render against the wrong
+    // skeleton.
+    const clone = skeletonClone(assets.soldier);
+
+    // Tint the mesh so the two teams are distinguishable.
+    clone.traverse(o => {
+      if (o.isMesh && o.material) {
+        o.material = o.material.clone();
+        if (o.material.color) o.material.color.setHex(color);
+        o.castShadow = true;
+        o.receiveShadow = true;
+      }
+    });
+
+    const mixer = new THREE.AnimationMixer(clone);
+    const clips = assets.soldierClips || [];
+    const idle = clips.find(c => c.name === 'idle');
+    const run = clips.find(c => c.name === 'run');
+    if (idle) mixer.clipAction(idle).play();
+    clone.userData.mixer = mixer;
+    clone.userData.runClip = run;
+    clone.userData.idleClip = idle;
+    clone.userData.isSkinned = true;
+    return clone;
+  }
+  const g = makeSoldier(color);
+  g.userData.mixer = null;
+  g.userData.isSkinned = false;
+  return g;
+}
+
 // ---------------------------------------------------------------- state
 
 let myId = null;
 let ws = null;
 let connected = false;
-const remotes = new Map();   // id -> { mesh, target: {x,y,z}, hp, alive, lastSeq }
+const remotes = new Map();   // id -> { mesh, target, hp, alive }
 let local = null;            // predicted local state
 let pendingInputs = [];      // for reconciliation
+let unsentInputs = [];       // inputs not yet delivered to the server
 let seq = 0;
 let lastSent = 0;
 let serverState = null;      // last authoritative snapshot
 let lastShotAt = 0;
+let physics = null;
+let currentWeapon = 'rifle';
+let ammo = { rifle: 30, rocket: 1, mgl: 6, tnt: 3 };
+const projectiles = new Map();   // visual projectile meshes
+const explosions = [];            // visual explosion effects
 
 // input
 const keys = new Set();
@@ -144,8 +256,17 @@ const sHp = document.getElementById('s-hp');
 const hpFill = document.getElementById('hpfill');
 const sWs = document.getElementById('s-ws');
 const playersEl = document.getElementById('players');
+const sWeapon = document.getElementById('s-weapon');
+const sAmmo = document.getElementById('s-ammo');
+const weaponBar = document.getElementById('weaponbar');
 
-addEventListener('keydown', e => { keys.add(e.code); if (e.code === 'Space') e.preventDefault(); });
+addEventListener('keydown', e => {
+  keys.add(e.code);
+  if (e.code === 'Space') e.preventDefault();
+  // 1-4 select a weapon
+  const slot = ['Digit1', 'Digit2', 'Digit3', 'Digit4'].indexOf(e.code);
+  if (slot >= 0 && WEAPON_IDS[slot]) selectWeapon(WEAPON_IDS[slot]);
+});
 addEventListener('keyup', e => keys.delete(e.code));
 addEventListener('mousemove', e => {
   if (document.pointerLockElement !== renderer.domElement) return;
@@ -193,6 +314,48 @@ function connect() {
 
 joinBtn.onclick = () => { if (!ws) connect(); };
 
+function selectWeapon(w) {
+  if (!WEAPON_IDS.includes(w)) return;
+  currentWeapon = w;
+  if (ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ t: MSG.SWITCH, weapon: w }));
+  }
+  updateWeaponPanel();
+}
+
+// Build the weapon bar once: one clickable tile per weapon.
+function buildWeaponBar() {
+  if (!weaponBar) return;
+  weaponBar.innerHTML = '';
+  WEAPON_IDS.forEach((id, i) => {
+    const w = WEAPONS[id];
+    const el = document.createElement('div');
+    el.className = 'w';
+    el.dataset.weapon = id;
+    el.innerHTML = `<span class="k">${i + 1}</span><b>${w.name}</b><span class="a" data-ammo></span>`;
+    el.onclick = () => selectWeapon(id);
+    weaponBar.appendChild(el);
+  });
+}
+
+function updateWeaponPanel() {
+  if (sWeapon) sWeapon.textContent = WEAPONS[currentWeapon].name;
+  if (sAmmo) {
+    const a = ammo[currentWeapon];
+    sAmmo.textContent = a === undefined ? '' : String(a);
+  }
+  if (weaponBar) {
+    for (const el of weaponBar.children) {
+      const id = el.dataset.weapon;
+      el.classList.toggle('active', id === currentWeapon);
+      const count = ammo[id];
+      const slot = el.querySelector('[data-ammo]');
+      if (slot) slot.textContent = count === undefined ? '∞' : String(count);
+      el.classList.toggle('empty', count !== undefined && count <= 0);
+    }
+  }
+}
+
 // ---------------------------------------------------------------- messages
 
 function handleMessage(m) {
@@ -202,7 +365,11 @@ function handleMessage(m) {
       sMap.textContent = m.map;
       sTick.textContent = m.tickRate + 'Hz';
       local = createPlayerState(m.spawn);
+      local.bodyId = myId;
+      if (physics) physics.addCharacter(myId, local.x, local.y, local.z);
       for (const p of m.players) if (p.id !== myId) addRemote(p);
+      if (m.ammo) ammo = m.ammo;
+      updateWeaponPanel();
       updatePlayersPanel();
       break;
     }
@@ -222,7 +389,8 @@ function handleMessage(m) {
       break;
     }
     case MSG.SHOT: {
-      drawTracer(m);
+      if (m.projectile) spawnProjectileVisual(m);
+      else drawTracer(m);
       break;
     }
     case MSG.HIT: {
@@ -237,40 +405,64 @@ function handleMessage(m) {
       if (m.id === myId) { local.hp = MAX_HEALTH; updateHp(); }
       break;
     }
+    case MSG.EXPLOSION: {
+      spawnExplosionVisual(m);
+      // A self-blast launches us. Predict it immediately so the jump feels
+      // instant; the server's snapshot reconciles it.
+      if (m.owner === myId) {
+        const blast = WEAPONS[m.weapon]?.blast;
+        if (blast && local) {
+          const eff = blastEffect(blast, local, m, PLAYER_MASS, true, local.onGround);
+          applyImpulse(local, eff.dvx, eff.dvy, eff.dvz);
+        }
+      }
+      break;
+    }
+    case MSG.AMMO: {
+      if (m.ammo) ammo = m.ammo;
+      updateWeaponPanel();
+      break;
+    }
   }
 }
 
 function addRemote(p) {
   if (remotes.has(p.id)) return;
-  const mesh = makeSoldier(0xfb923c);
+  const mesh = buildSoldier(0xfb923c);
   mesh.position.set(p.x, p.y, p.z);
   scene.add(mesh);
   remotes.set(p.id, {
     mesh,
     target: { x: p.x, y: p.y, z: p.z },
-    hp: p.hp ?? 100, alive: true, lastSeq: -1
+    hp: p.hp ?? 100, alive: true
   });
 }
 
 function applySnapshot(players) {
   for (const p of players) {
     if (p.id === myId) {
-      // reconcile local prediction against the server
       if (serverState && local) {
-        const before = { x: local.x, y: local.y, z: local.z };
+        // Reconcile the local prediction against the server.
+        //
+        // Three things must be reset together, or the client and server
+        // diverge permanently:
+        //   1. the position, taken from the authority
+        //   2. the Rapier body, which otherwise keeps its old transform and
+        //      resolves the next moveCharacter() against a stale position
+        //   3. the velocity, which is re-derived by replaying the
+        //      unacknowledged inputs
         local.x = p.x; local.y = p.y; local.z = p.z;
-        local.vx = 0; local.vy = 0; local.vz = 0;
+        local.vx = p.vx ?? 0; local.vy = p.vy ?? 0; local.vz = p.vz ?? 0;
+        local.onGround = !!p.onGround;
+        physics?.setCharacterPosition(myId, p.x, p.y, p.z);
         local.hp = p.hp;
         local.alive = p.alive;
         // replay unacknowledged inputs
         const unacked = pendingInputs.filter(i => i.seq > p.lastSeq);
-        for (const inp of unacked) stepMovement(local, inp, TICK_DT);
-        pendingInputs = pendingInputs.filter(i => i.seq > p.lastSeq);
-        const err = Math.hypot(local.x - before.x, local.z - before.z);
-        if (err > 0.01) {
-          // soft correction: nudge the camera target, don't teleport the body
-          local.x = p.x; local.y = p.y; local.z = p.z;
+        for (const inp of unacked) {
+          stepMovement(local, inp, SUB_DT, physics);
         }
+        pendingInputs = pendingInputs.filter(i => i.seq > p.lastSeq);
         updateHp();
       }
       continue;
@@ -302,6 +494,21 @@ function updateHp() {
     : hp > 25 ? 'linear-gradient(90deg,#f0b429,#fbbf24)' : 'linear-gradient(90deg,#f2545b,#fca5a5)';
 }
 
+/**
+ * The unit aim vector for a yaw/pitch pair.
+ *
+ * Convention (matches movement.js): yaw 0 faces +Z, positive yaw turns right.
+ * Pitch is POSITIVE = looking UP, clamped to +/- 1.2 rad (~69 degrees).
+ */
+function aimDirection(yaw, pitch) {
+  const cp = Math.cos(pitch);
+  return new THREE.Vector3(
+    Math.sin(yaw) * cp,
+    Math.sin(pitch),
+    Math.cos(yaw) * cp
+  );
+}
+
 // ---------------------------------------------------------------- tracers
 
 const tracers = [];
@@ -321,9 +528,53 @@ function drawTracer(m) {
   }
 }
 
+// ---------------------------------------------------------------- projectiles
+
+function spawnProjectileVisual(m) {
+  const weapon = WEAPONS[m.weapon];
+  if (!weapon) return;
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(0.12, 8, 6),
+    new THREE.MeshBasicMaterial({ color: 0xffd166 })
+  );
+  mesh.position.set(m.ox, m.oy, m.oz);
+  scene.add(mesh);
+  projectiles.set(`srv-${projectiles.size}-${performance.now()}`, {
+    mesh, weapon: m.weapon,
+    x: m.ox, y: m.oy, z: m.oz,
+    vx: m.dx * weapon.projectile.speed,
+    vy: m.dy * weapon.projectile.speed,
+    vz: m.dz * weapon.projectile.speed,
+    born: performance.now()
+  });
+}
+
+// ---------------------------------------------------------------- explosions
+
+const explosionGeo = new THREE.SphereGeometry(1, 16, 12);
+const BLAST_RADII = [2.0, 3.0, 4.5, 6.0, 8.0];
+
+function spawnExplosionVisual(m) {
+  const blast = WEAPONS[m.weapon]?.blast;
+  const radius = blast ? BLAST_RADII[blast.radiusTier] : 3;
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0xffb347, transparent: true, opacity: 0.9,
+    blending: THREE.AdditiveBlending, depthWrite: false
+  });
+  const mesh = new THREE.Mesh(explosionGeo, mat);
+  mesh.position.set(m.x, m.y, m.z);
+  mesh.scale.setScalar(0.3);
+  scene.add(mesh);
+  explosions.push({ mesh, born: performance.now(), radius });
+
+  const light = new THREE.PointLight(0xffaa55, 6, radius * 4, 2);
+  light.position.set(m.x, m.y, m.z);
+  scene.add(light);
+  explosions.push({ light, born: performance.now(), radius, isLight: true });
+}
+
 // ---------------------------------------------------------------- loop
 
-const camTarget = new THREE.Vector3();
 let last = performance.now();
 let acc = 0;
 
@@ -336,6 +587,9 @@ function frame(now) {
     // --- look
     const sens = 0.0022;
     local.yaw -= mouseDX * sens;
+    // Moving the mouse UP (negative movementY) must look UP, so the pitch
+    // sign is inverted here. This matches aimDirection()'s convention:
+    // positive pitch = looking up.
     local.pitch = Math.max(-1.2, Math.min(1.2, local.pitch - mouseDY * sens));
     mouseDX = 0; mouseDY = 0;
 
@@ -346,55 +600,82 @@ function frame(now) {
       mz: (keys.has('KeyW') ? 1 : 0) - (keys.has('KeyS') ? 1 : 0),
       jump: keys.has('Space')
     };
-    if (sprint && (inp.mx || inp.mz)) {
-      inp.mz *= 1; // sprint handled by speed below
-    }
 
-    // --- fixed-step prediction
+    // --- fixed-step prediction, on the same Rapier layer the server uses
+    //
+    // The server advances SUB_STEPS physics steps per network tick. The
+    // client must do exactly the same, and must send an input for EVERY
+    // sub-step. Predicting faster than the server (the old code predicted at
+    // TICK_DT but the server ran 2x sub-steps) made the client's position
+    // outrun the authority, so every snapshot yanked the player backwards.
     acc += dt;
     let steps = 0;
-    while (acc >= TICK_DT && steps < 5) {
-      acc -= TICK_DT;
+    while (acc >= SUB_DT && steps < 12) {
+      acc -= SUB_DT;
       steps++;
-      const speed = sprint ? MAX_SPEED * 1.35 : MAX_SPEED;
-      const before = { x: local.x, z: local.z };
-      stepMovement(local, inp, TICK_DT);
+      stepMovement(local, inp, SUB_DT, physics);
       if (sprint) {
-        // sprint = scale velocity, still server-authoritative on reconcile
-        const dx = local.x - before.x, dz = local.z - before.z;
-        local.x = before.x + dx * 1.35;
-        local.z = before.z + dz * 1.35;
+        local.x += local.vx * SUB_DT * 0.35;
+        local.z += local.vz * SUB_DT * 0.35;
       }
       seq++;
-      pendingInputs.push({ seq, ...inp });
+      const recorded = { seq, mx: inp.mx, mz: inp.mz, jump: inp.jump };
+      pendingInputs.push(recorded);
+      unsentInputs.push(recorded);
       if (pendingInputs.length > 120) pendingInputs.shift();
+      if (unsentInputs.length > 120) unsentInputs.shift();
     }
 
-    // --- send input at the server tick rate
+    // --- send the inputs produced since the last send
+    //
+    // Every physics sub-step produced one input. The server consumes exactly
+    // one per sub-step, so the client must deliver them at the SAME rate.
+    //
+    // The send window is driven by requestAnimationFrame, so the batch size
+    // oscillates between 1 and 3 depending on the frame timing. That
+    // oscillation made the server's input buffer starve and the player's
+    // effective input rate fall below the simulation rate: the player moved
+    // 2.6 m and then stopped dead.
+    //
+    // The fix: send on a FIXED schedule anchored to the physics step
+    // count, not to wall-clock RAF timing, so exactly SUB_STEPS inputs
+    // leave per network tick.
+    const sendEvery = Math.max(1, Math.round((now - lastSent) / SUB_DT));
     if (now - lastSent >= TICK_MS) {
       lastSent = now;
-      if (ws && ws.readyState === 1) {
+      if (ws && ws.readyState === 1 && unsentInputs.length) {
+        const batch = unsentInputs;
+        unsentInputs = [];
         ws.send(JSON.stringify({
-          t: MSG.INPUT, seq, mx: inp.mx, mz: inp.mz,
-          jump: inp.jump, yaw: local.yaw, pitch: local.pitch
+          t: MSG.INPUT, inputs: batch, seq,
+          mx: inp.mx, mz: inp.mz, jump: inp.jump,
+          yaw: local.yaw, pitch: local.pitch
         }));
       }
     }
 
     // --- fire
-    if (firing && now - lastShotAt >= FIRE_COOLDOWN_MS && local.alive) {
+    //
+    // The shot direction comes from yaw/pitch, NOT from the camera. The
+    // third-person camera always looks AT the player, so its forward vector
+    // always pointed at their chest - which made a rocket aimed at the
+    // ground hit the shooter's own torso instead.
+    //
+    // Convention: pitch is POSITIVE = looking UP.
+    const weapon = WEAPONS[currentWeapon];
+    if (firing && weapon && now - lastShotAt >= weapon.cooldownMs && local.alive) {
       lastShotAt = now;
-      const origin = new THREE.Vector3();
-      const dir = new THREE.Vector3();
-      camera.getWorldPosition(origin);
-      camera.getWorldDirection(dir);
-      // shoot from the muzzle, not the camera, so tracers match the model
-      const muzzle = origin.clone().add(dir.clone().multiplyScalar(0.9));
-      muzzle.y -= 0.45;
+      const aim = aimDirection(local.yaw, local.pitch);
+      const right = new THREE.Vector3(Math.cos(local.yaw), 0, -Math.sin(local.yaw));
+      // The muzzle sits at the player's shoulder, offset to the right, and
+      // points along the aim vector.
+      const muzzle = new THREE.Vector3(local.x, local.y + EYE_HEIGHT, local.z)
+        .addScaledVector(right, 0.28)
+        .addScaledVector(aim, 0.6);
       if (ws && ws.readyState === 1) {
         ws.send(JSON.stringify({
           t: MSG.FIRE, ox: muzzle.x, oy: muzzle.y, oz: muzzle.z,
-          dx: dir.x, dy: dir.y, dz: dir.z
+          dx: aim.x, dy: aim.y, dz: aim.z, weapon: currentWeapon
         }));
       }
     }
@@ -411,18 +692,34 @@ function frame(now) {
       local ? local.z - r.mesh.position.z : 0
     );
     r.mesh.rotation.y += (targetYaw - r.mesh.rotation.y) * Math.min(1, dt * 8);
+    if (r.mesh.userData.mixer) r.mesh.userData.mixer.update(dt);
   }
 
   // --- local player mesh + third-person camera
   if (local) {
     let me = scene.getObjectByName('localPlayer');
     if (!me) {
-      me = makeSoldier(0x7c5cfc);
+      me = buildSoldier(0x7c5cfc);
       me.name = 'localPlayer';
       scene.add(me);
     }
     me.position.set(local.x, local.y, local.z);
     me.rotation.y = local.yaw;
+
+    const speed = Math.hypot(local.vx, local.vz);
+    if (me.userData.mixer && me.userData.runClip) {
+      const running = speed > 0.5;
+      if (running && me.userData.runAction !== true) {
+        me.userData.mixer.stopAllAction();
+        me.userData.mixer.clipAction(me.userData.runClip).play();
+        me.userData.runAction = true;
+      } else if (!running && me.userData.runAction === true) {
+        me.userData.mixer.stopAllAction();
+        if (me.userData.idleClip) me.userData.mixer.clipAction(me.userData.idleClip).play();
+        me.userData.runAction = false;
+      }
+      me.userData.mixer.update(dt);
+    }
 
     const camDist = 6.2;
     const camHeight = 2.4;
@@ -430,13 +727,57 @@ function frame(now) {
     const sin = Math.sin(local.yaw), cos = Math.cos(local.yaw);
     const desired = new THREE.Vector3(
       focus.x - sin * camDist,
-      focus.y + camHeight + local.pitch * 2.2,
+      focus.y + camHeight,
       focus.z - cos * camDist
     );
     // keep the camera above the ground and out of walls
     desired.y = Math.max(desired.y, 0.6);
     camera.position.lerp(desired, Math.min(1, dt * 12));
-    camera.lookAt(focus);
+    // Look ALONG the aim vector, not at the player. The player sits lower in
+    // the frame and the crosshair marks where the shot actually goes.
+    const aim = aimDirection(local.yaw, local.pitch);
+    camera.lookAt(
+      focus.x + aim.x * 40,
+      focus.y + aim.y * 40,
+      focus.z + aim.z * 40
+    );
+  }
+
+  // --- projectile visuals
+  for (const [id, p] of projectiles) {
+    const age = now - p.born;
+    const weapon = WEAPONS[p.weapon];
+    if (!weapon) { projectiles.delete(id); continue; }
+    p.vy -= 22 * dt;
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    p.z += p.vz * dt;
+    p.mesh.position.set(p.x, p.y, p.z);
+    if (age > weapon.projectile.fuseMs || p.y <= 0) {
+      scene.remove(p.mesh);
+      p.mesh.geometry.dispose();
+      p.mesh.material.dispose();
+      projectiles.delete(id);
+    }
+  }
+
+  // --- explosion visuals
+  for (let i = explosions.length - 1; i >= 0; i--) {
+    const e = explosions[i];
+    const age = (now - e.born) / 1000;
+    if (e.isLight) {
+      e.light.intensity = Math.max(0, 6 * (1 - age / 0.4));
+      if (age > 0.4) { scene.remove(e.light); explosions.splice(i, 1); }
+      continue;
+    }
+    const t = Math.min(1, age / 0.45);
+    e.mesh.scale.setScalar(0.3 + t * e.radius);
+    e.mesh.material.opacity = Math.max(0, 0.9 * (1 - t));
+    if (age > 0.45) {
+      scene.remove(e.mesh);
+      e.mesh.material.dispose();
+      explosions.splice(i, 1);
+    }
   }
 
   // --- tracer fade
@@ -464,13 +805,46 @@ addEventListener('resize', () => {
 window.__NEUTRALIA = {
   get id() { return myId; },
   get connected() { return connected; },
-  get local() { return local ? { x: local.x, y: local.y, z: local.z, hp: local.hp, alive: local.alive } : null; },
+  get local() { return local ? { x: local.x, y: local.y, z: local.z, hp: local.hp, alive: local.alive, vy: local.vy, onGround: local.onGround } : null; },
   get remotes() { return [...remotes.entries()].map(([id, r]) => ({ id, x: r.mesh.position.x, z: r.mesh.position.z, hp: r.hp, alive: r.alive })); },
   get pendingInputs() { return pendingInputs.length; },
   get seq() { return seq; },
+  get debugNet() { return { seq, pending: pendingInputs.length, unsent: unsentInputs.length, lastServerSeq: serverState?.players?.find(p=>p.id===myId)?.lastSeq }; },
   get snapshots() { return serverState ? serverState.players.length : 0; },
-  keys
+  get weapon() { return currentWeapon; },
+  get ammo() { return { ...ammo }; },
+  get physicsBuild() { return physicsBuild(); },
+  get assetsLoaded() { return { map: !!assets.map, soldier: !!assets.soldier }; },
+  // What the local player mesh actually IS: 'skinned' or 'primitive'.
+  get localMeshKind() {
+    const me = scene.getObjectByName('localPlayer');
+    if (!me) return 'none';
+    let skinned = false, meshCount = 0, boneCount = 0;
+    me.traverse(o => {
+      if (o.isSkinnedMesh) { skinned = true; meshCount++; }
+      else if (o.isMesh) meshCount++;
+      if (o.isBone) boneCount++;
+    });
+    return { kind: skinned ? 'skinned' : 'primitive', meshes: meshCount, bones: boneCount };
+  },
+  keys,
+  selectWeapon,
+  // Fire without needing a real mouse press (used by the browser test).
+  fire() { firing = true; },
+  stopFire() { firing = false; },
+  // Aim the camera without a real pointer lock (used by the browser test).
+  setPitch(v) { if (local) local.pitch = Math.max(-1.2, Math.min(1.2, v)); },
+  setYaw(v) { if (local) local.yaw = v; }
 };
 
+// ---------------------------------------------------------------- boot
+
+await initPhysics('standard');
+physics = new PhysicsWorld();
+loadAssets().then(() => {
+  updateWeaponPanel();
+});
+
+buildWeaponBar();
 updateHp();
 requestAnimationFrame(frame);

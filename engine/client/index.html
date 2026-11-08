@@ -36,6 +36,18 @@
         text-align:center}
   kbd{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:4px;
       padding:1px 5px;font:11px ui-monospace,monospace;color:var(--txt)}
+  #weaponbar{position:fixed;left:50%;bottom:54px;transform:translateX(-50%);
+             display:flex;gap:6px;pointer-events:auto;z-index:11}
+  #weaponbar .w{display:flex;flex-direction:column;align-items:center;gap:2px;
+                min-width:78px;padding:6px 10px;border-radius:8px;
+                background:rgba(255,255,255,.05);border:1px solid var(--line);
+                color:var(--dim);font-size:11px;cursor:pointer;user-select:none}
+  #weaponbar .w b{color:var(--txt);font-weight:600;letter-spacing:.04em}
+  #weaponbar .w .k{font-size:9px;opacity:.65}
+  #weaponbar .w .a{font-variant-numeric:tabular-nums;color:var(--gold)}
+  #weaponbar .w.active{background:rgba(124,92,252,.20);border-color:var(--purple);
+                        color:var(--txt);box-shadow:0 0 14px rgba(124,92,252,.25)}
+  #weaponbar .w.empty{opacity:.45}
   #net{bottom:22px;left:22px;transform:translateY(-26px);color:var(--dim);font-size:11px}
   #net .ok{color:var(--green)}
   #net .bad{color:var(--red)}
@@ -70,9 +82,10 @@
 </div>
 
 <div class="hud" id="net">ws <span id="s-ws">connecting…</span></div>
+<div id="weaponbar"></div>
 <div class="hud" id="players"></div>
 <div class="hud" id="help">
-  <kbd>WASD</kbd> move · <kbd>mouse</kbd> look · <kbd>click</kbd> fire · <kbd>shift</kbd> sprint · <kbd>space</kbd> jump
+  <kbd>WASD</kbd> move · <kbd>mouse</kbd> look · <kbd>click</kbd> fire · <kbd>shift</kbd> sprint · <kbd>space</kbd> jump · <kbd>1-4</kbd> weapon
 </div>
 
 <div id="overlay">
