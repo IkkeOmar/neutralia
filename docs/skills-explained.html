@@ -175,7 +175,7 @@
     <span class="chip"><b>Engine</b> Three.js 0.187 + Rapier 0.21</span>
     <span class="chip"><b>Skills</b> 2,515 indexed</span>
     <span class="chip"><b>Written</b> 8 Nov 2026</span>
-    <span class="chip"><b>Checks</b> 115 passing</span>
+    <span class="chip"><b>Checks</b> 126 passing</span>
   </div>
 </header>
 
@@ -183,7 +183,7 @@
   <ol>
     <li><a href="#what">What a skill actually is</a></li>
     <li><a href="#stack">The stack, and what it costs</a></li>
-    <li><a href="#bugs">Fifteen bugs, written down so they cannot recur</a></li>
+    <li><a href="#bugs">Sixteen bugs, written down so they cannot recur</a></li>
     <li><a href="#jump">The rocket jump, explained physically</a></li>
     <li><a href="#tests">The test suite and what it proves</a></li>
     <li><a href="#where">Where everything lives</a></li>
@@ -292,7 +292,7 @@
   </tbody>
 </table>
 
-<h2 id="bugs">3 — Fifteen bugs, written down so they cannot recur</h2>
+<h2 id="bugs">3 — Sixteen bugs, written down so they cannot recur</h2>
 <p class="sub">
   None of these were found by reading the code. Every one was caught by a test that asserted a
   specific physical or network property and failed. This is the actual value of the skill:
@@ -618,6 +618,53 @@
   </div>
 </div>
 
+
+<div class="bug">
+  <div class="head"><span class="n">16</span><span class="t">Pressing D moved the player to the left</span></div>
+  <div class="body">
+    <p>
+      The movement code built its wish direction from two terms: the forward
+      vector for W and S, and a strafe vector for A and D. The forward part
+      was correct — with yaw 0 the player faces&nbsp;+Z and the aim vector is
+      <code>(sin yaw, 0, cos yaw)</code>.
+    </p>
+    <p>
+      The strafe part was not. A camera facing forward with up&nbsp;+Y has a
+      screen-right vector of <code>(−cos yaw, 0, sin yaw)</code>. The code used
+      the <em>negation</em> of that. So D moved the player left on screen and
+      A moved it right — while reading as perfectly plausible source code.
+    </p>
+    <p>
+      The reason it survived so long: every movement test so far asserted only
+      that the player <em>moved</em>. An inverted strafe moves perfectly, just
+      the wrong way. Distance cannot tell you which way is right.
+    </p>
+    <div class="rule">
+      <b>Rule</b>
+      Build the wish direction from two explicit basis vectors —
+      <code>wish = FORWARD · mz + RIGHT · mx</code> — and never from an ad-hoc
+      sign convention. Assert the <em>sign</em> of the dot product against a
+      reference direction, not the distance.
+    </div>
+    <div class="rule">
+      <b>Rule</b>
+      Take the reference direction from the engine's own camera basis. In
+      Three.js, column&nbsp;0 of <code>camera.matrixWorld</code> is screen-right
+      and the camera looks down its own −Z. That is ground truth; a
+      hand-derived formula can be argued both ways.
+    </div>
+    <div class="rule">
+      <b>Rule</b>
+      After writing a test, prove it fails. Revert the fix, rebuild, run the
+      test, confirm it goes red for the right reason, then restore. A test
+      that has never been seen red is not a test. The first attempt at this
+      proof passed, because the client bundle had not been rebuilt — the
+      revert only reached the server while the client still predicted
+      correctly.
+    </div>
+  </div>
+</div>
+
 <h2 id="jump">4 — The rocket jump, explained physically</h2>
 <p class="sub">
   The brief was specific: reproduce the Battlefield Heroes behaviour where detonating a rocket
@@ -698,7 +745,7 @@
 
 <h2 id="tests">5 — The test suite and what it proves</h2>
 <p class="sub">
-  115 checks across six suites. The browser tests assert the player's actual physical state,
+  126 checks across seven suites. The browser tests assert the player's actual physical state,
   not that a page loaded — a screenshot on its own is not a test.
 </p>
 
@@ -721,6 +768,10 @@
   <li><b>Browser — 16 checks</b> <code>node test/browser.cjs $URL</code><br>
       WebGL context alive, the canvas contains rendered geometry rather than a background, the
       HUD is wired, and the player actually moves when a key is held.</li>
+  <li><b>Direction — 11 checks</b> <code>node test/browser-direction.cjs $URL</code><br>
+      W, A, S and D each move the player the way the crosshair points. The assertion is the
+      <em>sign</em> of the dot product against Three.js's own camera basis, because a
+      distance-based test cannot tell a correct strafe from an inverted one.</li>
   <li><b>Rocket jump — 19 checks</b> <code>node test/browser-rocket.cjs $URL</code><br>
       The whole chain in a real browser: the model is skinned with 19 bones, the server
       confirms the shot and broadcasts the explosion, the rocket is fired at the player's own
@@ -757,7 +808,8 @@ node test/slice.js               # 29  authoritative server end to end
 node tools/verify-assets.mjs     # 16  glTF decodes, skin, clips, sizes
 node test/vehicles-data.js       # 15  vehicle data vs the design document
 node test/browser.cjs $URL       # 16  WebGL, HUD, movement, net
-node test/browser-rocket.cjs $URL # 19  the rocket jump, end to end</code></pre>
+node test/browser-rocket.cjs $URL # 19  the rocket jump, end to end
+node test/browser-direction.cjs $URL # 11  W/A/S/D move the RIGHT way</code></pre>
 </div>
 
 <h2 id="where">6 — Where everything lives</h2>

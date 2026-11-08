@@ -109,9 +109,31 @@ export function stepMovement(p, input, dt, world) {
     return p;
   }
 
+  // --- basis vectors -------------------------------------------------------
+  //
+  // FORWARD: yaw 0 faces +Z. Positive yaw turns right. The aim vector is
+  //   ( sin(yaw), 0, cos(yaw) )
+  //
+  // RIGHT: the screen-right direction of a camera that faces FORWARD with up
+  // +Y. In a right-handed coordinate system, facing +Z with up +Y means
+  // screen-right points toward -X. In general:
+  //   right = ( -cos(yaw), 0, sin(yaw) )
+  //
+  // The strafe axis MUST use that right vector. Using +X for "strafe right"
+  // is the classic left-handed mistake: it moves the player the wrong way on
+  // screen while looking perfectly correct in the source.
+  //
+  // Verified empirically against Three.js's own matrixWorld basis:
+  //   D must have dot(move, cameraRight) > 0, and A must have it < 0.
+  //
+  //   wish = FORWARD * mz + RIGHT * mx
+  //
+  // which expands to:
+  //   wishX = sin(yaw) * mz - cos(yaw) * mx
+  //   wishZ = cos(yaw) * mz + sin(yaw) * mx
   const sin = Math.sin(p.yaw), cos = Math.cos(p.yaw);
-  let wishX = sin * input.mz + cos * input.mx;
-  let wishZ = cos * input.mz - sin * input.mx;
+  let wishX = sin * input.mz - cos * input.mx;
+  let wishZ = cos * input.mz + sin * input.mx;
   const len = Math.hypot(wishX, wishZ);
   if (len > 1) { wishX /= len; wishZ /= len; }
 

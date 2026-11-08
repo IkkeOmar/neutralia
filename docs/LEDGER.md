@@ -330,6 +330,17 @@ prototype/
   138 KB → 1.85 MB gzip; Rapier is the whole increase. Colyseus 0.18 SDK installed but NOT yet
   wired — the raw WebSocket transport still runs, so lag compensation is the next gap.
 
+- **2026-11-08** — THIRD BUG ROUND (1 bug, reported by Omar in playtesting, not by any test):
+  the strafe axis was inverted. The movement code used `(+cos yaw, 0, -sin yaw)` for "strafe
+  right", but a camera facing forward with up +Y has screen-right at `(-cos yaw, 0, sin yaw)` —
+  the code used the negation of the true right vector, so D moved the player LEFT on screen and
+  A moved it RIGHT. It survived because every movement test asserted only that the player
+  MOVED, and an inverted strafe moves perfectly, just the wrong way. Fixed by building the wish
+  direction from explicit basis vectors. New suite `test/browser-direction.cjs` (11 checks)
+  asserts the SIGN of the dot product against Three.js's own `camera.matrixWorld` basis rather
+  than a hand-derived formula, and was proven red by reverting the fix and rebuilding. Suite
+  115 -> 126 checks across seven suites; all green, direction stable 3/3 consecutive runs.
+
 - **2026-11-08** — SECOND BUG ROUND (5 more bugs, found by testing the rocket jump
   repeatedly rather than once): (1) the client's self-blast prediction was erased by
   reconciliation, because a blast impulse is not an input and the snapshot reset discarded

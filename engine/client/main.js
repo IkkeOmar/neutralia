@@ -843,6 +843,31 @@ window.__NEUTRALIA = {
   get id() { return myId; },
   get connected() { return connected; },
   get local() { return local ? { x: local.x, y: local.y, z: local.z, hp: local.hp, alive: local.alive, vy: local.vy, onGround: local.onGround } : null; },
+  // Yaw and pitch, so a test can assert the DIRECTION the player faces and
+  // the direction they move - not merely that they moved at all.
+  get yaw() { return local ? local.yaw : 0; },
+  get pitch() { return local ? local.pitch : 0; },
+  // The camera's world position and the unit aim vector. A test can compare
+  // the camera-to-player offset against the aim vector to prove the camera
+  // is actually behind the player.
+  get camera() { return { x: camera.position.x, y: camera.position.y, z: camera.position.z }; },
+  get aim() { return local ? aimDirection(local.yaw, local.pitch) : null; },
+  // Test-only: force the look direction so a test can assert that pressing W
+  // moves the player the way the crosshair points.
+  setYaw(v) { if (local) local.yaw = v; },
+  // The camera's true world-space basis, taken straight from Three.js's
+  // matrixWorld. Column 0 is screen-right, column 1 is up, and the camera
+  // looks down its own -Z. Comparing the movement vector against these
+  // vectors is the only way to settle a "is A/D inverted" question - the
+  // trigonometry can be argued both ways, the matrix cannot.
+  get cameraBasis() {
+    const e = camera.matrixWorld.elements;
+    return {
+      right: { x: e[0], y: e[1], z: e[2] },
+      up: { x: e[4], y: e[5], z: e[6] },
+      back: { x: e[8], y: e[9], z: e[10] }
+    };
+  },
   get remotes() { return [...remotes.entries()].map(([id, r]) => ({ id, x: r.mesh.position.x, z: r.mesh.position.z, hp: r.hp, alive: r.alive })); },
   get pendingInputs() { return pendingInputs.length; },
   get seq() { return seq; },
