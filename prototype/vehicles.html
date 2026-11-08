@@ -486,9 +486,10 @@ function renderWeakness(){
     "<b>Every variant is worse than its chassis at something</b> — rule R8. " +
     "A variant with no downside is an upgrade, and an upgrade becomes mandatory.<br><br>" +
     "<table style='width:100%;font-size:12px;border-collapse:collapse'>"+
-    "<tr><th style='text-align:left;color:#8b90a8'>Chassis</th><th style='text-align:left;color:#8b90a8'>Variant</th><th style='text-align:left;color:#8b90a8'>Worse at</th></tr>"+
+    "<thead><tr><th style='text-align:left;color:#8b90a8'>Chassis</th><th style='text-align:left;color:#8b90a8'>Variant</th><th style='text-align:left;color:#8b90a8'>Worse at</th></tr></thead>"+
+    "<tbody>"+
     W.map(r=>`<tr><td style='text-align:left;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)'>${esc(r[0])}</td><td style='text-align:left;color:#b7a4ff;font-weight:600'>${esc(r[1])}</td><td style='text-align:left'>${esc(r[2]||'MISSING')}</td></tr>`).join("")+
-    "</table>";
+    "</tbody></table>";
 }
 
 function renderRps(){

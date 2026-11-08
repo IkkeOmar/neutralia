@@ -161,6 +161,16 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     (()=>{const tds=[...document.querySelectorAll('#weak td')];
       const downsides=tds.filter((td,i)=>i%3===2).map(td=>td.textContent.trim());
       return downsides.length>0 && downsides.every(d=>d.length>3);})()`));
+  ok('R8 table has exactly 20 rows -- one per variant', await evalJs(
+    "document.querySelectorAll('#weak tbody tr').length"), 20);
+  ok('R8 table covers all 7 chassis', await evalJs(`
+    (()=>{const rows=[...document.querySelectorAll('#weak tbody tr')].map(r=>r.cells[0].textContent.trim());
+      return new Set(rows).size===7 && rows.includes('Boat');})()`), true);
+  ok('R8 table has no MISSING cell', await evalJs(
+    "!document.getElementById('weak').textContent.includes('MISSING')"));
+  ok('R8 table lists every variant by name', await evalJs(`
+    (()=>{const t=document.getElementById('weak').textContent;
+      return CHASSIS.every(c=>c.variants.every(v=>t.includes(v.n)));})()`));
   ok('R9 is stated in the rules', await evalJs(
     "document.getElementById('rules').textContent.includes('practically the same class')"));
   ok('R8 is stated in the rules', await evalJs(
