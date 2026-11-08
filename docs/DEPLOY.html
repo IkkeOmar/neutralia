@@ -128,8 +128,26 @@ curl -s &quot;https://ikkeomar.github.io/neutralia/prototype/classes.html?cb=$(d
 # 5. clean up
 rm -rf &quot;$PUB&quot;
 </code></pre>
-<p><strong>Stale-CDN trap:</strong> <code>curl</code> the live URL too early and you get the old build. Poll Pages
-status to <code>built</code>, then fetch with <code>?cb=$(date +%s)</code> before concluding a change did not land.</p>
+<p><strong>Stale-CDN trap — the build status can be STALE TOO.</strong> Polling <code>status=built</code> is not
+enough: right after a push, the API can still report <code>built</code> for the <em>previous</em> build
+while the new one is queued. A screenshot taken at that moment shows the OLD page and
+the visual audit then confidently reports on stale content.</p>
+<p>The reliable check is <strong>content, not status</strong> — poll until the live HTML actually
+contains the thing you changed:</p>
+<pre><code class="language-bash">for i in $(seq 1 20); do
+  s=$(curl -s -H &quot;Authorization: Bearer $GH_TOKEN&quot; \
+      https://api.github.com/repos/IkkeOmar/neutralia/pages \
+      | python3 -c &quot;import json,sys; print(json.load(sys.stdin).get('status'))&quot;)
+  has=$(curl -s &quot;https://ikkeomar.github.io/neutralia/prototype/vehicles.html?cb=$(date +%s)&quot; \
+        | grep -c &quot;const LINES&quot;)
+  echo &quot;  attempt $i: status=$s  new_content=$has&quot;
+  if [ &quot;$s&quot; = &quot;built&quot; ] &amp;&amp; [ &quot;$has&quot; -gt 0 ]; then echo &quot;  LIVE IS CURRENT&quot;; break; fi
+  sleep 12
+done
+</code></pre>
+<p><strong>Never screenshot before this loop exits.</strong> This exact trap cost a full audit cycle:
+the vision pass reported on the old matrix and confidently told me the columns were
+wrong, when the code was already correct.</p>
 <h2>Running the DOM tests against the LIVE url</h2>
 <p><code>ws</code> is not installed in the project folder. Use the hjemmeside node_modules:</p>
 <pre><code class="language-bash">cd /home/omar/2026-11-07/bfh-mmo/prototype
