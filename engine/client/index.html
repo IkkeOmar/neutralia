@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEUTRALIA — engine slice</title>
+<style>
+  :root{--bg:#0b0d17;--line:rgba(255,255,255,.12);--purple:#7c5cfc;--cyan:#38bdf8;
+        --green:#34d399;--red:#f2545b;--gold:#f0b429;--txt:#e8eaf2;--dim:#8b90a8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);overflow:hidden;
+       font:13px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #app{position:fixed;inset:0}
+  canvas{display:block}
+  .hud{position:fixed;pointer-events:none;z-index:10}
+  #topbar{top:0;left:0;right:0;display:flex;gap:16px;align-items:center;
+          padding:8px 14px;background:linear-gradient(180deg,rgba(11,13,23,.92),transparent)}
+  #topbar b{color:var(--cyan);font-weight:600}
+  .stat{font-variant-numeric:tabular-nums;color:var(--dim)}
+  .stat b{color:var(--txt)}
+  #cross{top:50%;left:50%;width:22px;height:22px;margin:-11px 0 0 -11px;
+         opacity:.9}
+  #cross::before,#cross::after{content:'';position:absolute;background:#fff;
+         box-shadow:0 0 4px rgba(0,0,0,.9)}
+  #cross::before{left:10px;top:0;width:2px;height:22px}
+  #cross::after{top:10px;left:0;height:2px;width:22px}
+  #health{bottom:22px;left:22px;width:230px}
+  #hpbar{height:9px;border-radius:5px;background:rgba(255,255,255,.10);
+         border:1px solid var(--line);overflow:hidden;margin-top:4px}
+  #hpfill{height:100%;width:100%;background:linear-gradient(90deg,var(--green),#6ee7b7);
+          transition:width .12s}
+  #players{bottom:22px;right:22px;text-align:right}
+  #players div{color:var(--dim);font-variant-numeric:tabular-nums}
+  #players div.me{color:var(--purple)}
+  #help{bottom:22px;left:50%;transform:translateX(-50%);color:var(--dim);font-size:11px;
+        text-align:center}
+  kbd{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:4px;
+      padding:1px 5px;font:11px ui-monospace,monospace;color:var(--txt)}
+  #net{bottom:22px;left:22px;transform:translateY(-26px);color:var(--dim);font-size:11px}
+  #net .ok{color:var(--green)}
+  #net .bad{color:var(--red)}
+  #overlay{position:fixed;inset:0;display:grid;place-items:center;z-index:20;
+           background:radial-gradient(900px 600px at 50% 20%,#1a1640,transparent 60%),var(--bg)}
+  #overlay.hidden{display:none}
+  .panel{max-width:560px;text-align:center;padding:24px}
+  .panel h1{font-size:24px;letter-spacing:.16em;margin:0 0 6px}
+  .panel h1 span{color:var(--purple)}
+  .panel p{color:var(--dim);font-size:13px}
+  .panel button{margin-top:14px;padding:11px 26px;border-radius:9px;border:0;
+    background:linear-gradient(135deg,var(--purple),#5b3fd6);color:#fff;font:600 14px inherit;
+    cursor:pointer}
+  .panel button:disabled{opacity:.45;cursor:wait}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="hud" id="topbar">
+  <span class="stat">NEUTRALIA <b>engine slice</b></span>
+  <span class="stat">map <b id="s-map">—</b></span>
+  <span class="stat">tick <b id="s-tick">—</b></span>
+  <span class="stat">net <b id="s-net">—</b></span>
+</div>
+
+<div class="hud" id="cross"></div>
+
+<div class="hud" id="health">
+  <span class="stat">health <b id="s-hp">100</b></span>
+  <div id="hpbar"><div id="hpfill"></div></div>
+</div>
+
+<div class="hud" id="net">ws <span id="s-ws">connecting…</span></div>
+<div class="hud" id="players"></div>
+<div class="hud" id="help">
+  <kbd>WASD</kbd> move · <kbd>mouse</kbd> look · <kbd>click</kbd> fire · <kbd>shift</kbd> sprint · <kbd>space</kbd> jump
+</div>
+
+<div id="overlay">
+  <div class="panel">
+    <h1>NEUTRALIA <span>// SLICE</span></h1>
+    <p>Authoritative-server third-person slice. The server owns positions, health
+       and hit detection; the client predicts movement and interpolates remote
+       players.</p>
+    <button id="join">Join match</button>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>engine-stack</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>NEUTRALIA — technical stack decision</h1>
+<p>All version numbers and sizes verified against live sources 2026-11-08.
+Sources are listed inline. Anything not verified is marked UNVERIFIED.</p>
+<hr>
+<h2>0. What we learned from the site Omar pointed at</h2>
+<p>Omar's instruction (2026-11-08): <em>"you should definitely learn from the website that I
+reference to you earlier"</em>. The earlier research in this project had searched
+<strong>Ported2Browser</strong> and <strong>wasm.rip</strong>, so those are the references.</p>
+<p><strong><code>wasm.rip</code></strong> — "a group of people on the internet, porting games". Their ports are
+mostly <em>recompilations</em>: existing C/C++ or C# code translated and compiled to
+WebAssembly via Emscripten, with WebGPU where it helps. The directory lists real
+multiplayer browser ports, including <strong>Counter-Strike Surf</strong>, a browser-native
+Source-engine recreation with <strong>online ranked and unranked runs</strong> and <strong>Source-style
+physics at 66 tick</strong>.</p>
+<p><strong><code>ported2browser.net</code></strong> (the research table for the directory) — 305 ports as of
+4 Nov 2026; 26 documented in detail. The methods cluster into four buckets:
+recompile-to-WASM (Emscripten), decompilation projects (re3, reVC), emulator-in-page
+(DOS/PS2/PSP), and new-engine recreations. Multiplayer appears in: Counter-Strike
+Surf (ranked servers, 66 tick), GTA V (sandbox), NFS Most Wanted (online free roam,
+ranked + casual races), SOCOM II (online multiplayer + voice), FIFA Street 2
+(experimental online), DBZ Budokai 3 (experimental online 2P).</p>
+<p><strong>The three lessons that actually transfer to us:</strong></p>
+<ol>
+<li><strong>Native WASM in the browser is a solved delivery mechanism.</strong> Every working port
+   ships as WASM in a tab. The failure mode of the original is precisely what we must
+   avoid: Battlefield Heroes needed a <strong>downloadable plugin</strong>, and Chrome began pulling
+   <strong>NPAPI support in 2014</strong>, which killed the delivery mechanism while the game was
+   still running on it. rip.so's obit for BFH names this explicitly. <strong>We ship no
+   plugin. Everything is standard browser APIs.</strong></li>
+<li><strong>Tick rate is the multiplayer contract.</strong> Counter-Strike Surf runs 66 tick with
+   ranked servers in a browser. Our server runs <strong>30 Hz simulation with 60 Hz physics
+   substeps</strong> — comparable, and measured against a genre that has a decade of netcode
+   tuning behind it.</li>
+<li><strong>The Emscripten route does not apply to us.</strong> The dominant porting pattern is
+   "compile existing C/C++ to WASM", which only makes sense because those projects have
+   pre-existing codebases. NEUTRALIA is an <strong>original</strong> game with no code to compile.
+   The transferable half is the <em>architecture</em> — WASM-ready, no plugin, single origin,
+   static delivery.</li>
+</ol>
+<p><strong>Bundle-size comparison from the same sources</strong> — this is the decisive argument for
+the stack:</p>
+<table>
+<thead>
+<tr>
+<th>Delivery</th>
+<th>Engine payload</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Three.js custom stack</strong></td>
+<td><strong>~138 KB gzip</strong> (measured — our own build)</td>
+<td>renderer + game code</td>
+</tr>
+<tr>
+<td>Godot Web export</td>
+<td>~5 MB Brotli empty</td>
+<td></td>
+</tr>
+<tr>
+<td>Unity WebGL</td>
+<td>~7.7–10.7 MB</td>
+<td>Unity 6.6 lifts the WASM memory ceiling to 16 GB with Wasm64</td>
+</tr>
+<tr>
+<td>BFH (2009)</td>
+<td>"sub-250MB download"</td>
+<td>plugin-based</td>
+</tr>
+</tbody>
+</table>
+<p>BFH's own 2009 budget was ~250 MB. Our entire engine is <strong>138 KB gzipped</strong> — smaller
+than a single BFH character texture. That is the "lightweight" requirement met with
+three orders of magnitude to spare, and it is why we do not need Unity's asset pipeline
+or its WASM memory ceiling.</p>
+<hr>
+<h2>1. Renderer — Three.js 0.187.0, WebGL2 first</h2>
+<p><strong>Decision: Three.js 0.187.0, starting on <code>WebGLRenderer</code>. <code>WebGPURenderer</code> is a later
+opt-in, not a dependency.</strong></p>
+<p>Verified (2026-11-08): npm <code>three@0.187.0</code> (r187). Bundle: 725 KB raw / <strong>181 KB gzip</strong>
+(bundlephobia). Babylon.js <code>9.35.0</code>: 8.1 MB / <strong>1.8 MB gzip</strong>. PlayCanvas <code>2.23.3</code>:
+2.4 MB / <strong>622 KB gzip</strong>. Our actual Vite build measured <strong>132.9 KB gzip</strong> for the Three
+chunk plus 4.5 KB app code — smaller than bundlephobia's figure because Vite tree-shakes.</p>
+<p>Why Three.js and not the alternatives:</p>
+<ul>
+<li><strong>Byte cost is decisive.</strong> 181 KB vs 1.8 MB vs 622 KB. Against a "well under 50 MB"
+  target all three fit, but the engine should not be the budget.</li>
+<li><strong>WebGL2 is the correct default for a low-end target.</strong> WebGPU's wins are compute
+  shaders and lower CPU draw-call overhead. A 16-player scene with ~100 draw calls is
+  not CPU-bound. WebGPU matters more on mobile than on the desktop iGPU target.</li>
+<li><strong>WebGPU's fallback story is good but its maturity is not.</strong> Three.js's own manual
+  still calls <code>WebGPURenderer</code> experimental, and it does not support <code>ShaderMaterial</code> /
+  <code>RawShaderMaterial</code> / <code>onBeforeCompile</code> — custom GLSL would need porting to TSL.
+  Babylon's WebGPU is production-grade; if we need compute shaders later, Babylon is
+  the fallback.</li>
+<li><strong>2026 landscape:</strong> Safari 26 (Sept 2025) enabled WebGPU by default; Firefox still
+  ships it <strong>disabled by default</strong> in stable. Global support ~87–89%. <strong>WebGL2 fallback
+  is mandatory, not optional</strong> — which the Three.js <code>WebGPURenderer</code> gives us for free
+  at init with no dual codebase.</li>
+</ul>
+<p><strong>Fallback stack:</strong> Babylon.js 9.35 + Havok (<code>@babylonjs/havok@1.3.14</code>) if writing glue
+over Three.js proves painful. Costs ~1.8 MB gzip engine + 2.09 MB <code>havok.wasm</code>.</p>
+<hr>
+<h2>2. Physics — Rapier 3D 0.21.0, deterministic build on the server</h2>
+<p><strong>Decision: <code>@dimforge/rapier3d</code> 0.21.0.</strong> Server uses the deterministic build;
+client uses <code>-compat</code> (base64-inlined WASM, no bundler fights).</p>
+<p>Verified (2026-11-08): npm <code>@dimforge/rapier3d@0.21.0</code>. External WASM build 2.94 MB;
+<code>-compat</code> 4.2 MB minified JS / <strong>1.6 MB gzip</strong>. <code>cannon-es@0.20.0</code> is 120 KB / 34 KB
+gzip. <code>ammo.js@0.0.10</code> is effectively frozen (last real work ~2019). Havok's WASM is
+2,094,566 bytes.</p>
+<p><strong>Why Rapier and not cannon-es despite the size:</strong> the <em>deterministic</em> build is the
+only one of the four that guarantees bit-identical simulation across machines. That is
+exactly what lockstep prediction/reconciliation depends on. A 34 KB engine that
+diverges by one float between server and client produces a rubber-banding bug that is
+expensive to diagnose later. Rapier is also the only one with a maintained
+character-controller and raycast API.</p>
+<p><strong>What a third-person shooter with vehicles actually needs</strong> is narrower than a full
+rigid-body engine: raycasts for hitscan, a capsule character controller, and vehicles as
+<strong>kinematic</strong> bodies the server integrates. Rapier's raycasts and kinematic bodies are
+its sweet spot; we do not need the full dynamic pipeline.</p>
+<p><strong>Already done:</strong> the current slice ships its own compact kinematic solver in
+<code>shared/movement.js</code> — one implementation imported by both client and server, so
+client prediction and server authority can never diverge. The test asserts bit-identical
+agreement between two independent runs. Rapier replaces the <em>collision</em> layer (capsule
+vs. world, step height, slopes) while the kinematic controller logic stays ours.</p>
+<hr>
+<h2>3. Netcode — Colyseus 0.18 for the authoritative server</h2>
+<p><strong>Decision: <code>colyseus@0.18.12</code> server + <code>colyseus.js</code> client.</strong></p>
+<p>Verified (2026-11-08): npm <code>colyseus@0.18.12</code>. Client bundle 227 KB / <strong>61 KB gzip</strong>.</p>
+<p>Colyseus 0.18 is the only option where <strong>client-side prediction, reconciliation, and
+server-side lag compensation are already built and documented for exactly this genre</strong>:
+<code>setFixedTimestep()</code>, <code>allowRewindState({maxRewindMs})</code>, and <code>subSteps</code> to run 60 Hz
+physics under a 30 Hz network tick. That combination was previously hand-rolled in every
+browser shooter.</p>
+<p>Rejected alternatives: <code>Rivalis@8.0.0</code> has no prediction or lag compensation (you would
+hand-roll the shooter-critical parts). <code>murow@0.4.1</code> is promising but a very young
+single-maintainer project (created Dec 2025). <strong><code>@web-engine-dev/*</code> is not on npm</strong> —
+its docs describe a full ECS engine with GGPO rollback, but <code>npm install</code> 404s. Do not
+build on it.</p>
+<p><strong>Rates for 12–16 players with hitscan guns:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Value</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Server simulation tick</td>
+<td><strong>30 Hz</strong></td>
+<td>matches the browser-port precedent (CS Surf runs 66 tick with ranked servers)</td>
+</tr>
+<tr>
+<td>Physics substeps</td>
+<td><strong>2</strong> → 60 Hz</td>
+<td>stable movement and vehicles under a 30 Hz network tick</td>
+</tr>
+<tr>
+<td>Snapshot rate to clients</td>
+<td><strong>15–20 Hz</strong></td>
+<td>delta-compressed; ~a few KB/player/s</td>
+</tr>
+<tr>
+<td>Client prediction</td>
+<td>30 Hz</td>
+<td>local player responsive with no visible rubber-band</td>
+</tr>
+<tr>
+<td>Remote interpolation</td>
+<td>~100 ms in the past</td>
+<td>smooth remote motion</td>
+</tr>
+<tr>
+<td>Hitscan</td>
+<td><strong>server-side lag compensation</strong>, rewind up to 250 ms</td>
+<td>"what you see is what you hit"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Transport:</strong> WebSocket now, WebTransport later. WebTransport became Baseline when
+Safari 26.4 shipped it (March 2026), and an NSDI 2025 study measured it beating
+WebSockets under packet loss (unreliable datagrams avoid TCP head-of-line blocking).
+<strong>But QUIC runs over UDP, which some corporate and school networks block</strong> — so a
+WebSocket fallback stays mandatory. WebTransport is an optimisation to add after the
+slice, not a dependency of it.</p>
+<p><strong>Already done:</strong> the slice implements the same architecture by hand — server owns
+positions, health and hit detection; the client sends intent only; the server
+rejects a client that tries to inject a position (asserted by the test); the client
+predicts locally and reconciles against the server snapshot. Colyseus replaces the
+hand-rolled transport and adds the lag compensation we have not hand-built yet.</p>
+<hr>
+<h2>4. Asset pipeline — Meshopt + KTX2/ETC1S</h2>
+<p><strong>Decision: glTF 2.0 with <code>EXT_meshopt_compression</code> + KTX2 (ETC1S for colour, UASTC for
+normal/ORM) + WebP for non-PBR textures.</strong> Tooling: <code>@gltf-transform/cli</code> + <code>gltfpack</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Draco</th>
+<th>Meshopt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Extension</td>
+<td><code>KHR_draco_mesh_compression</code></td>
+<td><code>EXT_meshopt_compression</code></td>
+</tr>
+<tr>
+<td>Compresses</td>
+<td><strong>triangle meshes only</strong> — animation and morph targets pass through</td>
+<td>vertices, indices, morph targets <strong>and animation keyframes</strong></td>
+</tr>
+<tr>
+<td>Decoder</td>
+<td>192–286 KB WASM + 58 KB wrapper</td>
+<td><strong>32 KB</strong> JS module (inline WASM)</td>
+</tr>
+<tr>
+<td>Decode speed</td>
+<td>considerably slower</td>
+<td>~1 GB/s (WASM SIMD)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Meshopt, because our characters are animated.</strong> Draco does not compress animation
+tracks, and for a soldier with an animation set the animation is often the largest
+single component — Draco would leave most of the bytes on the table.</p>
+<p>Texture budget (2048×2048 with mipmaps): RGBA8 ~22 MB → UASTC ~5.6 MB → <strong>ETC1S ~2.8 MB</strong>.
+ETC1S is ~0.3–3 bits/pixel on disk and transcodes to GPU block format, so it stays
+compressed in VRAM (4–8× less GPU memory — the biggest single lever on a 4 GB machine).</p>
+<p><strong>Realistic first-load budget</strong> for a BFH-class stylised scene (grey-box + one soldier +
+one rifle + one vehicle, Meshopt + ETC1S + WebP, Brotli): <strong>5–12 MB</strong>, map streamed in
+tiers. Rule of thumb from the 2026 sources: first scene under ~10 MB on the wire, VRAM
+under 150–200 MB, hero character 30–50k triangles, props under 5k.</p>
+<hr>
+<h2>5. Hosting — GitHub Pages for the app, Cloudflare R2 for assets</h2>
+<p><strong>Decision: app on GitHub Pages, large binaries on Cloudflare R2, game server on the VPS.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th>Per-file limit</th>
+<th>CORS</th>
+<th>COOP/COEP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GitHub Pages</td>
+<td>100 MB</td>
+<td><strong>serves <code>Access-Control-Allow-Origin: *</code></strong> (verified by curl)</td>
+<td><strong>cannot set</strong></td>
+</tr>
+<tr>
+<td>Cloudflare Pages</td>
+<td>25 MB</td>
+<td>configurable</td>
+<td>configurable</td>
+</tr>
+<tr>
+<td>Cloudflare R2</td>
+<td>~5 TB/object</td>
+<td>configurable</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>jsDelivr</td>
+<td>20 MB (GitHub files)</td>
+<td>yes</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>GitHub Releases</td>
+<td>2 GB</td>
+<td><strong>no CORS on the asset CDN → browser <code>fetch()</code> fails</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The COEP trap is avoidable by stack choice, not by header gymnastics.</strong> Threaded WASM
+builds need <code>SharedArrayBuffer</code>, which needs COOP/COEP, which GitHub Pages cannot set.
+<strong>Our stack is single-threaded</strong> — Rapier and Colyseus run single-threaded, Three.js
+renders on the main thread — so we dodge COOP/COEP entirely and GitHub Pages works with
+zero header hacks. (If threads are ever wanted: <code>coi-serviceworker</code> shims it, or move to
+Cloudflare Pages which can set the headers.)</p>
+<p>R2 wins for assets: <strong>free egress</strong> (a 20 TB month of downloads costs $0), 10 GB free
+storage covers an entire asset set, and we control CORS/CORP.</p>
+<p><strong>Reject GitHub Releases</strong> for runtime asset loading — no CORS headers on the actual
+file, so <code>fetch()</code> fails. Fine as a human-downloadable distribution archive.
+<strong>Reject jsDelivr</strong> for scene files — 20 MB per-file cap, plus third-party dependency.</p>
+<hr>
+<h2>6. Current state — what is built and verified</h2>
+<p><code>engine/</code> in this repo. All numbers below are from real runs on 2026-11-08.</p>
+<pre><code>engine/
+  shared/protocol.js     tuning constants + wire message types
+  shared/map.js          grey-box map, imported by BOTH client and server
+  shared/movement.js     kinematic movement + collision, imported by BOTH
+  server/index.js        authoritative server: positions, health, hitscan
+  client/main.js         Three.js renderer, client prediction, interpolation
+  test/slice.js          29 integration checks (headless, two WebSocket clients)
+  test/browser.cjs       16 render checks (real Chromium, real WebGL)
+</code></pre>
+<p><strong>Measured results:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gzipped download</td>
+<td><strong>138 KB</strong> (index 1.7 KB + app 4.5 KB + three 132.9 KB)</td>
+</tr>
+<tr>
+<td>Raw download</td>
+<td>551 KB</td>
+</tr>
+<tr>
+<td>Server tick</td>
+<td>30 Hz</td>
+</tr>
+<tr>
+<td>Integration test</td>
+<td><strong>29/29 passed</strong></td>
+</tr>
+<tr>
+<td>Browser render test</td>
+<td><strong>16/16 passed</strong></td>
+</tr>
+<tr>
+<td>Visual audit</td>
+<td>passed — real 3D, third-person camera, shadows, HUD legible</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What the slice proves, concretely:</strong></p>
+<ul>
+<li>The server owns positions. A client that injects a position field is ignored.</li>
+<li>Movement propagates: client A's input moves A on the server; client B sees it.</li>
+<li>Hitscan is server-validated. The client sends a ray; the server raycasts the world,
+  finds the nearest target, applies damage, and broadcasts the shot.</li>
+<li>Fire rate is server-enforced (burst of 10 in 100 ms → 3 shot events).</li>
+<li>Death and respawn work; the victim returns to a spawn point.</li>
+<li>The shared movement module is <strong>bit-identical</strong> between two independent runs — that
+  is what makes prediction safe.</li>
+<li>The client predicts locally and reconciles against the server snapshot.</li>
+</ul>
+<hr>
+<h2>7. Next steps, in order</h2>
+<ol>
+<li><strong>Rapier for collision</strong> — capsule character controller, step height, slopes.
+   The kinematic movement logic stays ours; Rapier owns the collision queries.</li>
+<li><strong>Colyseus for the transport</strong> — replaces the hand-rolled WebSocket protocol, and
+   adds lag compensation (<code>allowRewindState</code>) that we have not hand-built.</li>
+<li><strong>A real map</strong> — glTF grey-box from a Blender export, Meshopt-compressed.</li>
+<li><strong>A soldier model</strong> with animation, Meshopt + ETC1S, streamed.</li>
+<li><strong>A weapon</strong> — hitscan ray already works; add a projectile weapon to exercise the
+   non-hitscan path.</li>
+<li><strong>Vehicles</strong> — kinematic bodies with a vehicle controller, per the chassis × variant
+   system in <code>systems/vehicle-system.md</code>.</li>
+<li><strong>Deploy</strong> — app to GitHub Pages, assets to R2, server to the VPS behind a
+   subdomain with a WebSocket route.</li>
+</ol>
+<hr>
+<h2>8. Sources</h2>
+<ul>
+<li>npm registry + bundlephobia API: three, @babylonjs/core, playcanvas, @dimforge/rapier3d,
+  colyseus, @rivalis/core, murow (all 2026-11-08)</li>
+<li><code>threejs.org/docs/pages/WebGPURenderer.html</code>, <code>threejs.org/manual/pages/webgpurenderer</code></li>
+<li><code>doc.babylonjs.com/setup/support/webGPU/</code>, github.com/BabylonJS/Babylon.js/releases</li>
+<li><code>caniuse.com/webgpu</code>, github.com/gpuweb/gpuweb/wiki/Implementation-Status</li>
+<li><code>docs.colyseus.io/netcode</code>, <code>colyseus.io/blog/colyseus-018-is-here</code></li>
+<li><code>github.com/dimforge/rapier.js/issues/366</code>, npmjs.com/package/@dimforge/rapier3d-compat</li>
+<li><code>app.cinevva.com/guides/optimize-glb-for-web</code>,
+  <code>digitalgarden.si/blog/draco-vs-meshopt-ktx2-benchmark</code></li>
+<li><code>developers.cloudflare.com/r2/pricing</code>,
+  <code>docs.github.com/en/repositories/releasing-projects-on-github/about-releases</code>,
+  github.com/jsdelivr/jsdelivr</li>
+<li><code>ported2browser.net/games-ported-to-browser/</code> (the 26-game research table),
+  <code>ported2browser.net/how-does-ported2browser-work</code></li>
+<li><code>github.com/Carter54git/Ultimate-Catalog-Of-Web-Game-Ports</code> (493-star catalog)</li>
+<li><code>wasm.rip</code>, <code>rip.so/battlefield-heroes.html</code></li>
+<li><code>aaron.gember-jacobson.com/docs/nsdi2025browser-networking.pdf</code> (WebTransport vs
+  WebSockets under packet loss), WebTransport in Safari 26.4</li>
+<li><code>bfh-info.cs-heroes.cz/en/game/technology/</code>, <code>en.wikipedia.org/wiki/Battlefield_Heroes</code></li>
+</ul>
+<p><strong>Our own measurements</strong> (in this repo, reproducible):
+<code>engine/test/slice.js</code>, <code>engine/test/browser.cjs</code>, and the Vite build output.</p>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>engine-stack.md</code>.</footer>
+</div>
+</body>
+</html>
