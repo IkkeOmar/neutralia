@@ -540,7 +540,20 @@ prototype/
   build while the new one queues. Poll on live CONTENT, never on status alone. Recorded in
   skill devops/deliverable-hosting.</li>
 <li><strong>2026-11-08</strong> — Rocket Launcher reclassified as <em>split</em>, not new. Matrix re-cut.</li>
-<li><strong>2026-11-07</strong> — class × weapon-family system written; simulator extended; prototype built.</li>
+<li>
+<p><strong>2026-11-08</strong> — ENGINE UPGRADED: Rapier 3D collision (deterministic build on the server,
+  standard on the client — proven bit-identical over 400 steps), real glTF 2.0 map + animated
+  skinned soldier (Meshopt, 33 KB), projectile weapons with explosive physics, and the
+  <strong>rocket jump</strong> verified end to end in a browser (Panzerfaust apex ~9.7 m, Sticky TNT ~14 m,
+  M32 MGL ~4 m). Ten real bugs found and fixed, each written up as a rule in the new skill
+  <code>development/neutralia-multiplayer-engine</code>. Test suite grew to 98 checks across five suites
+  (20 explosion + 29 integration + 16 assets + 16 browser + 17 rocket-jump). Client bundle
+  138 KB → 1.85 MB gzip; Rapier is the whole increase. Colyseus 0.18 SDK installed but NOT yet
+  wired — the raw WebSocket transport still runs, so lag compensation is the next gap.</p>
+</li>
+<li>
+<p><strong>2026-11-07</strong> — class × weapon-family system written; simulator extended; prototype built.</p>
+</li>
 </ul>
 <footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>LEDGER.md</code>.</footer>
 </div>
