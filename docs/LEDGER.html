@@ -184,6 +184,90 @@ family) · 2 genuinely new (Artillery, Field Kit).</p>
 </ul>
 <p>Not built yet. No design file written. Revisit when the vertical/horizontal balance is
 actually needed.</p>
+<h3>5.1 Engine slice — BUILT AND VERIFIED (2026-11-08)</h3>
+<p>Omar: <em>"It looks like you've only done some front end stuff right now. That hasn't been
+any time into game design how to implement the 3-D stuff and how to actually have a
+lightweight playable game engine. I don't know what the stack will be, but you should
+definitely learn from the website that I reference to you earlier."</em></p>
+<p><strong>The reference</strong> was Ported2Browser / wasm.rip, from this project's earlier research.
+The lessons that transferred:
+1. <strong>Native WASM in a browser, no plugin.</strong> Every working port ships as WASM in a tab.
+   The original needed a <em>downloadable plugin</em>, and Chrome pulled NPAPI in 2014 — that
+   killed BFH's delivery mechanism while the game ran on it. We ship no plugin.
+2. <strong>Tick rate is the multiplayer contract.</strong> Counter-Strike Surf runs a browser-native
+   Source-style recreation with ranked servers at 66 tick. We run 30 Hz + 60 Hz substeps.
+3. <strong>The Emscripten route does not apply</strong> — that pattern works because ports have
+   existing C/C++ to compile. NEUTRALIA is original. The transferable half is the
+   architecture: WASM-ready, plugin-free, static delivery.</p>
+<p><strong>Built</strong> (<code>engine/</code> in the repo, <code>systems/engine-stack.md</code> has the full decision):</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Choice</th>
+<th>Version</th>
+<th>Verified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Renderer</td>
+<td>Three.js, WebGL2 first</td>
+<td>0.187.0</td>
+<td>bundlephobia + npm</td>
+</tr>
+<tr>
+<td>Physics</td>
+<td>Rapier 3D (deterministic build on server)</td>
+<td>0.21.0</td>
+<td>npm</td>
+</tr>
+<tr>
+<td>Netcode</td>
+<td>Colyseus</td>
+<td>0.18.12</td>
+<td>npm + docs</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>WebSocket now, WebTransport later</td>
+<td>—</td>
+<td>Safari 26.4 shipped WebTransport Mar 2026</td>
+</tr>
+<tr>
+<td>Assets</td>
+<td>glTF + Meshopt + KTX2/ETC1S</td>
+<td>—</td>
+<td>2026 benchmarks</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>GitHub Pages (app) + R2 (assets) + VPS (server)</td>
+<td>—</td>
+<td>CF/GH docs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Measured:</strong>
+- <strong>138 KB gzipped</strong> total download (three 132.9 KB + app 4.7 KB + html 1.7 KB).
+  BFH's own 2009 download was ~250 MB.
+- Integration test <strong>29/29</strong> — two WebSocket clients, server owns positions,
+  movement propagates, hitscan validated, cooldown enforced, death+respawn,
+  shared movement module bit-identical.
+- Browser render test <strong>16/16</strong> — real Chromium, real WebGL, canvas verified to
+  contain rendered geometry, WASD movement confirmed, screenshots taken.
+- Visual audit passed: real 3D, third-person camera, shadows, HUD legible.
+- <strong>Public URL verified:</strong> HTTP 200 + WSS WELCOME through a Cloudflare quick tunnel.</p>
+<p><strong>Trap found and fixed:</strong> <code>cloudflared tunnel --url</code> loads <code>~/.cloudflared/config.yml</code>
+by default, so its catch-all <code>http_status:404</code> ingress rule applied to the quick
+tunnel — every request 404'd. A quick tunnel needs an explicit empty config
+(<code>--config /tmp/quick-empty.yml</code>).</p>
+<p><strong>Why not Unity/Godot:</strong> Unity WebGL is 7.7–10.7 MB and Godot Web export ~5 MB for an
+<em>empty</em> build. Our whole engine is 138 KB — an order of magnitude leaner, and the
+single-threaded choice means no COOP/COEP headers needed, so GitHub Pages works with
+zero header hacks.</p>
+<p><strong>Next:</strong> Rapier collision → Colyseus transport + lag compensation → real glTF map →
+animated soldier → projectile weapon → vehicles.</p>
 <h3>5.2 Vehicle system — DESIGNED (2026-11-08)</h3>
 <p>Omar asked whether the original's small vehicle roster could grow, with <strong>specialised
 variants per chassis</strong>. Answered: yes, and the model is <strong>Battlefield 1's</strong>, not BFH's.</p>
@@ -369,6 +453,26 @@ to <em>perform</em> it. Cron prompts must state the correct location and prohibi
 </tr>
 <tr>
 <td>2026-11-08</td>
+<td>engine integration test (2 WS clients)</td>
+<td>29/29</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>engine browser render test (real WebGL)</td>
+<td>16/16</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>engine over public WSS tunnel</td>
+<td>HTTP 200 + WELCOME received</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>engine visual audit</td>
+<td>pass — 3D geometry, camera, shadows, HUD</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
 <td>vehicle visual audit, desktop + mobile</td>
 <td>pass (R2 visible in the DOM matrix)</td>
 </tr>
@@ -392,6 +496,7 @@ LEDGER.md                 this file — durable project state
 FEASIBILITY.md            feasibility findings
 Battlefield-Heroes-MMO.md project brief
 systems/
+  engine-stack.md         the 3D stack decision, with sources
   class-and-weapon-families.md
   weapon-specification.md
 lore/
@@ -405,6 +510,12 @@ research/
 tools/
   simulate-design.py      progression + class-matrix simulator
   render-docs.py          markdown -&gt; site HTML
+engine/                    the playable slice
+  shared/                 protocol, map, movement (imported by BOTH sides)
+  server/index.js         authoritative server
+  client/main.js          Three.js renderer + prediction
+  test/slice.js           29 integration checks
+  test/browser.cjs        16 browser render checks
 prototype/
   classes.html            class x family matrix (53 checks)
   index.html              weapon spec tree (39 checks)
