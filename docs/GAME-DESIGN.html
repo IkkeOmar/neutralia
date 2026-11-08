@@ -630,6 +630,90 @@ thick variable-width ink outline, cel-shading with soft digital-paint shadows, w
 away from the body for silhouette readability. The Engineer reads as a tradesman — satchel,
 tool roll, goggles on the forehead, a bolted-on mechanical silhouette, industrial
 yellow-ochre deliberately outside both factions' palettes.</p>
+<hr>
+<h2>11. Vehicle system (added 2026-11-08)</h2>
+<p>The full system is in <code>systems/vehicle-system.md</code>; the precedent research is in
+<code>research/05-vehicle-variant-precedent.md</code>.</p>
+<p><strong>What BFH actually had</strong> <code><span class="verified">[verified]</span></code>: six chassis and <strong>zero variants</strong>. Jeep
+(3 seats, 120 HP, unarmed), light tank (2 seats, 180 HP), fighter (3 seats, 190 HP),
+helicopter, AA gun (immobile, 250 HP), boat. Vehicles spawned only at controlled points;
+5 of 14 maps had no vehicles at all. Every vehicle of a role was the same vehicle — the
+spawn screen offered no decision beyond "wheels or not".</p>
+<p><strong>What we build: 7 chassis × 20 player-selectable variants</strong>, plus a map-only AA
+emplacement players never choose.</p>
+<table>
+<thead>
+<tr>
+<th>Chassis</th>
+<th>Variants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scout car (jeep lineage)</td>
+<td>Scout · Technical · Courier</td>
+</tr>
+<tr>
+<td>Armoured car (half-track lineage) — <strong>new</strong></td>
+<td>APC · Carrier · Recovery</td>
+</tr>
+<tr>
+<td>Light tank</td>
+<td>Javelin · Bulwark · Hunter</td>
+</tr>
+<tr>
+<td>Heavy tank — <strong>new</strong></td>
+<td>Assault · Dug-in · Siege</td>
+</tr>
+<tr>
+<td>Fighter</td>
+<td>Interceptor · Bomber · Liaison</td>
+</tr>
+<tr>
+<td>Helicopter</td>
+<td>Transport · Gunship · Spotter</td>
+</tr>
+<tr>
+<td>Boat</td>
+<td>Landing craft · Gunboat</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The model is Battlefield 1's</strong>, not BFH's: a chassis is a hull, a variant is a role.
+A variant changes the weapon mount, the gadget, the seat count and the battlefield line —
+never just a stat. BF1 proved it: its Light Tank was three different vehicles
+(Close Support / Flanker / Howitzer), and the Landship changed seat count by variant
+(Squad Support carries five, Tank Hunter carries three).</p>
+<p><strong>The rules come from Battlefield 2042's named failure modes</strong> (EA dev notes, 30 Nov 2023:
+<em>"the prevalence of explosive weaponry, and unclear combat roles across vehicles"</em>):</p>
+<ul>
+<li><strong>R1</strong> — a transport chassis carries no explosive weapon. (BF2042 removed explosives from
+  the LATV4 Recon for exactly this reason.)</li>
+<li><strong>R2</strong> — every variant owns exactly one battlefield line. (BF2042 cut the TOR's long-range
+  potency and raised its close-range power rather than buffing it everywhere.)</li>
+<li><strong>R3</strong> — air chassis do not ground-clear. (BF2042 made the jet's role air-primary.)</li>
+<li><strong>R5</strong> — a variant is chosen at the spawn screen, never picked up in the field.</li>
+<li><strong>R7</strong> — a chassis that appears on many maps has the lowest power ceiling. (The Jeep was
+  on 6 of BFH's 14 maps.)</li>
+</ul>
+<p><strong>Variants are earned by playing the chassis</strong>, not by levelling — the same trick as the
+per-weapon skill tree. A player who owns six chassis and spreads their time masters one
+or two; a player who commits has all three variants of one chassis. A match offers one
+variant per chassis you have unlocked, and one chassis slot, so the spawn screen is a
+decision.</p>
+<p><strong>The Armoured car is the chassis that makes the Engineer real.</strong> The original's Engineer
+did not exist and vehicle repair was a Gunner ability; the APC / Carrier / Recovery
+variant line gives repair and squad-carrying a permanent home.</p>
+<p><strong>Simulator-verified.</strong> <code>tools/simulate-design.py</code> carries <code>sim_vehicle_matrix()</code>, asserting
+V1–V6 plus seat-economy and transport-share checks. It found two real design flaws on its
+first run — contested role lines and a Scout car with no predator — both fixed in the
+design rather than loosened in the assertion.</p>
+<p><strong>Honor / level-bracketed PvP is deferred</strong> by Omar (2026-11-08). The direction is kept
+alive in <code>systems/vehicle-system.md</code> §6 because accepting <em>level = vertical power</em> forces
+level brackets — the two are not separable — and retrofitting that later is expensive.
+Precedent exists (WoW's Honor ranks with 10–19/20–29/…/60 battleground brackets; R6
+Siege's Skill-vs-Rank split with squad restrictions). Nothing in the vehicle system depends
+on it, so the deferral is cheap.</p>
 <footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>GAME-DESIGN.md</code>.</footer>
 </div>
 </body>

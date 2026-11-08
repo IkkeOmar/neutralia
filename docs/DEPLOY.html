@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEPLOY</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Deploy notes — NEUTRALIA prototype</h1>
+<h2>Live URLs (verified 2026-11-08)</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Serves</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://ikkeomar.github.io/neutralia/</code></td>
+<td><code>index.html</code> — landing page</td>
+<td>200</td>
+</tr>
+<tr>
+<td><code>https://ikkeomar.github.io/neutralia/prototype/classes.html</code></td>
+<td>class × weapon-family matrix</td>
+<td>200</td>
+</tr>
+<tr>
+<td><code>https://ikkeomar.github.io/neutralia/prototype/index.html</code></td>
+<td>weapon spec / progression tree</td>
+<td>200</td>
+</tr>
+<tr>
+<td><code>https://ikkeomar.github.io/neutralia/docs/GAME-DESIGN.html</code></td>
+<td>master design doc</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<p>Repos:
+- <code>IkkeOmar/neutralia</code> — <strong>public</strong>, GitHub Pages. Contains the published site only.
+- <code>IkkeOmar/bfh-mmo</code> — <strong>private</strong>. Full corpus: research scrapes, source docs, tools, tests.</p>
+<h2>DOMAIN SEPARATION — hard rule</h2>
+<p><code>basednode.xyz</code> is Omar's <strong>business</strong> domain. It must not carry non-business artifacts.
+No game prototypes, no research, no design docs, no side projects.</p>
+<p>The former <code>/prototype/</code> route was removed from the business site on 2026-11-08:
+- <code>routing-proxy.py</code> — <code>PROTOTYPE_PREFIX</code> / <code>serve_prototype()</code> removed, proxy restarted.
+- <code>/home/omar/hjemmeside/prod/prototype</code> symlink → <code>/var/www/bfh-prototype</code> removed.
+- <code>/var/www/bfh-prototype/</code> directory removed.</p>
+<p><strong>Never re-add a prototype route to the business site or to <code>/home/omar/hjemmeside/prod/</code>.</strong>
+Anything dropped into that directory is public on <code>basednode.xyz</code>.</p>
+<p>If a non-business artifact needs to be public, it goes to the <code>ikkeomar.github.io</code>
+namespace via GitHub Pages. Full procedure in skill <code>devops/deliverable-hosting</code>.</p>
+<h2>Deploy checklist (run every time)</h2>
+<pre><code class="language-bash">export GH_TOKEN=&quot;$SKILLS_HUB_GITHUB_TOKEN&quot;
+WORK=/home/omar/2026-11-07/bfh-mmo
+PUB=$WORK/_pages                      # staging tree, deleted after deploy
+
+# 1. rebuild the staging tree
+rm -rf &quot;$PUB&quot; &amp;&amp; mkdir -p &quot;$PUB/prototype&quot; &quot;$PUB/docs&quot;
+cp &quot;$WORK&quot;/prototype/*.html &quot;$PUB/prototype/&quot;
+cp &quot;$WORK&quot;/prototype/*.js   &quot;$PUB/prototype/&quot; 2&gt;/dev/null || true
+python3 &quot;$WORK&quot;/tools/render-docs.py        # markdown -&gt; docs/*.html
+
+# 2. push
+cd &quot;$PUB&quot;
+git init -q 2&gt;/dev/null || true
+git remote set-url origin &quot;https://x-access-token:$SKILLS_HUB_GITHUB_TOKEN@github.com/IkkeOmar/neutralia.git&quot;
+git add -A
+git -c commit.gpgsign=false commit -q -m &quot;&lt;message&gt;&quot; || true
+git push -q origin main
+
+# 3. wait for the Pages build — the CDN serves the PREVIOUS build for ~30-60s
+for i in $(seq 1 12); do
+  s=$(curl -s -H &quot;Authorization: Bearer $GH_TOKEN&quot; \
+      https://api.github.com/repos/IkkeOmar/neutralia/pages \
+      | python3 -c &quot;import json,sys; print(json.load(sys.stdin).get('status'))&quot;)
+  [ &quot;$s&quot; = &quot;built&quot; ] &amp;&amp; break
+  sleep 10
+done
+
+# 4. verify against the LIVE url, cache-busted
+curl -s &quot;https://ikkeomar.github.io/neutralia/prototype/classes.html?cb=$(date +%s)&quot; \
+  | grep -q &quot;New&lt;/span&gt;&quot; &amp;&amp; echo &quot;live OK&quot;
+
+# 5. clean up
+rm -rf &quot;$PUB&quot;
+</code></pre>
+<p><strong>Stale-CDN trap:</strong> <code>curl</code> the live URL too early and you get the old build. Poll Pages
+status to <code>built</code>, then fetch with <code>?cb=$(date +%s)</code> before concluding a change did not land.</p>
+<h2>Running the DOM tests against the LIVE url</h2>
+<p><code>ws</code> is not installed in the project folder. Use the hjemmeside node_modules:</p>
+<pre><code class="language-bash">cd /home/omar/2026-11-07/bfh-mmo/prototype
+NODE_PATH=/home/omar/hjemmeside/node_modules node test-classes.js \
+  https://ikkeomar.github.io/neutralia/prototype/classes.html     # expect 53/53
+NODE_PATH=/home/omar/hjemmeside/node_modules node test-prototype.js \
+  https://ikkeomar.github.io/neutralia/prototype/index.html      # expect 39/39
+</code></pre>
+<p><strong>Headless Chromium leaks ~2 GB RSS on this 3.7 GB box.</strong> After any test run:</p>
+<pre><code class="language-bash">pkill -9 -f chromium; free -h
+</code></pre>
+<h2>Business-site health check (separate concern)</h2>
+<p>The business site is monitored by cron, not by this file:</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Schedule</th>
+<th>What it checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>basednode-health-watch</code></td>
+<td><code>0 */12 * * *</code></td>
+<td>endpoint + PM2 + disk</td>
+</tr>
+<tr>
+<td><code>basednode-watchdog</code></td>
+<td><code>0 7,19 * * *</code></td>
+<td>auto-restart on failure</td>
+</tr>
+<tr>
+<td><code>Morgencheck: BasedNode + Hermes</code></td>
+<td><code>0 7 * * *</code></td>
+<td>morning report to Discord</td>
+</tr>
+</tbody>
+</table>
+<p>Scripts: <code>~/.hermes/scripts/basednode-watchdog.sh</code>, <code>~/.hermes/scripts/obsidian-vault-sync.sh</code>.</p>
+<h2>Verified 2026-11-08</h2>
+<ul>
+<li><code>index.html</code> — 39/39 checks against the live Pages URL</li>
+<li><code>classes.html</code> — 53/53 checks against the live Pages URL</li>
+<li>simulator — ALL CHECKS PASSED</li>
+<li><code>basednode.xyz/</code> and all site routes — 200</li>
+<li><code>basednode.xyz/prototype/*</code> — 404 (business domain clean)</li>
+</ul>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>DEPLOY.md</code>.</footer>
+</div>
+</body>
+</html>

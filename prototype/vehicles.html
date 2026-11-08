@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEUTRALIA — Vehicle Chassis &amp; Variants Prototype</title>
+<style>
+  :root{
+    --bg:#0b0d17; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.10); --purple:#7c5cfc; --cyan:#38bdf8;
+    --gold:#f0b429; --red:#f2545b; --green:#34d399; --orange:#fb923c;
+    --txt:#e8eaf2; --dim:#8b90a8; --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+       radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+       color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       min-height:100vh;padding:26px 20px 60px}
+  .wrap{max-width:1280px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:.14em;font-weight:700}
+  h1 span{color:var(--purple)}
+  .sub{color:var(--dim);font-size:13px;margin-bottom:22px}
+  .sub b{color:var(--cyan);font-weight:600}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        backdrop-filter:blur(14px);padding:16px;margin-bottom:16px}
+  .card h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+           margin:0 0 12px;font-weight:600}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+  .note{font-size:12px;color:var(--dim);line-height:1.55}
+  .note b{color:var(--cyan)}
+  .chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:600;letter-spacing:.05em}
+  .chip.g{background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+  .chip.p{background:rgba(124,92,252,.18);color:#b7a4ff;border:1px solid rgba(124,92,252,.4)}
+  .chip.c{background:rgba(56,189,248,.15);color:#8ad4ff;border:1px solid rgba(56,189,248,.35)}
+  .chip.o{background:rgba(251,146,60,.15);color:#fdba74;border:1px solid rgba(251,146,60,.35)}
+  .chip.r{background:rgba(242,84,91,.15);color:#fca5a5;border:1px solid rgba(242,84,91,.35)}
+  .mxscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+  .mxscroll table.mx{min-width:640px}
+  .mxhint{display:none;font-size:11px;color:var(--dim);margin-top:8px}
+  @media(max-width:560px){.mxhint{display:block}}
+
+  /* matrix */
+  table.mx{width:100%;border-collapse:collapse;font-size:13px}
+  table.mx th, table.mx td{padding:7px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.05)}
+  table.mx th:first-child, table.mx td:first-child{text-align:left;padding-left:2px}
+  table.mx thead th{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  table.mx tbody tr:hover{background:rgba(255,255,255,.03)}
+  table.mx td.ch{font-weight:600;text-align:left}
+  table.mx td.ch small{display:block;color:var(--dim);font-size:10.5px;font-weight:400}
+  .vdot{display:inline-block;width:16px;height:16px;border-radius:5px;vertical-align:-3px;cursor:pointer}
+  .vdot.t{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14)}
+  .vdot.on{background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 0 9px rgba(124,92,252,.55)}
+  .vdot.lock{background:rgba(240,180,41,.30);border:1px solid rgba(240,180,41,.55);box-shadow:0 0 9px rgba(240,180,41,.28)}
+  tr.sel{background:rgba(124,92,252,.12)!important}
+  tr.sel td.ch{color:#b7a4ff}
+
+  /* chassis tabs */
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);
+       color:var(--txt);font-size:13px;cursor:pointer;font-family:inherit;transition:.15s;font-weight:600}
+  .tab:hover{border-color:var(--purple)}
+  .tab.on{background:linear-gradient(135deg,var(--purple),#5b3fd6);border-color:transparent}
+  .tab .hp{color:var(--dim);font-weight:400;margin-left:5px;font-size:11px}
+  .tab.on .hp{color:rgba(255,255,255,.7)}
+  .tab.newtag{border-color:rgba(240,180,41,.5)}
+
+  .vlist{display:grid;gap:9px}
+  .vcard{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--panel2);
+         cursor:pointer;transition:.15s}
+  .vcard:hover{border-color:rgba(124,92,252,.55)}
+  .vcard.sel{border-color:var(--purple);background:rgba(124,92,252,.13)}
+  .vcard .vh{display:flex;justify-content:space-between;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .vcard .vn{font-weight:700;font-size:14px}
+  .vcard .vline{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .vcard .vmeta{font-size:11.5px;color:var(--dim);margin-top:5px}
+  .vcard .vmeta em{font-style:normal;color:var(--txt)}
+  .vcard .vgad{font-size:11.5px;color:var(--dim);margin-top:4px}
+  .vcard .vgad em{font-style:normal;color:#8ad4ff}
+  .vcard.locked{opacity:.42}
+  .vcard.locked .vn::after{content:" — locked";color:var(--gold);font-weight:500;font-size:11px}
+
+  .rolebox{border-left:3px solid var(--gold);padding:11px 0 11px 14px;margin:12px 0;
+           background:rgba(240,180,41,.055);border-radius:0 9px 9px 0}
+  .rolebox .rn{font-weight:700;color:var(--gold);font-size:14px}
+  .rolebox .rd{font-size:13px;color:var(--dim);margin-top:4px}
+  .rolebox .rw{font-size:11.5px;color:#6ee7b7;margin-top:6px}
+
+  .rules{display:grid;gap:7px}
+  .rule{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--panel2);
+        font-size:12.5px;display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start}
+  .rule .rk{font-weight:700;color:var(--purple);font-size:12px}
+  .rule .rb{color:var(--dim)}
+  .rule .rb em{font-style:normal;color:var(--txt)}
+
+  .inv{display:grid;gap:6px}
+  .invrow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;
+          padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .invrow:last-child{border-bottom:0}
+  .invrow .v{font-weight:600;font-variant-numeric:tabular-nums}
+  .pass{color:var(--green);font-weight:700}
+  .fail{color:var(--red);font-weight:700}
+  .ref{color:var(--dim)}
+
+  .srcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+  .src{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--panel2);font-size:11.5px;color:var(--dim)}
+  .src b{display:block;color:var(--cyan);font-size:12.5px;margin-bottom:3px}
+  .eqbox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--panel2);margin-top:12px}
+  .eqbox .q{font-style:italic;color:var(--dim);font-size:13px;margin-bottom:7px}
+  .eqbox .src{font-size:11px;color:#6ee7b7}
+  .arteq{font-size:11.5px;color:var(--dim);line-height:1.65}
+  .arteq b{color:var(--txt)}
+  .warn{border-left:2px solid var(--gold);padding:8px 0 8px 11px;margin:12px 0;font-size:12px;color:var(--dim)}
+  .warn b{color:var(--gold)}
+  .defer{border:1px dashed rgba(240,180,41,.4);border-radius:10px;padding:12px 14px;
+         background:rgba(240,180,41,.05);font-size:12.5px;color:var(--dim);margin-top:12px}
+  .defer b{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NEUTRALIA <span>// VEHICLE CHASSIS &amp; VARIANTS</span></h1>
+  <div class="sub">The 2009 original had <b>six chassis and zero variants</b> — every vehicle of a role was the same vehicle. Ours has <b>seven chassis and twenty role-variants</b>. Prototype of <code>systems/vehicle-system.md</code>.</div>
+
+  <div class="card">
+    <h2>Chassis × Variant matrix</h2>
+    <div class="mxscroll"><table class="mx" id="matrix"></table></div>
+    <div class="mxhint">Swipe the table sideways to see every chassis.</div>
+    <div class="note" style="margin-top:12px">
+      Each cell is one variant. <span class="chip g">Unlocked</span> = available in the spawn screen.
+      <span class="chip o">Locked</span> = earned by playing that chassis.
+      <span class="chip p">New</span> = chassis the original never had.
+      <br>Click a cell to inspect the variant. The invariants under <b>Invariants</b> are asserted by <code>tools/simulate-design.py</code> on every run.
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Chassis</h2>
+        <div class="tabs" id="tabs"></div>
+        <div class="vlist" id="vlist"></div>
+        <div id="roledetail"></div>
+      </div>
+
+      <div class="card">
+        <h2>Balancing rules</h2>
+        <div class="rules" id="rules"></div>
+        <div class="note" style="margin-top:12px">
+          R1–R3 and R7 come from Battlefield 2042's own published failure modes: after launch,
+          DICE reported community feedback about <b>"the prevalence of explosive weaponry, and
+          unclear combat roles across vehicles"</b>, and reworked every vehicle loadout to fix it.
+          R4–R5 come from Battlefield 1, which shipped four chassis with three variants each and
+          changed seat count per variant.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Anti-vehicle rock-paper-scissors</h2>
+        <div class="arteq" id="rps"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Invariants</h2>
+        <div class="inv" id="inv"></div>
+        <div class="note" style="margin-top:10px">
+          The simulator found two real design flaws on its first run and both were fixed in the
+          design rather than loosened in the assertion: <b>contested role lines</b> (two variants of
+          one chassis fighting the same battle) and <b>a Scout car with no predator</b>.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Deferred — Honor</h2>
+        <div class="defer">
+          <b>Level-gated PvP is parked for the future.</b> "Leveling can also be power, not only
+          choice … restricting which levels can fight against which levels (we can call it 'honor')."
+          <br><br>
+          It is not separable from level brackets: if level carries vertical power, brackets become
+          mandatory or a level 30 deletes a level 10 in the open world. Precedent exists — World of
+          Warcraft's Honor ranks with 10–19 / 20–29 / … / 60 battleground brackets, and Rainbow Six
+          Siege's Skill-versus-Rank split with squad restrictions.
+          <br><br>
+          Nothing in the vehicle system depends on it, so the deferral costs nothing.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Original roster — measured</h2>
+        <div class="arteq" id="bfh"></div>
+        <div class="eqbox">
+          <div class="q">"Each faction has access to four vehicles: jeeps, medium tanks, fighter planes, and helicopters."</div>
+          <div class="src">Battlefield Heroes, Battlefield Wiki</div>
+        </div>
+        <div class="note" style="margin-top:10px">
+          Vehicles spawned only at controlled points, and <b>5 of BFH's 14 maps had no vehicles at
+          all</b>. The Jeep was on 6 maps — the most ubiquitous chassis, which is why our rule R7
+          caps it at the lowest power ceiling.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Sources</h2>
+        <div class="srcgrid" id="srcs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHASSIS = [
+  {id:"Scout car", domain:"Ground", origin:"original", abbr:"SC",
+   note:"Jeep lineage. On 6 of BFH's 14 maps — the most ubiquitous chassis, so the lowest ceiling.",
+   variants:[
+     {n:"Scout", line:"Recon", mount:"—", gadget:"Smoke screen", seats:3, expl:false,
+      role:"Fast, quiet, reveals. The BFH jeep exactly — no mount at all.",
+      why:"You cannot outrun a tank. A scout that cannot fight is a scout that survives, and a scout that survives finds the enemy."},
+     {n:"Technical", line:"Anti-infantry", mount:"Light machine gun", gadget:"Repair kit", seats:2, expl:false,
+      role:"Improvised fighting car. Cheap, expendable, good at infantry.",
+      why:"The technical is a real historical category — a light improvised fighting vehicle. It is the cheapest thing on four wheels and it knows it."},
+     {n:"Courier", line:"Transport", mount:"—", gadget:"Radio relay", seats:5, expl:false,
+      role:"Moves the squad. The forward-respawn vehicle.",
+      why:"Five seats and a radio turns a jeep into a logistics decision. It never fights — that is the point."}]},
+
+  {id:"Armoured car", domain:"Ground", origin:"new", abbr:"AC",
+   note:"Half-track lineage. New chassis — and the one that makes the Engineer class real.",
+   variants:[
+     {n:"APC", line:"Transport", mount:"—", gadget:"Smoke", seats:6, expl:false,
+      role:"The squad taxi.",
+      why:"Battlefield 1's Squad Support Landship proved the shape: a vehicle that carries five and has a repair crate is a force multiplier, not a stat block."},
+     {n:"Carrier", line:"Anti-infantry", mount:"Light machine gun", gadget:"Ammo crate", seats:3, expl:false,
+      role:"Sustained fire support on foot.",
+      why:"It cannot shoot vehicles, so it must never have to. It carries the ammunition that lets a squad keep fighting."},
+     {n:"Recovery", line:"Support", mount:"—", gadget:"Hull repair", seats:4, expl:false,
+      role:"Repairs and revives friendly vehicles. The Engineer vehicle.",
+      why:"The original had no Engineer class and gave vehicle repair to the Gunner. This gives repair a permanent home where it can be a whole identity."}]},
+
+  {id:"Light tank", domain:"Ground", origin:"original", abbr:"LT",
+   note:"M4 Sherman / Panzer IV lineage.",
+   variants:[
+     {n:"Javelin", line:"Anti-infantry", mount:"20mm autocannon", gadget:"Smoke", seats:2, expl:true,
+      role:"Fast flanker.",
+      why:"Its gun kills men and barely scratches armour. If it meets a tank it should leave — and that decision belongs to the driver."},
+     {n:"Bulwark", line:"Heavy", mount:"37mm main gun", gadget:"Emergency repair", seats:2, expl:true,
+      role:"The line holder.",
+      why:"One job: hold the point you are standing on. Not the fastest, not the best against infantry — the one that is still there."},
+     {n:"Hunter", line:"Anti-vehicle", mount:"AT gun", gadget:"Mine dispenser", seats:2, expl:true,
+      role:"Anti-vehicle specialist.",
+      why:"Battlefield 1's Tank Hunter. Superb against tanks and nearly useless against a man with a rifle — which is the definition of a specialisation."}]},
+
+  {id:"Heavy tank", domain:"Ground", origin:"new", abbr:"HT",
+   note:"A7V lineage. New chassis.",
+   variants:[
+     {n:"Assault", line:"Heavy", mount:"57mm + coaxial MG", gadget:"Smoke", seats:3, expl:true,
+      role:"Pushes the line.",
+      why:"It advances. That is the entire identity, and the armour exists to survive the trip."},
+     {n:"Dug-in", line:"Hold", mount:"57mm, slow traverse", gadget:"Repair + ammo", seats:3, expl:true,
+      role:"Static, durable, holds an objective.",
+      why:"It gives the map a second contested point — a version of the tank that wins by not moving."},
+     {n:"Siege", line:"Indirect", mount:"Howitzer (arc)", gadget:"Repair", seats:2, expl:true,
+      role:"Indirect fire. Cannot hit what it can see.",
+      why:"A howitzer that cannot hit the target in front of it is a weapon that demands a whole team to aim for it."}]},
+
+  {id:"Fighter", domain:"Air", origin:"original", abbr:"FIG",
+   note:"Spitfire / Bf 109 lineage.",
+   variants:[
+     {n:"Interceptor", line:"Air superiority", mount:"2× machine gun", gadget:"—", seats:1, expl:false,
+      role:"Air superiority. No bombs, no rockets.",
+      why:"Battlefield 2042 made the jet's role air-primary for a reason — a fighter that can also clear infantry stops being a fighter."},
+     {n:"Bomber", line:"Bombing", mount:"2× bomb", gadget:"—", seats:1, expl:true,
+      role:"Softens ground, then leaves. Cannot dogfight.",
+      why:"It is the answer to the Scout car — unarmoured transports are exactly what bombs are for. It cannot win a dogfight, and it must not try."},
+     {n:"Liaison", line:"Recon", mount:"Machine gun", gadget:"Radio relay", seats:3, expl:false,
+      role:"Carries two passengers, relays spots. Weak in a dogfight.",
+      why:"The original's Spitfire carried two wing passengers who fired their own weapons. That was the best idea in the vehicle game."}]},
+
+  {id:"Helicopter", domain:"Air", origin:"original", abbr:"HEL",
+   note:"Original helicopter lineage.",
+   variants:[
+     {n:"Transport", line:"Transport", mount:"—", gadget:"Smoke", seats:4, expl:false,
+      role:"The fast drop. No weapons at all.",
+      why:"The purest transport in the roster. It has no opinion about the fight — it moves people to it."},
+     {n:"Gunship", line:"Anti-infantry", mount:"2× machine gun", gadget:"Rocket pod", seats:2, expl:true,
+      role:"Anti-infantry. Vulnerable to anti-air.",
+      why:"It hovers, which means it is a target. The AA emplacement exists precisely to teach that lesson."},
+     {n:"Spotter", line:"Recon", mount:"—", gadget:"Laser designator", seats:2, expl:false,
+      role:"Marks targets for everyone. Cannot fight.",
+      why:"Worthless in a fight and indispensable to a team that knows how to use it — which is exactly the skill a PvP ladder should measure."}]},
+
+  {id:"Boat", domain:"Marine", origin:"original", abbr:"BOAT",
+   note:"Original naval craft. Marine maps only.",
+   variants:[
+     {n:"Landing craft", line:"Transport", mount:"—", gadget:"Ramp", seats:6, expl:false,
+      role:"Amphibious drop onto a beach.",
+      why:"It converts a naval map into an infantry map, which is why it carries six and no gun."},
+     {n:"Gunboat", line:"Naval", mount:"20mm autocannon", gadget:"Smoke", seats:3, expl:true,
+      role:"Naval support. Bounded to water.",
+      why:"It cannot chase you onto the beach. A hard boundary is a feature, not a limitation."}]}
+];
+
+const BFH_ROSTER = [
+  ["Jeep","3","120","No"],["Light tank","2","180","Yes"],["Fighter","3","190","Yes"],
+  ["Helicopter","—","—","Yes"],["Anti-air gun","1","250","Yes"],["Boat","—","—","No"]
+];
+
+const RULES = [
+  ["R1","A <em>transport chassis carries no explosive weapon</em>. Battlefield 2042 removed explosives from the LATV4 Recon for exactly this reason."],
+  ["R2","Every variant owns <em>exactly one battlefield line</em>. BF2042 cut the TOR's long-range potency and raised its close-range power rather than buffing it everywhere."],
+  ["R3","<em>Air chassis do not ground-clear.</em> BF2042 made the jet's role air-primary and ground support secondary."],
+  ["R4","A variant may <em>reduce</em> seats, never add them. Battlefield 1's Landship carried five in Squad Support and three in Tank Hunter."],
+  ["R5","A variant is chosen <em>at the spawn screen</em>, never picked up in the field. This turns a vehicle from a lottery into a decision."],
+  ["R6","Anti-vehicle capability belongs to <em>exactly one chassis per domain</em>."],
+  ["R7","A chassis that appears on many maps has the <em>lowest power ceiling</em>. The Jeep was on 6 of BFH's 14 maps."]
+];
+
+const INVARIANTS = [
+  ["Chassis total","7","ref","BFH had 6 with zero variants; BF1 had 4 with 3 each"],
+  ["Player-selectable variants","20","ref","BFH had 0 variants; BF1 had 12 across 4 chassis"],
+  ["Chassis with wrong variant count","0","pass","every chassis has 2-3 variants"],
+  ["Duplicate variant loadouts","0","pass","no two variants of a chassis are the same vehicle"],
+  ["Transport variants with explosives","0","pass","R1: a transport carries no explosive weapon"],
+  ["Chassis with a contested role line","0","pass","each variant of a chassis owns a distinct battlefield line"],
+  ["Chassis with no counter","0","pass","closed rock-paper-scissors"],
+  ["Chassis with no prey","0","pass","every chassis can be hunted"],
+  ["Chassis map-count spread","5","pass","BFH: Jeep 6 vs Plane 3 -> spread 3"],
+  ["Chassis on more than 8 maps","0","pass","R7: a ubiquitous chassis has the lowest ceiling"],
+  ["Variants exceeding chassis seat count","0","pass","R4: a variant may reduce seats, never add them"],
+  ["Transport-role variants","4","pass","4/20 = 20% of the roster"]
+];
+
+const RPS = [
+  ["Light tank","Heavy tank, Helicopter"],
+  ["Heavy tank","Fighter"],
+  ["Fighter","Helicopter, Boat, Scout car"],
+  ["Helicopter","Light tank"],
+  ["Armoured car","Light tank, Heavy tank"],
+  ["Boat","Armoured car"],
+  ["Scout car","— (outruns Light tank; Bomber hunts it)"]
+];
+
+const SOURCES = [
+  ["BFH technology + map tables","bfh-info.cs-heroes.cz/en/game/technology/ and /map/"],
+  ["BFH vehicle HP and seats","battlefield-heroes.estranky.cz/clanky/prostredky.html"],
+  ["BFH class + vehicle roster","battlefield.fandom.com/wiki/Battlefield_Heroes"],
+  ["BFH seat mechanics","giantbomb.com/wiki/Games/Battlefield_Heroes"],
+  ["BF1 chassis × variants","gameranx.com/features/id/52014/article/battlefield-1-vehicles-2016/"],
+  ["BF2042 failure modes","ea.com/games/battlefield/battlefield-2042/news/dev-notes-state-of-vehicle-gameplay"],
+  ["BF2 role separation","gamespot.com/articles/battlefield-2-walkthrough/1100-6127838/"],
+  ["WoT vehicle roles","worldoftanks.com/en/content/guide/game-mechanics-and-achievements/vehicle-types-and-functions/"]
+];
+
+let activeChassis = 0;
+let unlocked = new Set(["Scout car|Scout","Scout car|Technical","Light tank|Javelin","Light tank|Bulwark"]);
+let selectedVariant = null;
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function renderMatrix(){
+  let h = "<thead><tr><th>Chassis</th>";
+  for(const c of CHASSIS) h += `<th>${esc(c.id)}${c.origin==="new"?' <span style="color:#f0b429;font-size:9px">NEW</span>':""}</th>`;
+  h += "</tr></thead><tbody>";
+  for(const c of CHASSIS){
+    h += `<tr data-chassis="${esc(c.id)}"><td class="ch">${esc(c.id)}<small>${esc(c.abbr)} · ${esc(c.domain)}</small></td>`;
+    for(const v of c.variants){
+      const key = c.id+"|"+v.n;
+      const isUnlocked = unlocked.has(key);
+      const isLockable = !isUnlocked;
+      const cls = isUnlocked ? "on" : "lock";
+      const sel = (selectedVariant && selectedVariant.key===key) ? " sel" : "";
+      h += `<td class="${sel}" data-v="${esc(key)}"><span class="vdot ${cls}" title="${esc(c.id)} · ${esc(v.n)} — ${isUnlocked?'unlocked':'locked'}"></span></td>`;
+    }
+    h += "</tr>";
+  }
+  h += "</tbody>";
+  const t = document.getElementById("matrix");
+  t.innerHTML = h;
+  t.querySelectorAll("td[data-v]").forEach(td=>{
+    td.onclick = ()=>{
+      const [cid,vn] = td.dataset.v.split("|");
+      const c = CHASSIS.find(x=>x.id===cid);
+      const v = c.variants.find(x=>x.n===vn);
+      const key = cid+"|"+vn;
+      if(!unlocked.has(key)){ unlocked.add(key); }
+      selectedVariant = {key, c, v};
+      activeChassis = CHASSIS.indexOf(c);
+      renderAll();
+    };
+  });
+}
+
+function renderTabs(){
+  const t = document.getElementById("tabs");
+  t.innerHTML = CHASSIS.map((c,i)=>{
+    const un = c.variants.filter(v=>unlocked.has(c.id+"|"+v.n)).length;
+    const newtag = c.origin==="new" ? " newtag" : "";
+    return `<button class="tab${i===activeChassis?" on":""}${newtag}" data-i="${i}">${esc(c.id)}<span class="hp">${un}/${c.variants.length}</span></button>`;
+  }).join("");
+  t.querySelectorAll(".tab").forEach(b=>{
+    b.onclick=()=>{ activeChassis=+b.dataset.i; selectedVariant=null; renderAll(); };
+  });
+}
+
+function renderVariants(){
+  const c = CHASSIS[activeChassis];
+  const l = document.getElementById("vlist");
+  l.innerHTML = c.variants.map(v=>{
+    const key = c.id+"|"+v.n;
+    const isUn = unlocked.has(key);
+    const sel = (selectedVariant && selectedVariant.key===key) ? " sel" : "";
+    return `<div class="vcard${sel}${isUn?"":" locked"}" data-v="${esc(key)}">
+      <div class="vh"><span class="vn">${esc(v.n)}</span><span class="vline">${esc(v.line)}</span></div>
+      <div class="vmeta">Mount <em>${esc(v.mount)}</em> · Gadget <em>${esc(v.gadget)}</em> · <em>${v.seats}</em> seat${v.seats===1?"":"s"} · ${v.expl?"<em>Explosive</em>":"<em>No explosives</em>"}</div>
+      <div class="vgad">${esc(v.role)}</div>
+    </div>`;
+  }).join("");
+  l.querySelectorAll(".vcard").forEach(d=>{
+    d.onclick=()=>{
+      const [cid,vn]=d.dataset.v.split("|");
+      const cc=CHASSIS.find(x=>x.id===cid); const vv=cc.variants.find(x=>x.n===vn);
+      const key=cid+"|"+vn;
+      if(!unlocked.has(key)) unlocked.add(key);
+      selectedVariant={key,c:cc,v:vv}; activeChassis=CHASSIS.indexOf(cc); renderAll();
+    };
+  });
+
+  const rd = document.getElementById("roledetail");
+  if(selectedVariant && selectedVariant.c.id===c.id){
+    const v=selectedVariant.v;
+    rd.innerHTML = `<div class="rolebox">
+      <div class="rn">${esc(v.n)} — ${esc(v.line)} line</div>
+      <div class="rd">${esc(v.role)}</div>
+      <div class="rw">Why it exists: ${esc(v.why)}</div>
+    </div>`;
+  } else { rd.innerHTML=""; }
+}
+
+function renderRules(){
+  document.getElementById("rules").innerHTML = RULES.map(([k,v])=>
+    `<div class="rule"><span class="rk">${esc(k)}</span><span class="rb">${v}</span></div>`).join("");
+}
+
+function renderInv(){
+  document.getElementById("inv").innerHTML = INVARIANTS.map(([n,v,st,d])=>{
+    const cls = st==="pass"?"pass":st==="fail"?"fail":"ref";
+    return `<div class="invrow"><span>${esc(n)}</span><span class="v ${cls}">${esc(v)}</span></div>
+            <div class="note" style="margin-top:-4px;margin-bottom:6px">${esc(d)}</div>`;
+  }).join("");
+}
+
+function renderRps(){
+  document.getElementById("rps").innerHTML =
+    "<b>Threat → countered by</b><br><br>" +
+    RPS.map(([a,b])=>`${esc(a)} → ${esc(b)}`).join("<br>") +
+    "<br><br>Sticky TNT sticks to walls <b>and vehicles</b> — infantry can always threaten a vehicle. That was true in the original.";
+}
+
+function renderBfh(){
+  document.getElementById("bfh").innerHTML =
+    "<table style='width:100%;font-size:12px;border-collapse:collapse'>"+
+    "<tr><th style='text-align:left;color:#8b90a8'>Vehicle</th><th>Seats</th><th>HP</th><th>Armed</th></tr>"+
+    BFH_ROSTER.map(r=>`<tr><td style='text-align:left;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)'>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("")+
+    "</table>";
+}
+
+function renderSrcs(){
+  document.getElementById("srcs").innerHTML = SOURCES.map(([t,u])=>
+    `<div class="src"><b>${esc(t)}</b>${esc(u)}</div>`).join("");
+}
+
+function renderAll(){
+  renderMatrix(); renderTabs(); renderVariants(); renderRules();
+  renderInv(); renderRps(); renderBfh(); renderSrcs();
+}
+renderAll();
+</script>
+</body>
+</html>

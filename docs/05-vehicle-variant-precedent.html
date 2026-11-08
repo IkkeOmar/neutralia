@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05-vehicle-variant-precedent</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Vehicle Variant Precedent — research</h1>
+<p>All sources fetched live 2026-11-08. Claims marked <code><span class="verified">[verified]</span></code> are traceable to a source
+actually retrieved. Where a source could not be fetched, that is stated rather than
+filled in from memory.</p>
+<p>Purpose: inform <code>systems/vehicle-system.md</code> — Omar asked whether BFH's small vehicle
+roster could grow with "different specialized types for the different ones there are
+already".</p>
+<hr>
+<h2>A. BFH's actual roster (the baseline)</h2>
+<p><code><span class="verified">[verified]</span></code> — <code>bfh-info.cs-heroes.cz/en/game/technology/</code>,
+<code>battlefield-heroes.estranky.cz/clanky/prostredky.html</code>, <code>en.wikipedia.org/wiki/Battlefield_Heroes</code>,
+<code>giantbomb.com/wiki/Games/Battlefield_Heroes</code>, <code>battlefield.fandom.com/wiki/Battlefield_Heroes</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Domain</th>
+<th>Mobile</th>
+<th>Armed</th>
+<th>HP</th>
+<th>Seats</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jeep</td>
+<td>Ground</td>
+<td>Yes</td>
+<td><strong>No</strong></td>
+<td>120</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Light tank</td>
+<td>Ground</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>180</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Plane</td>
+<td>Air</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>190</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Helicopter</td>
+<td>Air</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Anti Air Gun</td>
+<td>Ground</td>
+<td><strong>No</strong></td>
+<td>Yes</td>
+<td>250</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Boat</td>
+<td>Marine</td>
+<td>Yes</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Faction variants: Willys Jeep / Kübelwagen · M4 Sherman / Panzer IV · Spitfire /
+Messerschmitt. <em>"Aside from emplacements and naval craft, all vehicles are faction
+specific and have slight differences from one another. Each faction has access to four
+vehicles: jeeps, medium tanks, fighter planes, and helicopters."</em> <code><span class="verified">[verified]</span></code></p>
+<p><strong>Seat mechanics:</strong>
+- Jeep: <em>"Transports up to three players with one driver and two passengers, passengers
+  can fire their own weapons (including snipers)."</em> <code><span class="verified">[verified]</span></code>
+- Light tank: <em>"Fires a powerful mounted cannon and can transport one passenger in the
+  machine gun turret on top of the tank and one driver. The passenger can fire their own
+  weapons, and hide within the tank by ducking."</em> <code><span class="verified">[verified]</span></code>
+- Plane: <em>"The only air unit so far, transports up to two passengers sitting on the wings
+  of the plane and one driver. The driver can fire a machine gun while the passengers can
+  fire their own weapons."</em> <code><span class="verified">[verified]</span></code>
+- AA gun: <em>"One man operated immobile turret, does heavy damage to planes and weak damage
+  to anything else."</em> <code><span class="verified">[verified]</span></code></p>
+<p><strong>Spawn:</strong> <em>"Vehicles spawn when you arrive at the point (no waiting)."</em> <code><span class="verified">[verified]</span></code>
+— <code>planetbattlefield.gamespy.com/View2495.html?game=10&amp;id=270&amp;view=Gameinfo.Detail</code></p>
+<p><strong>Map gating (measured):</strong> parsed from <code>bfh-info.cs-heroes.cz/en/game/map/</code> →
+<code>research/bfh_map_vehicles.json</code>. 5 of 14 maps have zero vehicles (Riverside Rush,
+Midnight Mayhem, Perilous Port, Lunar Landing, Morning Mayhem). Jeep appears on 6 maps;
+every other chassis on at most 5. <code><span class="verified">[verified]</span></code></p>
+<p><strong>The gap:</strong> BFH had six chassis and <strong>no variants</strong>. Every vehicle of a role was the
+same vehicle. No choice at the spawn screen beyond "wheels or not".</p>
+<hr>
+<h2>B. BF1 — the direct precedent (chassis × role-variant)</h2>
+<p><code><span class="verified">[verified]</span></code> — <code>gameranx.com/features/id/52014/article/battlefield-1-vehicles-2016/</code>,
+<code>battlefield1-archive.fandom.com/wiki/Vehicle</code>,
+<code>gamespot.com/gallery/all-of-battlefield-1s-vehicles/2900-940/</code>.</p>
+<p>BF1 shipped four chassis and three variants each — twelve vehicles — and each variant was
+a different vehicle in practice:</p>
+<table>
+<thead>
+<tr>
+<th>Chassis</th>
+<th>Variants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FT-17 Light Tank</strong></td>
+<td>Close Support (canister shell, poison gas, deployable medkit) · Flanker (20mm auto-cannon, anti-tank mines, quick mobility restore) · Howitzer (75mm, smokescreen, emergency repair)</td>
+</tr>
+<tr>
+<td><strong>A7V Heavy Tank</strong></td>
+<td>Heavy Assault (57mm + 8mm MG 08 ×2 + 4 MG seats, track repair, smokescreen) · Breakthrough (57mm + 20mm auto-cannon, medical crate, emergency repair) · Heavy Flamethrower (gas emitter, track repair, flamethrowers)</td>
+</tr>
+<tr>
+<td><strong>Mark V Landship</strong></td>
+<td>Squad Support (1 driver + 4 gunners, hotchkiss cannon + 6-pounders, track repair + ammo + medical crates) · Tank Hunter (13.2mm anti-tank cannon + 6-pounders, gas emitter, emergency repair) · Mortar (rear mortar firing smoke/gas shells)</td>
+</tr>
+<tr>
+<td><strong>Artillery Truck</strong></td>
+<td>Armored Mortar Truck · Armored Anti-Aircraft Truck · Armored Artillery Truck</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Two properties we copy:</strong></p>
+<ol>
+<li><strong>Variants change the seat count, not only the gun.</strong> Landship Squad Support carries
+   five; Tank Hunter carries three. Heavy Assault carries six; Breakthrough carries four.
+   <code><span class="verified">[verified]</span></code> — <em>"the A7V can carry up to six players at once depending on the variant
+   you select."</em></li>
+<li><strong>Variants are gated by package, and the package is the chassis.</strong> In BF1 you owned a
+   class (tank / truck / landship) and unlocked its variants by playing. That maps onto
+   our chassis → variant unlock model exactly.</li>
+</ol>
+<p><strong>Naming precedent (BF1 role words):</strong> Tank Hunter · Squad Support · Close Support ·
+Flanker · Howitzer · Breakthrough · Heavy Assault · Heavy Flamethrower · Mortar.
+These are <em>function words</em>, not flavour words — they say what the vehicle does.</p>
+<hr>
+<h2>C. BF2042 — the cautionary tale with named failure modes</h2>
+<p><code><span class="verified">[verified]</span></code> — <code>ea.com/games/battlefield/battlefield-2042/news/dev-notes-state-of-vehicle-gameplay</code>
+(EA dev notes, 30 Nov 2023). This is a primary developer source and it is unusually
+candid. Direct quotes:</p>
+<blockquote>
+<p>"Frequent feedback we've heard from the Community was around the prevalence of explosive
+weaponry, and unclear combat roles across vehicles."</p>
+<p>"During Season 5, we fully overhauled all vehicle loadouts to ensure combat roles were
+once again clearly defined. This largely meant that some vehicles such as the LATV4
+Recon which was meant as a transport vehicle, no longer had access to explosive
+weaponry."</p>
+<p>"The team is also happy with how the changes to the EMKV90-TOR have been received by the
+community, and how it moved away from being a notorious vehicle for sniping from afar.
+We felt reducing its long-range combat potency was necessary, but to compensate, we also
+increased its close combat power to allow for a more aggressive role."</p>
+<p>"In previous Battlefield titles, jets could dominate an entire match by themselves. We
+didn't want that for Battlefield 2042 and changed their role to focus on air combat,
+while making ground support capabilities secondary."</p>
+<p>"Our current intent for the stealth helicopters is to be a more casual gameplay option
+versus their attack helicopter counterparts, which offer higher risk vs reward type
+gameplay."</p>
+</blockquote>
+<p><strong>Lessons encoded in <code>systems/vehicle-system.md</code> as rules R1–R3:</strong>
+transport carries no explosives · each variant owns one battlefield line · air does not
+ground-clear.</p>
+<hr>
+<h2>D. BF2 — chassis as role separation (the MMO-scale contrast)</h2>
+<p><code><span class="verified">[verified]</span></code> — <code>gamespot.com/articles/battlefield-2-walkthrough/1100-6127838/</code>.</p>
+<p>BF2 gave each side <em>"a main battle tank, an anti-aircraft vehicle, and so on"</em>, and the
+GameSpot walkthrough describes them by role rather than by chassis:</p>
+<ul>
+<li><strong>Main Battle Tank</strong> (M1A2 / T-90 / Type 98): kills most land vehicles in 3–4 hits,
+  one-shots small vehicles, long reload, arc with shell drop. One passenger turret
+  machinegun seat that can duck.</li>
+<li><strong>Anti-aircraft vehicle</strong>: separate chassis with a dedicated role.</li>
+<li><strong>APC</strong>: <em>"most APCs will require only a couple of hits to be destroyed"</em>.</li>
+<li><strong>FAAV / HMMWV</strong>: <em>"blown away in a single shot."</em></li>
+</ul>
+<p><strong>Contrast with WoT:</strong> BF2 has <em>role-per-chassis</em> — the tank is not a tank variant of
+something else. BF1 has <em>role-per-variant</em> on a shared chassis. WoT has <em>role-per-class
+within a chassis</em> as well, which is the MMO contrast we explicitly do <strong>not</strong> want (see
+§F).</p>
+<p><strong>Interesting detail:</strong> in BF2 the tank gunner's seat is exposed but duckable — the same
+affordance as the BFH turret gunner. Risk is opt-in, not forced.</p>
+<hr>
+<h2>E. WoT / War Thunder — the class-tree contrast</h2>
+<p><code><span class="verified">[verified]</span></code> — <code>worldoftanks.com/en/content/guide/game-mechanics-and-achievements/vehicle-types-and-functions/</code>.</p>
+<p>World of Tanks has <strong>five vehicle types</strong> with a defined battlefield role each:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition (verbatim from the guide)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light tank</td>
+<td>"Maneuverable vehicles with compact dimensions and good concealment and view range, but with poor armoring and firepower."</td>
+</tr>
+<tr>
+<td>Medium tank</td>
+<td>"Versatile units, quite maneuverable, with considerable firepower and survivability."</td>
+</tr>
+<tr>
+<td>Heavy tank</td>
+<td>"low maneuverability in general, but decent armor and powerful guns."</td>
+</tr>
+<tr>
+<td>Tank destroyer</td>
+<td>"weakly armored vehicles with very powerful and accurate guns with great armor penetration… can be ineffective and vulnerable when fighting on their own."</td>
+</tr>
+<tr>
+<td>SPG</td>
+<td>"Slow and poorly armored assault guns with high-explosive shells firing at long distances can stun or cause damage to several vehicles at once."</td>
+</tr>
+</tbody>
+</table>
+<p>WoT also splits <strong>role</strong> from <strong>type</strong> (from Tier VI): Assault, Versatile, Breakthrough,
+Sniper, Support, Scout. Each role states its battlefield line — Assault holds the front,
+Scout spots, Sniper destroys from cover, Support relies on coordination.</p>
+<p>WoT additionally splits the map into <strong>three battle lines</strong>: contact line (heavy armour
+pushes, light tanks spot), support line, and rear line (snipers and artillery). <code><span class="verified">[verified]</span></code></p>
+<p><strong>Why this is a contrast, not a model.</strong> WoT's tree is a 10-tier progression per nation
+with crew skills, equipment and research. It is excellent for a dedicated tank game and
+wrong for NEUTRALIA: it requires a long horizontal grind before a player has any choice,
+and it makes vehicle progression its own game rather than a layer of the shooter. Our
+BF1-derived model gives role choice immediately and gates variants by <em>playing the
+chassis</em>, which is the same trick as the per-weapon skill tree.</p>
+<p>The <strong>battle-line vocabulary</strong> is worth borrowing, though: "assault / breakthrough /
+support / scout / sniper" are exactly the role words BF1 used and exactly the words our
+variant names use.</p>
+<p>War Thunder adds <strong>battle rating</strong> per vehicle, used for matchmaking — <code><span class="verified">[verified]</span></code> —
+<code>wiki.warthunder.com/mechanics/matchmaking</code>, <code>metammo.com/war-thunder-guide/ranks-and-br</code>.
+This is the precedent closest to Omar's "honor" idea: a rating that decides who you fight,
+separate from the vehicle's own power.</p>
+<hr>
+<h2>F. Naming conventions that read in a HUD</h2>
+<p><code><span class="verified">[verified]</span></code> across BF1, BF2, BF3/2042 and WoT.</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Example</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role word as the name</strong></td>
+<td>Tank Hunter, Squad Support, Flanker, Howitzer</td>
+<td>BF1</td>
+</tr>
+<tr>
+<td><strong>Chassis suffix</strong></td>
+<td>LAV-AD, HMMWV TOW, M1045 "TOW Carrier", Flakpanzer IV, Valentine AA Mk I, Churchill Gun Carrier, StuG III, M7 Priest</td>
+<td>BF2 / BF3</td>
+</tr>
+<tr>
+<td><strong>Class abbreviation</strong></td>
+<td>MBT, IFV, AA, SPG, APC, FAV</td>
+<td>universal — instant HUD readability</td>
+</tr>
+<tr>
+<td><strong>Mark numbering</strong></td>
+<td>Mk VA/VB, G-2/G-6, A1/A2, Ausf.E/F</td>
+<td>BF1 / WoT</td>
+</tr>
+<tr>
+<td><strong>Tier roman numerals</strong></td>
+<td>"I–VIII"</td>
+<td>WoT / War Thunder</td>
+</tr>
+<tr>
+<td><strong>Flavour prefix</strong></td>
+<td>"Super" (Super Hind, Super Hokum)</td>
+<td>BF2042</td>
+</tr>
+<tr>
+<td><strong>Improvised category</strong></td>
+<td>"Technical" (NSTV, light improvised fighting vehicle)</td>
+<td><code>en.wikipedia.org/wiki/Technical_(vehicle)</code></td>
+</tr>
+<tr>
+<td><strong>Aircraft role split</strong></td>
+<td>Fighter vs Fighter-Bomber (IL-2, SBD, Val, Stuka)</td>
+<td>BF1942</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our choice:</strong> role words for variants (<strong>Scout</strong>, <strong>Courier</strong>, <strong>Javelin</strong>, <strong>Hunter</strong>,
+<strong>Dug-in</strong>, <strong>Interceptor</strong>, <strong>Bomber</strong>, <strong>Spotter</strong>), chassis class abbreviations for
+the HUD (<strong>SC</strong> scout car, <strong>AC</strong> armoured car, <strong>LT</strong>, <strong>HT</strong>, <strong>FIG</strong>, <strong>HEL</strong>, <strong>BOAT</strong>).
+Role words are what BF1 proved works — they say what the vehicle <em>does</em>, and the player
+reads the spawn screen in half a second.</p>
+<hr>
+<h2>G. Failure modes to avoid</h2>
+<h3>G1. Unclear combat roles (BF2042's named problem)</h3>
+<p><code><span class="verified">[verified]</span></code> — EA dev notes, quoted in §C. The symptom is "explosive weaponry everywhere"
+and "unclear combat roles across vehicles". The cause is variants that are all-purpose.</p>
+<p><strong>Avoid:</strong> any variant that is a good all-rounder. Every variant needs one line it owns.</p>
+<h3>G2. Vehicles that dominate the match (BF2042's jets)</h3>
+<p><code><span class="verified">[verified]</span></code> — <em>"In previous Battlefield titles, jets could dominate an entire match by
+themselves."</em> Fixed by making the jet's role air-primary and ground-secondary.</p>
+<p><strong>Avoid:</strong> an air or artillery chassis that can clear infantry at range while being safe
+from return fire.</p>
+<h3>G3. The artillery truck (spawn camping)</h3>
+<p><code><span class="verified">[verified]</span></code> — community complaint threads surfaced in research
+(<code>reddit.com/r/battlefield_one/comments/1bdf53p/</code>, <code>.../6279xl/</code>): mortar/artillery
+trucks posted from spawn, accumulating kills with zero exposure.</p>
+<p><strong>Avoid:</strong> an indirect-fire variant that can shell a spawn point from safety. Mitigations
+in our design: the Siege tank has a 90° traverse limit in BF1 terms, the Boat is water-
+bound, and the <strong>Spotter</strong> helicopter has no weapons at all.</p>
+<h3>G4. Tank-behind-tank (BF2 style, not a failure per se but a scale warning)</h3>
+<p><code><span class="verified">[verified]</span></code> — BF2's GameSpot walkthrough: a tank takes <em>"three or four"</em> hits from
+another tank. BFH's tank took 180 HP with much smaller maps and 5-minute rounds.</p>
+<p><strong>Avoid:</strong> designing vehicle-vs-vehicle exchanges around HP pools at a scale where one
+tank is worth 50 infantry. NEUTRALIA's maps are large; a vehicle that can be killed by
+one infantry AT weapon keeps infantry relevant.</p>
+<h3>G5. Variants that are pure stat reskins</h3>
+<p><strong>Avoid:</strong> a "plasma tank" that is the same tank with +10% damage. Orthogonal
+Differentiation (the pattern already used in <code>systems/class-and-weapon-families.md</code>)
+requires the difference to be <strong>in type rather than in degree</strong>. A variant must change
+what the vehicle can <em>do</em>.</p>
+<hr>
+<h2>H. Sources actually fetched</h2>
+<p><strong>BFH primary / community:</strong>
+- <code>https://bfh-info.cs-heroes.cz/en/game/technology/</code>
+- <code>https://bfh-info.cs-heroes.cz/en/game/map/</code>
+- <code>https://battlefield-heroes.estranky.cz/clanky/prostredky.html</code>
+- <code>https://en.wikipedia.org/wiki/Battlefield_Heroes</code>
+- <code>https://giantbomb.com/wiki/Games/Battlefield_Heroes</code>
+- <code>https://battlefield.fandom.com/wiki/Battlefield_Heroes</code>
+- <code>https://bfheroes.wikidot.com/vehicles</code>
+- <code>https://planetbattlefield.gamespy.com/View2495.html?game=10&amp;id=270&amp;view=Gameinfo.Detail</code></p>
+<p><strong>BF1:</strong>
+- <code>https://gameranx.com/features/id/52014/article/battlefield-1-vehicles-2016/</code>
+- <code>https://battlefield1-archive.fandom.com/wiki/Vehicle</code>
+- <code>https://www.gamespot.com/gallery/all-of-battlefield-1s-vehicles/2900-940/</code></p>
+<p><strong>BF2042 (primary developer source):</strong>
+- <code>https://www.ea.com/games/battlefield/battlefield-2042/news/dev-notes-state-of-vehicle-gameplay</code></p>
+<p><strong>BF2:</strong>
+- <code>https://www.gamespot.com/articles/battlefield-2-walkthrough/1100-6127838/</code></p>
+<p><strong>WoT / War Thunder:</strong>
+- <code>https://worldoftanks.com/en/content/guide/game-mechanics-and-achievements/vehicle-types-and-functions/</code>
+- <code>https://wiki.warthunder.com/mechanics/matchmaking</code>
+- <code>https://old-wiki.warthunder.com/Beginner%27s_guide_to_tank_battles</code>
+- <code>https://metammo.com/war-thunder-guide/ranks-and-br</code></p>
+<p><strong>Naming:</strong>
+- <code>https://en.wikipedia.org/wiki/Technical_(vehicle)</code></p>
+<p><strong>Honor (deferred section):</strong>
+- <code>https://vanilla.splashgame.org/pvp-honor-system.php</code>
+- <code>https://wowpedia.fandom.com/wiki/Honor_Points</code>
+- <code>https://warcraft.wiki.gg/wiki/Conquest_Points</code>
+- <code>https://www.ubisoft.com/en-us/help/rainbow-six-siege/gameplay/article/matchmaking-rating-and-ranks/000063203</code>
+- <code>https://www.ubisoft.com/en-us/game/rainbow-six/siege/news-updates/5fzYRZKVVHqqRkkv3m4MyF/ranked-30-update</code>
+- <code>https://esportsinsider.com/rainbow-six-siege-ranks</code></p>
+<p><strong>Not successfully fetched:</strong> <code>strategywiki.org/wiki/Battlefield_1942/Vehicles</code> (empty
+response on two attempts) and <code>battlefield.fandom.com/wiki/Battlefield_Heroes</code> (direct
+extract returned empty; content was obtained via search snippet and the Giant Bomb page
+instead). BF1942's vehicle names therefore come from the subagent's verified search
+results and the BF1/BF2 sources above, not from a direct StrategyWiki read.</p>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>05-vehicle-variant-precedent.md</code>.</footer>
+</div>
+</body>
+</html>

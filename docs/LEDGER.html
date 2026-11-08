@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEDGER</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>LEDGER — NEUTRALIA (BFH-MMO)</h1>
+<p>Durable project state. This file is the source of truth for <em>where the project is</em>;
+Hermes memory holds only the cross-session pointer to it.</p>
+<p>Append-only within a section. When a decision changes, add a new dated entry — do not
+silently rewrite history. Superseded entries get a line marked <code>SUPERSEDED</code>.</p>
+<p>Last updated: 2026-11-08</p>
+<hr>
+<h2>1. Identity</h2>
+<ul>
+<li><strong>Working title:</strong> NEUTRALIA</li>
+<li><strong>Working dir:</strong> <code>/home/omar/2026-11-07/bfh-mmo/</code></li>
+<li><strong>Public site:</strong> https://ikkeomar.github.io/neutralia/ (repo <code>IkkeOmar/neutralia</code>, public, GitHub Pages)</li>
+<li><strong>Private corpus:</strong> <code>IkkeOmar/bfh-mmo</code></li>
+<li><strong>Domain rule:</strong> <code>basednode.xyz</code> = business domain, NEVER hosts this project.</li>
+</ul>
+<hr>
+<h2>2. Design pillars (current)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Pillar</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Weapon choice is the game — every weapon differs functionally on ≥3 axes</td>
+<td>active</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Leveling unlocks options, never power</td>
+<td><strong>AMENDED 2026-11-08 — see §5</strong></td>
+</tr>
+<tr>
+<td>P3</td>
+<td>The war you fight is not the war that exists (Neutralia = third faction premise)</td>
+<td>active</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>3. Measured original-game facts</h2>
+<p>Source: <code>research/02-weapon-roster.json</code>, <code>research/bfhinfo_items_detail.json</code>,
+<code>research/02-bfh-system-inventory.md</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base weapons</td>
+<td>185</td>
+</tr>
+<tr>
+<td>Tier variants</td>
+<td>161 (37 Super, 37 Uber, 21 Stolen, 21 Pilfered, 13 Dapper, 13 Stylish, 16 Golden)</td>
+</tr>
+<tr>
+<td>Distinct 4-axis stat profiles</td>
+<td>55</td>
+</tr>
+<tr>
+<td>Weapons with a unique stat profile</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Distinct behaviour descriptions</td>
+<td>95</td>
+</tr>
+<tr>
+<td>Knives sharing one stat profile</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Do not</strong> re-derive these from memory — the earlier "functionally ~25 weapons" reading was
+wrong and was corrected. 185 weapons collapse to 55 stat profiles but carry 95 distinct
+behaviours, so the original was not purely interchangeable reskins.</p>
+<h3>Original BFH vehicle roster (measured)</h3>
+<p>Per faction: <strong>Jeep</strong> (Willys / Kübelwagen, 3 seats, 120 HP), <strong>medium tank</strong>
+(M4 Sherman / Panzer IV, 2 seats, 180 HP), <strong>fighter</strong> (Spitfire / Bf 109, 3 seats, 190 HP),
+<strong>helicopter</strong> (1 seat). Neutral: <strong>AA gun</strong> (1 seat, 250 HP), <strong>boat</strong> (marine maps).
+All are faction-specific except the AA gun. Vehicles carry passengers; the original had
+a plain chassis roster with no variant tiers.</p>
+<hr>
+<h2>4. Class × weapon-family matrix (current, simulator-validated)</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Families</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soldier</td>
+<td>SMG, Shotgun, Grenade Launcher, TNT</td>
+</tr>
+<tr>
+<td>Gunner</td>
+<td>MG, Grenade Launcher, Rocket Launcher</td>
+</tr>
+<tr>
+<td>Commando</td>
+<td>Shotgun, Rifle, Knife</td>
+</tr>
+<tr>
+<td>Engineer</td>
+<td>Pistol, Artillery, Field Kit</td>
+</tr>
+</tbody>
+</table>
+<p>Invariants asserted by <code>tools/simulate-design.py</code>: no class is a subset of another, no
+family is dead, family counts 4/3/3/3, no two classes share more than one family, family
+spread = 1.</p>
+<p>Family origins: 8 original one-to-one (SMG, Pistol, Shotgun, MG, Rifle, Knife, Grenade
+Launcher, TNT) · 1 split (Rocket Launcher — shipped 2009 under the GL category, not a new
+family) · 2 genuinely new (Artillery, Field Kit).</p>
+<hr>
+<h2>5. Open design decisions</h2>
+<h3>5.1 Leveling as power + "honor" PvP brackets — DEFERRED (2026-11-08)</h3>
+<p>Omar's direction, explicitly parked for the future:</p>
+<ul>
+<li>Leveling <strong>can</strong> be power, not only choice. This lets different levels have <strong>different
+  quests and different work</strong>, and creates a vertical power axis alongside the horizontal one.</li>
+<li><strong>Honor</strong> = the system restricting which levels may fight which levels (PvP brackets),
+  and/or the PvP rank ladder. Precedent exists: WoW's old Honor rank system with
+  battleground level brackets (10–19, 20–29, 30–39, 40–49, 50–59, 60) and rank-gated
+  rewards; R6 Siege's Rank/Skill split with RP-based ladder and squad restrictions.</li>
+</ul>
+<p>Not built yet. No design file written. Revisit when the vertical/horizontal balance is
+actually needed.</p>
+<h3>5.2 Vehicle system — DESIGNED (2026-11-08)</h3>
+<p>Omar asked whether the original's small vehicle roster could grow, with <strong>specialised
+variants per chassis</strong>. Answered: yes, and the model is <strong>Battlefield 1's</strong>, not BFH's.</p>
+<p><strong>BFH measured baseline:</strong> 6 chassis, <strong>0 variants</strong>. Jeep (3 seats, 120 HP, unarmed),
+light tank (2 seats, 180 HP), fighter (3 seats, 190 HP), helicopter, AA gun (immobile,
+250 HP), boat. Vehicles only at controlled points; 5 of 14 maps had no vehicles at all.
+The Jeep was on 6 maps — the most ubiquitous chassis.</p>
+<p><strong>Our system:</strong> 7 player-selectable chassis × 20 variants + 1 map-only emplacement.
+Scout car (Scout/Technical/Courier) · Armoured car NEW (APC/Carrier/Recovery) ·
+Light tank (Javelin/Bulwark/Hunter) · Heavy tank NEW (Assault/Dug-in/Siege) ·
+Fighter (Interceptor/Bomber/Liaison) · Helicopter (Transport/Gunship/Spotter) ·
+Boat (Landing craft/Gunboat).</p>
+<p><strong>Rules</strong> (from BF2042's EA dev notes on their named failure modes — "the prevalence of
+explosive weaponry, and unclear combat roles across vehicles"):
+R1 transport carries no explosives · R2 one battlefield line per variant ·
+R3 air does not ground-clear · R4 variant may reduce seats, never add ·
+R5 variant chosen at spawn only · R6 anti-vehicle belongs to one chassis per domain ·
+R7 ubiquitous chassis has the lowest ceiling.</p>
+<p><strong>Variants earned by playing the chassis</strong>, not by levelling — same trick as the
+per-weapon skill tree.</p>
+<p><strong>Armoured car is what makes the Engineer real</strong> — the original had no Engineer class
+and vehicle repair was a Gunner ability.</p>
+<p><strong>Simulator:</strong> <code>sim_vehicle_matrix()</code> in <code>tools/simulate-design.py</code> asserts V1–V6 plus
+seat-economy and transport-share. It caught two real flaws on first run (contested role
+lines; Scout car with no predator) — both fixed in the design, not in the assertion.</p>
+<p>Docs: <code>systems/vehicle-system.md</code>, <code>research/05-vehicle-variant-precedent.md</code>,
+<code>research/bfh_map_vehicles.json</code>.</p>
+<hr>
+<h2>6. Operational state (2026-11-08)</h2>
+<h3>Cron jobs — audited, all healthy</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Schedule</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dd5d41e24800</code></td>
+<td>Morgencheck: BasedNode + Hermes</td>
+<td><code>0 7 * * *</code></td>
+<td>ON → Discord</td>
+</tr>
+<tr>
+<td><code>b6a0ca13df80</code></td>
+<td>obsidian-vault-sync</td>
+<td><code>0 3 * * *</code></td>
+<td>ON</td>
+</tr>
+<tr>
+<td><code>059d461b109f</code></td>
+<td>Vector Memory Auto-Ingest</td>
+<td>every 120m</td>
+<td>ON → local</td>
+</tr>
+<tr>
+<td><code>c44bef575fa7</code></td>
+<td>GXU-påmindelse (elev)</td>
+<td><code>45 13 30 9 *</code></td>
+<td>ON</td>
+</tr>
+<tr>
+<td><code>777c04ec6541</code></td>
+<td>Pi sign-in investigation</td>
+<td>once 2026-11-08 13:41</td>
+<td>ON</td>
+</tr>
+<tr>
+<td><code>a63f6726321f</code></td>
+<td>BFH-MMO idé (1/2)</td>
+<td>was 09:00 today</td>
+<td>completed, prompt corrected</td>
+</tr>
+<tr>
+<td><code>3543cbeb9a77</code></td>
+<td>BFH-MMO idé (2/2)</td>
+<td>was 14:00 today</td>
+<td><strong>PAUSED</strong>, prompt corrected</td>
+</tr>
+<tr>
+<td><code>ca241ce969bc</code></td>
+<td>basednode-health-watch</td>
+<td><code>0 */12 * * *</code></td>
+<td>paused (pre-existing)</td>
+</tr>
+<tr>
+<td><code>ddd6ac437402</code></td>
+<td>basednode-watchdog</td>
+<td><code>0 7,19 * * *</code></td>
+<td>paused (pre-existing)</td>
+</tr>
+</tbody>
+</table>
+<p>Cron heartbeat confirmed live (24 s age at audit). Both script crons executed clean:
+<code>obsidian-vault-sync.sh</code> exit 0, <code>basednode-watchdog.sh</code> exit 0, "All systems healthy".</p>
+<h3>The 09:00 cron incident — root cause</h3>
+<p>The cron job <code>a63f6726321f</code> ("BFH-MMO idé 1/2") fired at 09:00 and its prompt asserted
+<em>"prototypen er live på basednode.xyz/prototype/"</em>. The cron agent took that as an
+instruction and, rather than just describing state, <strong>created the deployment</strong>: it made
+<code>/home/omar/hjemmeside/prod/prototype</code> → <code>/var/www/bfh-prototype</code> and copied the prototype
+there. The business domain was serving BFH content again from 09:03.</p>
+<p>Fixed at 09:08: symlink + target removed, routing-proxy route deleted, both BFH cron
+prompts rewritten to point at GitHub Pages and to carry an explicit hosting prohibition.
+Both BFH jobs are now paused/completed; neither will re-fire on its own.</p>
+<p><strong>Lesson recorded:</strong> a cron prompt that <em>states</em> a deployment location can cause an agent
+to <em>perform</em> it. Cron prompts must state the correct location and prohibit the wrong one.</p>
+<h3>Business site</h3>
+<p>All routes 200 (<code>/</code>, <code>/index.html</code>, <code>/app.js</code>, <code>/i18n.js</code>, <code>/ecc-data.json</code>, <code>/about.html</code>,
+<code>/cases.html</code>, <code>/contact.html</code>, <code>/privacy.html</code>, clean URLs <code>/about</code>, <code>/cases</code>, <code>/contact</code>,
+<code>/privacy</code>). <code>/prototype/*</code> → 404. <code>routing-proxy</code> and <code>basednode-site</code> both online.</p>
+<hr>
+<h2>7. Verification ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-11-08</td>
+<td>simulator <code>tools/simulate-design.py</code></td>
+<td>ALL CHECKS PASSED</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>classes.html</code> DOM suite, live URL</td>
+<td>53/53</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>index.html</code> DOM suite, live URL</td>
+<td>39/39</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>Pages status</td>
+<td>built</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>business site route sweep</td>
+<td>all 200</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>business domain prototype paths</td>
+<td>all 404</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>cron heartbeat</td>
+<td>24 s old</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>script crons executed</td>
+<td>both exit 0</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>8. File map</h2>
+<pre><code>GAME-DESIGN.md            master design
+DEPLOY.md                 deploy procedure (GitHub Pages)
+LEDGER.md                 this file — durable project state
+FEASIBILITY.md            feasibility findings
+Battlefield-Heroes-MMO.md project brief
+systems/
+  class-and-weapon-families.md
+  weapon-specification.md
+lore/
+  third-faction.md
+research/
+  02-bfh-system-inventory.md
+  02-weapon-roster.json
+  04-class-weapon-family-exclusivity.md
+  bfhinfo_items_detail.json
+  map_*.txt
+tools/
+  simulate-design.py      progression + class-matrix simulator
+  render-docs.py          markdown -&gt; site HTML
+prototype/
+  classes.html            class x family matrix (53 checks)
+  index.html              weapon spec tree (39 checks)
+  test-classes.js
+  test-prototype.js
+</code></pre>
+<hr>
+<h2>9. Change log</h2>
+<ul>
+<li><strong>2026-11-08</strong> — BFH content removed from the business domain; moved to
+  <code>IkkeOmar/neutralia</code> on GitHub Pages. Routing-proxy prototype route deleted.</li>
+<li><strong>2026-11-08</strong> — 09:00 cron recreated the prototype on the business domain; root-caused,
+  removed, and both BFH cron prompts rewritten + paused.</li>
+<li><strong>2026-11-08</strong> — Rocket Launcher reclassified as <em>split</em>, not new. Matrix re-cut.</li>
+<li><strong>2026-11-07</strong> — class × weapon-family system written; simulator extended; prototype built.</li>
+</ul>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>LEDGER.md</code>.</footer>
+</div>
+</body>
+</html>

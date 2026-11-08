@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vehicle-system</title>
+<style>
+:root{--bg:#0b0d17;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.10);
+--purple:#7c5cfc;--cyan:#38bdf8;--gold:#f0b429;--green:#34d399;--txt:#e8eaf2;--dim:#8b90a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#1a1640 0%,transparent 60%),
+radial-gradient(900px 700px at 100% 0%,#0d2b45 0%,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.68 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+padding:38px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:30px;margin:0 0 22px;letter-spacing:.06em;color:var(--txt)}
+h1 span{color:var(--purple)}
+h2{font-size:19px;margin:38px 0 12px;padding-top:20px;border-top:1px solid var(--line);color:var(--cyan)}
+h3{font-size:15.5px;margin:26px 0 9px;color:var(--purple)}
+h4{font-size:14px;margin:20px 0 7px;color:var(--gold)}
+p{margin:0 0 13px}
+a{color:var(--cyan)}
+code{background:rgba(124,92,252,.16);padding:1px 6px;border-radius:5px;font-size:12.5px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#c3b5ff}
+pre{background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:11px;padding:15px;
+overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;color:#d5d8e8;font-size:12.5px;line-height:1.55}
+table{border-collapse:collapse;width:100%;margin:0 0 18px;font-size:13px}
+th,td{border-bottom:1px solid rgba(255,255,255,.07);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.028)}
+blockquote{border-left:3px solid var(--purple);margin:0 0 15px;padding:2px 0 2px 14px;
+color:var(--dim);font-style:italic}
+blockquote p{margin:0 0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:5px}
+strong{color:#fff}
+.back{display:inline-block;margin-bottom:22px;color:var(--dim);text-decoration:none;font-size:13px;
+padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.04)}
+.back:hover{border-color:var(--purple);color:var(--txt)}
+.verified{color:var(--green);font-size:11px;font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">&larr; NEUTRALIA — design index</a>
+<h1>Vehicle System — chassis, variants, and the honor bracket</h1>
+<p>Companion to <code>GAME-DESIGN.md</code> and <code>systems/class-and-weapon-families.md</code>. Implements the
+vehicle half of pillar P1 (<em>weapon choice is the game</em>) applied to vehicles, and answers
+Omar's two questions:</p>
+<blockquote>
+<p>"Leveling can also be power, not only choice. Because that way we can have different
+quests and work for different levels. Also restricting which levels can fight against
+which levels (we can call it 'honor'). That's for the future though. Don't worry about it."</p>
+<p>"Also think about the different vehicles there are in BFH. Could we have a few more? Maybe
+different specialized types for the different ones there are already?"</p>
+</blockquote>
+<p>Research basis: <code>research/05-vehicle-variant-precedent.md</code>, <code>research/bfh_map_vehicles.json</code>,
+<code>research/02-bfh-system-inventory.md</code>. All primary sources fetched live on 2026-11-08.</p>
+<hr>
+<h2>0. Scope and status</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vehicle chassis × variant system (§2–§5)</td>
+<td><strong>Designed here.</strong> Ready for implementation.</td>
+</tr>
+<tr>
+<td>Honor brackets / level-gated PvP (§6)</td>
+<td><strong>Deferred by Omar (2026-11-08).</strong> Spec sketched so it is not lost; not built.</td>
+</tr>
+</tbody>
+</table>
+<p>Omar's framing of leveling-as-power is <strong>kept as a live option</strong>, because it changes the
+progression architecture and is expensive to retrofit. §6 records exactly what it would
+require. It is deliberately <em>not</em> implemented now.</p>
+<hr>
+<h2>1. What BFH actually had (measured, not assumed)</h2>
+<p><code><span class="verified">[verified]</span></code> — sources fetched 2026-11-08:
+<code>bfh-info.cs-heroes.cz/en/game/technology/</code> (technology + map tables),
+<code>battlefield-heroes.estranky.cz/clanky/prostredky.html</code> (HP and seat counts),
+<code>en.wikipedia.org/wiki/Battlefield_Heroes</code>, <code>giantbomb.com/wiki/Games/Battlefield_Heroes</code>.</p>
+<h3>1.1 The chassis</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Domain</th>
+<th>Mobile</th>
+<th>Armed</th>
+<th>HP</th>
+<th>Seats</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jeep (Willys MB / Kübelwagen)</td>
+<td>Ground</td>
+<td>yes</td>
+<td><strong>no</strong></td>
+<td>120</td>
+<td>3 (1 driver + 2 passengers)</td>
+</tr>
+<tr>
+<td>Light tank (M4 Sherman / Panzer IV)</td>
+<td>Ground</td>
+<td>yes</td>
+<td>yes</td>
+<td>180</td>
+<td>2 (driver + turret gunner)</td>
+</tr>
+<tr>
+<td>Fighter (Spitfire / Bf 109)</td>
+<td>Air</td>
+<td>yes</td>
+<td>yes</td>
+<td>190</td>
+<td>3 (driver + 2 wing passengers)</td>
+</tr>
+<tr>
+<td>Helicopter</td>
+<td>Air</td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Anti-air gun</td>
+<td>Ground</td>
+<td><strong>no</strong></td>
+<td>yes</td>
+<td>250</td>
+<td>1 (immobile turret)</td>
+</tr>
+<tr>
+<td>Boat</td>
+<td>Marine</td>
+<td>yes</td>
+<td><strong>no</strong></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Six chassis, six roles, <strong>zero variants</strong>. Every vehicle in a given role was the same
+vehicle. That is the gap Omar is pointing at.</p>
+<p>Two mechanics worth keeping because they are the reason BFH vehicles were fun:
+- <strong>Passengers fire their own weapons.</strong> A sniper riding the wing of a Spitfire shoots
+  with their own rifle. The vehicle is a platform, not a replacement for the player.
+- <strong>The tank turret gunner can duck.</strong> Firing from the exposed turret seat is a choice,
+  not a forced risk. <code><span class="verified">[verified]</span></code> — Giant Bomb BFH page.</p>
+<h3>1.2 Where vehicles appeared (measured)</h3>
+<p>Parsed from <code>bfh-info.cs-heroes.cz/en/game/map/</code> → <code>research/bfh_map_vehicles.json</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Map</th>
+<th>Vehicles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seaside Skirmish</td>
+<td>Jeep, Tank, Plane, Helicopter</td>
+</tr>
+<tr>
+<td>Buccaneer Bay</td>
+<td>Jeep, Tank, Plane, Helicopter</td>
+</tr>
+<tr>
+<td>Wicked Wake</td>
+<td>Jeep, Tank, Plane, Helicopter</td>
+</tr>
+<tr>
+<td>Inland Invasion</td>
+<td>Jeep, Tank, Plane, Helicopter</td>
+</tr>
+<tr>
+<td>Alpine Assault</td>
+<td>Jeep, Tank</td>
+</tr>
+<tr>
+<td>Victory Village</td>
+<td>Jeep</td>
+</tr>
+<tr>
+<td>Coastal Clash</td>
+<td>Jeep</td>
+</tr>
+<tr>
+<td>Fortress Frenzy</td>
+<td>Jeep</td>
+</tr>
+<tr>
+<td>Riverside Rush</td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td>Midnight Mayhem</td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td>Perilous Port</td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td>Lunar Landing</td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td>Morning Mayhem</td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td>Scroll to the Middle (unnamed in parse)</td>
+<td><strong>none</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Vehicle frequency across maps: Jeep 6 · full four-chassis 5 · three-chassis 3+2 ·
+Jeep+Tank 2.</p>
+<p><strong>Two lessons, both load-bearing for our design:</strong></p>
+<ol>
+<li><strong>BFH gated vehicles per map.</strong> Infantry-only maps had zero vehicles. That is a
+   deliberate, load-bearing map property, not a content accident — 5 of 14 maps had no
+   vehicles at all.</li>
+<li><strong>The Jeep is the universal chassis.</strong> It appears on 6 maps; every other chassis
+   appears on at most 5. If we add variants, the Jeep chassis is where they will be
+   read most often — and where a bad variant will be felt most.</li>
+</ol>
+<h3>1.3 The original's weakness</h3>
+<p>BFH's vehicles were <em>chassis without roles</em>. A jeep is a jeep; a tank is a tank. There is
+no decision at the spawn screen beyond "do I want wheels". Compare <strong>Battlefield 1</strong>,
+where one chassis is three different vehicles depending on loadout — and this is exactly
+the shape of the thing Omar is asking for.</p>
+<hr>
+<h2>2. The system: chassis × variant</h2>
+<p><strong>A chassis is a hull. A variant is a role.</strong> The chassis decides physics, silhouette and
+seat layout; the variant decides the weapon mount, the gadget, the armour profile and the
+spawn cost.</p>
+<p>The design rule, borrowed from BF1 and BF2042:</p>
+<blockquote>
+<p>Every variant must be the <strong>best</strong> vehicle at its job and the <strong>worst</strong> vehicle at every
+other job. If a variant is merely "a bit better" at something, it is a stat change, not
+a new vehicle.</p>
+</blockquote>
+<h3>2.1 Why BF1 is the precedent, not BF2</h3>
+<p><code><span class="verified">[verified]</span></code> — <code>gameranx.com/features/id/52014/article/battlefield-1-vehicles-2016/</code>,
+<code>battlefield1-archive.fandom.com/wiki/Vehicle</code>, <code>gamespot.com/gallery/all-of-battlefield-1s-vehicles/2900-940/</code>.</p>
+<p>BF1 shipped <strong>four chassis, three variants each, twelve vehicles</strong>, and every variant was
+a different vehicle in practice:</p>
+<table>
+<thead>
+<tr>
+<th>Chassis</th>
+<th>Variants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FT-17 Light Tank</td>
+<td>Close Support (medkits, poison gas, deployable) · Flanker (fast, 20mm auto-cannon, mine-laying) · Howitzer (75mm, smokescreen, emergency repair)</td>
+</tr>
+<tr>
+<td>A7V Heavy Tank</td>
+<td>Heavy Assault (57mm + 5 MGs, smokescreen) · Breakthrough (57mm + 20mm, medkit, emergency repair) · Heavy Flamethrower (gas cloud, flamethrowers)</td>
+</tr>
+<tr>
+<td>Mark V Landship</td>
+<td>Squad Support (5 seats, repair + ammo + medkit crates) · Tank Hunter (13.2mm anti-tank) · Mortar (rear mortar, smoke/gas shells)</td>
+</tr>
+<tr>
+<td>Artillery Truck</td>
+<td>Armored Mortar Truck · Armored Anti-Aircraft Truck · Armored Artillery Truck</td>
+</tr>
+</tbody>
+</table>
+<p>Note the pattern: <strong>the variants change the seat count</strong>, not just the gun. A Landship
+Squad Support carries five; a Tank Hunter carries three. A variant is a different
+<em>vehicle that happens to share a chassis</em>, exactly as we want.</p>
+<p>BF1 also gated by <strong>package</strong>: you owned a class (tank/truck/landship) and unlocked its
+variants by playing. That is our progression hook, and it maps directly onto the class
+spec system already designed in <code>systems/class-and-weapon-families.md</code>.</p>
+<h3>2.2 Why BF2042 is the cautionary tale</h3>
+<p><code><span class="verified">[verified]</span></code> — <code>ea.com/games/battlefield/battlefield-2042/news/dev-notes-state-of-vehicle-gameplay</code>
+(EA dev notes, 30 Nov 2023). Two named failure modes:</p>
+<blockquote>
+<p>"Frequent feedback we've heard from the Community was around the prevalence of explosive
+weaponry, and unclear combat roles across vehicles."</p>
+</blockquote>
+<p>The fix: <em>"we fully overhauled all vehicle loadouts to ensure combat roles were once again
+clearly defined. This largely meant that some vehicles such as the LATV4 Recon which was
+meant as a transport vehicle, no longer had access to explosive weaponry."</em></p>
+<p>Also, from the same notes, on the EMKV90-TOR:</p>
+<blockquote>
+<p>"We felt reducing its long-range combat potency was necessary, but to compensate, we also
+increased its close combat power to allow for a more aggressive role."</p>
+</blockquote>
+<p>And on jets:</p>
+<blockquote>
+<p>"In previous Battlefield titles, jets could dominate an entire match by themselves. We
+didn't want that for Battlefield 2042 and changed their role to focus on air combat,
+while making ground support capabilities secondary."</p>
+</blockquote>
+<p><strong>Three rules we take directly from this:</strong></p>
+<ol>
+<li><strong>A transport chassis carries no explosives.</strong> No launcher, no AT rocket, no mine. The
+   Recon/APC/Jeep transport may not kill vehicles. Full stop.</li>
+<li><strong>Every variant has one battlefield line, not one "strongest at everything".</strong> The TOR
+   was nerfed at range and buffed at close range, not buffed everywhere. A variant that is
+   good everywhere is a variant that is bad at being interesting.</li>
+<li><strong>Air chassis do not ground-clear.</strong> A vehicle that can kill tanks, planes and infantry
+   from a safe position deletes the infantry's reason to exist.</li>
+</ol>
+<h3>2.3 The one rule that matters most for NEUTRALIA</h3>
+<p>BF2042's problem was <strong>unclear combat roles</strong>. Our answer is structural, not numeric:</p>
+<blockquote>
+<p><strong>A vehicle variant may not be chosen in the field. It is chosen at the spawn screen,
+and it is one of three.</strong> Each spawn offers one variant per chassis, never more. The
+player picks a role before the match and plays it. There is no "the tank spawned and I
+happen to be in it".</p>
+</blockquote>
+<p>This is BF1's model. It converts a vehicle from a lottery into a decision.</p>
+<hr>
+<h2>3. The chassis roster</h2>
+<p><strong>Seven chassis.</strong> Six are the BFH originals (so the lineage is legible); one is new.
+Each has 2–3 variants.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Chassis</th>
+<th>Domain</th>
+<th>BFH origin</th>
+<th>Seats</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td><strong>Scout car</strong> (jeep lineage)</td>
+<td>Ground</td>
+<td>Jeep</td>
+<td>3</td>
+<td>Transport / recon / forward resupply</td>
+</tr>
+<tr>
+<td>C2</td>
+<td><strong>Armoured car</strong> (half-track lineage)</td>
+<td>Ground</td>
+<td><strong>New</strong></td>
+<td>4</td>
+<td>Mobile support, infantry carrier</td>
+</tr>
+<tr>
+<td>C3</td>
+<td><strong>Light tank</strong></td>
+<td>Ground</td>
+<td>Light tank</td>
+<td>2</td>
+<td>Direct-fire, anti-vehicle</td>
+</tr>
+<tr>
+<td>C4</td>
+<td><strong>Heavy tank</strong></td>
+<td>Ground</td>
+<td><strong>New</strong></td>
+<td>3</td>
+<td>Breakthrough, area denial</td>
+</tr>
+<tr>
+<td>C5</td>
+<td><strong>Fighter</strong></td>
+<td>Air</td>
+<td>Plane</td>
+<td>3</td>
+<td>Air superiority, anti-ground strafing</td>
+</tr>
+<tr>
+<td>C6</td>
+<td><strong>Helicopter</strong></td>
+<td>Air</td>
+<td>Helicopter</td>
+<td>2</td>
+<td>Transport, spotting, indirect fire</td>
+</tr>
+<tr>
+<td>C7</td>
+<td><strong>Boat</strong></td>
+<td>Marine</td>
+<td>Boat</td>
+<td>4</td>
+<td>Amphibious transport, naval support</td>
+</tr>
+</tbody>
+</table>
+<p>Plus <strong>C8 — Emplacement</strong> (AA gun lineage): immobile, 1 seat, map-controlled, never
+spawned by players. It stays a map feature, because a player-controlled static AA is a
+sniper rifle with a health bar and it deletes aircraft.</p>
+<h3>3.1 Variant matrix</h3>
+<p>Every cell is a role. Two variants of the same chassis must be <strong>mutually exclusive in
+what they can do</strong>, not in how well they do it.</p>
+<h4>C1 — Scout car (jeep lineage) · 3 variants</h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Transport</th>
+<th>Anti-vehicle</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scout</strong></td>
+<td>None (passenger weapons only)</td>
+<td>Smoke screen</td>
+<td>3 passengers</td>
+<td><strong>None</strong></td>
+<td>Fast, quiet, reveals. The BFH jeep exactly.</td>
+</tr>
+<tr>
+<td><strong>Technical</strong></td>
+<td>Light machine gun</td>
+<td>Repair kit</td>
+<td>2 passengers</td>
+<td>None</td>
+<td>Improvised fighting car. Cheap, expendable, good at infantry.</td>
+</tr>
+<tr>
+<td><strong>Courier</strong></td>
+<td>None</td>
+<td>Radio relay</td>
+<td><strong>5 passengers</strong></td>
+<td>None</td>
+<td>Moves the squad. The forward-respawn vehicle.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Precedent:</em> BF1 "Armored Mortar Truck"/"Armored AA Truck" share a chassis; the Technical
+is a real historical category (<code>en.wikipedia.org/wiki/Technical_(vehicle)</code>).</p>
+<p><strong>Rule 1 applied:</strong> no explosives on any of the three. The Scout car's job is to arrive.</p>
+<h4>C2 — Armoured car (half-track lineage) · 3 variants · <strong>new chassis</strong></h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Transport</th>
+<th>Anti-vehicle</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>APC</strong></td>
+<td>None</td>
+<td>Smoke</td>
+<td>6 passengers</td>
+<td>None</td>
+<td>The squad taxi. Battlefield 1's "Squad Support".</td>
+</tr>
+<tr>
+<td><strong>Carrier</strong></td>
+<td>Light machine gun</td>
+<td>Ammo crate</td>
+<td>3 passengers</td>
+<td>None</td>
+<td>Sustained fire support on foot. Anti-infantry line.</td>
+</tr>
+<tr>
+<td><strong>Recovery</strong></td>
+<td>None</td>
+<td>Repair hull</td>
+<td>4 passengers</td>
+<td>None</td>
+<td>Repairs and revives friendly vehicles. The Engineer vehicle. Support line.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>This is the chassis that makes the Engineer class real.</strong> The BFH Engineer can repair
+vehicles, but had no vehicle to do it from. <code><span class="verified">[verified]</span></code> — the BFH class/vehicle split:
+the original's three classes were Soldier, Gunner, Commando; there was no fourth class,
+and vehicle repair was a Gunner ability (<code>systems/class-and-weapon-families.md</code>).</p>
+<h4>C3 — Light tank · 3 variants</h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Anti-vehicle</th>
+<th>Anti-infantry</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Javelin</strong></td>
+<td>20mm autocannon</td>
+<td>Smoke</td>
+<td>Low (anti-personnel)</td>
+<td>High</td>
+<td>Fast flanker. BF1 "Flanker". <strong>Anti-infantry line.</strong></td>
+</tr>
+<tr>
+<td><strong>Bulwark</strong></td>
+<td>37mm main gun</td>
+<td>Emergency repair</td>
+<td>Medium</td>
+<td>High</td>
+<td>The line holder. <strong>Heavy line.</strong></td>
+</tr>
+<tr>
+<td><strong>Hunter</strong></td>
+<td>AT gun (anti-tank)</td>
+<td>Mine dispenser</td>
+<td><strong>High</strong></td>
+<td>Low</td>
+<td>Anti-vehicle specialist. BF1 "Tank Hunter".</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule 1 applied:</strong> the Hunter is superb against tanks and nearly useless against a man
+with a rifle. That is the point of the variant existing.</p>
+<h4>C4 — Heavy tank · 3 variants · <strong>new chassis</strong></h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Seats</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Assault</strong></td>
+<td>57mm + coaxial MG</td>
+<td>Smoke</td>
+<td>3</td>
+<td>Pushes the line.</td>
+</tr>
+<tr>
+<td><strong>Dug-in</strong></td>
+<td>57mm, slow traverse</td>
+<td>Emergency repair + ammo</td>
+<td>3</td>
+<td>Static, durable, holds an objective. <strong>Hold line.</strong></td>
+</tr>
+<tr>
+<td><strong>Siege</strong></td>
+<td>Howitzer (arc)</td>
+<td>Repair</td>
+<td>2</td>
+<td>Indirect fire. Cannot hit what it can see.</td>
+</tr>
+</tbody>
+</table>
+<p>The Heavy Tank is BF1's A7V with three loadouts. <strong>The Dug-in variant exists to punish
+the same objective a mobile team wants</strong>, giving the map a second contested point.</p>
+<h4>C5 — Fighter · 3 variants</h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Seats</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interceptor</strong></td>
+<td>2× machine gun</td>
+<td>None</td>
+<td>1</td>
+<td>Air superiority. No bombs, no rockets.</td>
+</tr>
+<tr>
+<td><strong>Bomber</strong></td>
+<td>2× bombs</td>
+<td>None</td>
+<td>1</td>
+<td>Softens ground, then leaves. Cannot dogfight.</td>
+</tr>
+<tr>
+<td><strong>Liaison</strong></td>
+<td>Machine gun</td>
+<td>Radio relay</td>
+<td>3</td>
+<td>Carries two passengers, relays spots. Weak in a dogfight.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule 3 applied:</strong> the Bomber cannot fight planes. The Interceptor cannot hurt
+ground infantry efficiently. Each is the best at one line and helpless at another.</p>
+<h4>C6 — Helicopter · 3 variants</h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Seats</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transport</strong></td>
+<td>None</td>
+<td>Smoke</td>
+<td>4</td>
+<td>The fast drop. No weapons at all.</td>
+</tr>
+<tr>
+<td><strong>Gunship</strong></td>
+<td>2× machine gun</td>
+<td>Rocket pod (light)</td>
+<td>2</td>
+<td>Anti-infantry. Vulnerable to AA.</td>
+</tr>
+<tr>
+<td><strong>Spotter</strong></td>
+<td>None</td>
+<td>Laser designator</td>
+<td>2</td>
+<td>Marks targets for everyone. Cannot fight.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The Spotter is the honour-bracket MVP.</strong> It is worthless in a fight and indispensable
+to a team that knows how to use it — which is exactly the skill axis a PvP ladder should
+measure.</p>
+<h4>C7 — Boat · 2 variants</h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Mount</th>
+<th>Gadget</th>
+<th>Seats</th>
+<th>Identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Landing craft</strong></td>
+<td>None</td>
+<td>Ramp</td>
+<td>6</td>
+<td>Amphibious drop onto a beach.</td>
+</tr>
+<tr>
+<td><strong>Gunboat</strong></td>
+<td>20mm autocannon</td>
+<td>Smoke</td>
+<td>3</td>
+<td>Naval support. Bounded to water.</td>
+</tr>
+</tbody>
+</table>
+<h4>C8 — Emplacement (AA gun) · not player-selectable</h4>
+<p>Map-placed, 1 seat, 250 HP, immobile. Anti-air strong, anti-ground weak — as shipped
+in BFH. It is a map feature, not a spawn choice.</p>
+<h3>3.2 Totals</h3>
+<p><strong>7 player-selectable chassis · 20 variants</strong>, plus the map-only emplacement (C8) which
+players never choose. Arithmetic: 3+3+3+3+3+3+2 = 20.</p>
+<p>Readability test: BFH had 6 chassis and 0 variants; we have 7 chassis and 20 variants. The variant count is
+what makes each match's spawn screen a decision. The chassis count stays low enough that
+a player can hold all of it in their head.</p>
+<hr>
+<h2>4. How a variant is earned</h2>
+<p>Reuses the class-spec model from <code>systems/class-and-weapon-families.md</code> — no new economy.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it does</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chassis</strong></td>
+<td>Unlocked by level / faction standing. 8 chassis total.</td>
+<td>Level gates</td>
+</tr>
+<tr>
+<td><strong>Variant</strong></td>
+<td>Unlocked by <em>using</em> that chassis. 3 per chassis.</td>
+<td>Chassis-specific XP, like Weapon Skill Points</td>
+</tr>
+<tr>
+<td><strong>Loadout</strong></td>
+<td>Chosen at spawn, free, changeable every match.</td>
+<td>Nothing</td>
+</tr>
+</tbody>
+</table>
+<p>The middle layer is the important one and it is the same trick as the weapon tree:
+<strong>variants are earned by playing the chassis, not by levelling.</strong> A player who owns six
+chassis and spreads their time masters one or two; a player who commits has all three
+variants of one chassis. Same math, same lesson.</p>
+<p><strong>Every match, the spawn screen offers exactly one variant per chassis you have
+unlocked.</strong> You may not carry two variants of the same chassis, and you may not drive a
+variant you have not unlocked. The spawn screen shows, per chassis, the three variant
+icons with the unlocked one lit.</p>
+<p><strong>Cost to the match:</strong> one chassis slot. A player who wants the Heavy Tank cannot also
+take the Fighter. This is the decision.</p>
+<hr>
+<h2>5. Balancing rules</h2>
+<h3>5.1 Hard rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1. A transport chassis carries no explosive weapon.</td>
+<td>BF2042 LATV4 Recon rework (EA dev notes)</td>
+</tr>
+<tr>
+<td>R2. Every variant has exactly one battlefield line it dominates.</td>
+<td>BF2042 TOR: range cut, close buffed</td>
+</tr>
+<tr>
+<td>R3. Air chassis do not ground-clear.</td>
+<td>BF2042 jets: air role primary, ground secondary</td>
+</tr>
+<tr>
+<td>R4. A variant never changes the chassis silhouette or seat count upward.</td>
+<td>BF1 variants <em>do</em> change seat count (downward) — we follow BF1: a variant may reduce seats, never add them</td>
+</tr>
+<tr>
+<td>R5. No variant may be selected in the field. It is a spawn-screen choice.</td>
+<td>§2.3</td>
+</tr>
+<tr>
+<td>R6. Anti-vehicle capability belongs to exactly one chassis per domain.</td>
+<td>BF2 role separation (MBT / AA / APC each distinct)</td>
+</tr>
+<tr>
+<td>R7. A chassis that appears on many maps must have the lowest power ceiling.</td>
+<td>§1.2 — the Jeep is on 6 maps; a strong Jeep is a strong Jeep on every map</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 Anti-vehicle rock-paper-scissors</h3>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Countered by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light tank</td>
+<td>Fighter Bomber (bombs vs armour), AT infantry</td>
+</tr>
+<tr>
+<td>Heavy tank</td>
+<td>Scout car (never engage — outrun it), Heavy Tank Hunter, air</td>
+</tr>
+<tr>
+<td>Air (fighter)</td>
+<td>Emplacement AA, Heavy Tank AA? no — AA emplacement only, plus Flak infantry</td>
+</tr>
+<tr>
+<td>Air (helicopter)</td>
+<td>Light Tank Hunter, AA emplacement, AT infantry</td>
+</tr>
+<tr>
+<td>Infantry</td>
+<td>Fighter Bomber, Gunboat, Gunship</td>
+</tr>
+<tr>
+<td>Scout car (unarmoured transport)</td>
+<td>Fighter Bomber — the scout has no armour to stop bombs</td>
+</tr>
+<tr>
+<td>Player in a vehicle</td>
+<td>Infantry AT weapons, sticky TNT (BFH-verified: sticks to vehicles)</td>
+</tr>
+</tbody>
+</table>
+<p>Sticky TNT sticking to vehicles is <code><span class="verified">[verified]</span></code> in the original
+(<code>battlefield.fandom.com/wiki/Battlefield_Heroes</code>: <em>"Sticky TNT/ Sticky TNT - Short
+range/ Medium radius (Standard for all classes, sticks to walls and vehicles)"</em>). It is a
+free gift for the vehicle game: infantry can always threaten vehicles.</p>
+<h3>5.3 Spawn economy</h3>
+<ul>
+<li>A vehicle spawns <strong>only at a controlled point</strong>, like BFH. <code><span class="verified">[verified]</span></code> — BFH vehicles
+  spawned when you arrived at the point, no waiting.</li>
+<li><strong>One vehicle per point per chassis.</strong> A point offering Heavy Tank does not also offer
+  the Light Tank. This is the scarcity that makes the chassis choice matter.</li>
+<li><strong>A point's chassis is map-defined.</strong> Infantry-only maps have no points. BFH had 5 of
+  14 maps with no vehicles; we keep that discipline.</li>
+</ul>
+<hr>
+<h2>6. Honor — level-gated PvP (DEFERRED)</h2>
+<p>Omar's direction, parked on 2026-11-08: <em>"That's for the future though. Don't worry about
+it."</em> Recorded here so the design consequence is captured before it becomes expensive.</p>
+<h3>6.1 What Omar proposed</h3>
+<blockquote>
+<p>"Leveling can also be power, not only choice. Because that way we can have different
+quests and work for different levels. Also restricting which levels can fight against
+which levels (we can call it 'honor')."</p>
+</blockquote>
+<p>Two independent ideas, and they are separable:</p>
+<ul>
+<li><strong>(a) Level = vertical power.</strong> Contradicts pillar P2 ("Leveling unlocks options, never
+  power"). Accepting it means level 30 vs level 1 is a real gap, which enables
+  level-gated content and level-gated PvP.</li>
+<li><strong>(b) Honor = the bracket system.</strong> Restricts which levels may fight which levels, and
+  can carry the PvP rank ladder.</li>
+</ul>
+<h3>6.2 Precedent that exists</h3>
+<p><code><span class="verified">[verified]</span></code> — <code>vanilla.splashgame.org/pvp-honor-system.php</code>, <code>wowpedia.fandom.com/wiki/Honor_Points</code>,
+<code>ubisoft.com/.../ranked-30-update</code>, <code>esportsinsider.com/rainbow-six-siege-ranks</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Game</th>
+<th>System</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WoW (vanilla)</td>
+<td>Honor ranks 1–14 with <strong>battleground level brackets</strong> 10–19 / 20–29 / 30–39 / 40–49 / 50–59 / 60</td>
+<td>Rank-gated rewards. Rank 7+ had real PvP gear. Also the cautionary tale: <em>"it will be nothing but cruel"</em> — free-for-all honour grinding in the open world punished low-level players.</td>
+</tr>
+<tr>
+<td>WoW Cataclysm</td>
+<td>Honor (low tier, capped) + Conquest (high tier, weekly cap), removed in Legion</td>
+<td>Two-tier currency split.</td>
+</tr>
+<tr>
+<td>R6 Siege</td>
+<td>Skill (hidden) vs Rank (visible RP ladder); squad restrictions — Copper–Emerald may queue within 3 ranks, Diamond–Champion within 2</td>
+<td>Ranked 3.0 removed hidden MMR so "your skill is truly your rank".</td>
+</tr>
+</tbody>
+</table>
+<h3>6.3 The design consequence we must accept</h3>
+<p>If level carries power, then <strong>level brackets are not optional</strong> — they are mandatory.
+Without them a level 30 with better gear deletes a level 10 in open world, and that is
+the WoW complaint quoted above. So (a) forces (b).</p>
+<h3>6.4 Sketch (to be designed properly when the time comes)</h3>
+<ul>
+<li><strong>Brackets by level band</strong>, not by a single number. 1–10, 11–20, 21–30, plus an
+  open band.</li>
+<li><strong>Honor = the PvP rank</strong> carried on top of level. Separate currency from level XP.</li>
+<li><strong>A bracket's queue mixes only that bracket.</strong> Different bands do not meet.</li>
+<li><strong>Open-world PvP is either disabled across brackets or honour-gated</strong> — this is the WoW
+  lesson, and the reason the original honour system is worth studying rather than copying.</li>
+<li><strong>Rewards bracket-specific.</strong> A rank that is unbeatable at level 30 is worthless if the
+  level 10 bracket cannot see it.</li>
+<li>The <strong>Squad Support / Spotter / Recovery</strong> variants (§3) are the honest picks for
+  bracket play — they reward coordination over aim.</li>
+</ul>
+<h3>6.5 Why the deferral is cheap</h3>
+<p>Nothing in the vehicle system depends on honor. The spawn-screen variant choice, the
+chassis economy and the vehicle loadouts all work at a single level band. If honor is
+designed later, it slots in as a <em>queue rule</em> and a <em>reward track</em> — it does not require
+rebuilding vehicles.</p>
+<hr>
+<h2>7. What is deliberately not designed yet</h2>
+<ul>
+<li><strong>Vehicle physics.</strong> Handling model, armour model, hit-point values. The original used
+  a simple HP number per vehicle (Jeep 120, Tank 180, Plane 190, AA 250) and we keep the
+  <em>shape</em> of that — one HP pool plus role-specific armour multipliers — but the numbers
+  are not set here.</li>
+<li><strong>Seat-by-seat weapon mounts.</strong> BF1's exact mount table (which seat has which gun) is
+  the model to copy; the specific table is implementation.</li>
+<li><strong>Vehicle class/spec tree</strong>, in the style of <code>systems/class-and-weapon-families.md</code>.
+  The variant unlock curve (how much chassis XP per variant) is not set.</li>
+<li><strong>Exact map vehicle assignments.</strong> §1.2 gives the BFH baseline; our maps are not
+  designed.</li>
+</ul>
+<hr>
+<h2>8. Verification checklist for implementation</h2>
+<p>When this system is built, assert mechanically:</p>
+<ol>
+<li>Every chassis has 2–3 variants (plus the emplacement).</li>
+<li>No two variants of the same chassis share a loadout.</li>
+<li>No transport variant carries an explosive (R1).</li>
+<li>Each variant has exactly one dominant battlefield line, and no line is claimed by two
+   variants of the same chassis (R2).</li>
+<li>Every chassis has a counter and a prey (rock-paper-scissors is closed).</li>
+<li>Every chassis appears on at least one map and on no more than 8 maps (R7).</li>
+<li>A variant is never selectable in the field — only at spawn (R5).</li>
+<li>The spawn screen shows at most one variant per chassis, and at most one chassis of
+   each domain at a time.</li>
+</ol>
+<p><strong>Done:</strong> <code>tools/simulate-design.py</code> now carries <code>sim_vehicle_matrix()</code>, asserting V1–V6
+plus the seat-economy and transport-share checks. It runs as part of the normal
+<code>ALL CHECKS PASSED</code> gate.</p>
+<p>The simulator found two real design flaws on its first run, which were fixed in the
+design rather than papered over in the assertion:
+- <strong>Contested role lines.</strong> The Carrier and Recovery both claimed SUPPORT, and Bulwark
+  and Javelin both fought anti-vehicle. Now every variant of a chassis owns a distinct
+  battlefield line (Armoured car: TRANSPORT / ANTI_INF / SUPPORT · Light tank: ANTI_INF /
+  HEAVY / ANTI_VEH · Heavy tank: HEAVY / HOLD / INDIRECT).
+- <strong>The Scout car had no predator.</strong> A transport that nothing can hunt is a safe ride.
+  The Fighter Bomber now counts as its counter — unarmoured transports are what bombs are
+  for.</p>
+<p>Both are now enforced: changing the matrix to reintroduce either flaw fails the build.</p>
+<footer>NEUTRALIA — Battlefield Heroes MMO design. Rendered from <code>vehicle-system.md</code>.</footer>
+</div>
+</body>
+</html>
